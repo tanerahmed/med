@@ -29,7 +29,19 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerate();
 
-        return redirect()->intended(RouteServiceProvider::HOME);
+        // TANER Role base redirect!
+        $url = '';
+        if($request->user()->role === 'admin'){
+            $url = "admin/dashboard";
+        }elseif($request->user()->role === 'author'){
+            $url = "author/dashboard";
+        }elseif($request->user()->role === 'reviewer'){
+            $url = "reviewer/dashboard";
+        }elseif($request->user()->role === 'user'){
+            $url = "user/dashboard";
+        }
+
+        return redirect()->intended($url);
     }
 
     /**
