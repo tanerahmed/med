@@ -51,3 +51,7 @@ Route::middleware(['auth', 'role:user'])->group(function () {
     Route::get('/user/dashboard', [UserController::class, 'UserDashboard'])->name('user.dashboard');
 });
 
+
+// Login with ORCID
+Route::get('/login/orcid', 'Auth\LoginController@redirectToOrcid');
+Route::get('/login/orcid/callback', 'Auth\LoginController@handleOrcidCallback');
