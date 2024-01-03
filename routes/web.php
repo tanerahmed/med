@@ -5,6 +5,7 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AuthorController;
 use App\Http\Controllers\ReviewerController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\AdminPanelAuthController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -18,10 +19,13 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+
+// !!!!! TODO REMOVE !!!!!
 Route::get('/', function () {
     return view('welcome');
 });
 
+// !!!!! TODO REMOVE !!!!!
 Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
@@ -30,6 +34,9 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+
+    // !!!!! Logout !!!!!
+    Route::get('/logout', [AdminPanelAuthController::class, 'adminPanelLogout'])->name('admin.logout');
 });
 
 require __DIR__.'/auth.php';
