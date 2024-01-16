@@ -40,8 +40,13 @@ class AuthenticatedSessionController extends Controller
         }elseif($request->user()->role === 'user'){
             $url = "user/dashboard";
         }
+        // Return Toster NOTIFICATION message to view. Just for test I did it
+        $notification = array(
+            'message'=> $request->user()->name ." Loggin Successfully",
+            'alert-type'=>'info'
+        );
 
-        return redirect()->intended($url);
+        return redirect()->intended($url)->with($notification);
     }
 
     /**

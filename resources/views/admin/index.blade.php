@@ -6,7 +6,7 @@
 
 <div class="d-flex justify-content-between align-items-center flex-wrap grid-margin">
   <div>
-    <h4 class="mb-3 mb-md-0">Welcome to Taner Admin Panel</h4>
+    <h4 class="mb-3 mb-md-0">Welcome: {{ Auth::user()->name }}</h4>
   </div>
   <div class="d-flex align-items-center flex-wrap text-nowrap">
     <div class="input-group flatpickr wd-200 me-2 mb-2 mb-md-0" id="dashboardDate">
@@ -302,7 +302,7 @@
             </div>
             <div class="w-100">
               <div class="d-flex justify-content-between">
-                <h6 class="text-body mb-2">Amiah Burton</h6>
+                <h6 class="text-body mb-2"></h6>
                 <p class="text-muted tx-12">05.49 AM</p>
               </div>
               <p class="text-muted tx-13">Nice to meet you</p>

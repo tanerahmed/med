@@ -8,7 +8,13 @@ class AdminController extends Controller
 {
     public function AdminDashboard()
     {
-        return view('admin.index');
+        // Return NOTIFICATION message to view
+        $notification = array(
+            'message'=> 'Admin test message',
+            'alert-type'=>'success'
+        );
+
+        return view('admin.index')->with($notification);
     }
 
 }
