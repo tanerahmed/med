@@ -7,6 +7,9 @@
 <div class="d-flex justify-content-between align-items-center flex-wrap grid-margin">
   <div>
     <h4 class="mb-3 mb-md-0">Welcome: {{ Auth::user()->name }}</h4>
+
+    {{ Auth::user()->role }}
+
   </div>
   <div class="d-flex align-items-center flex-wrap text-nowrap">
     <div class="input-group flatpickr wd-200 me-2 mb-2 mb-md-0" id="dashboardDate">
