@@ -43,6 +43,7 @@ require __DIR__.'/auth.php';
 
 Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::get('/admin/dashboard', [AdminController::class, 'AdminDashboard'])->name('admin.dashboard');
+    Route::get('/admin/user/list', [AdminController::class, 'userList'])->name('admin.user-list');
 });
 
 Route::middleware(['auth', 'role:author'])->group(function () {

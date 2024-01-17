@@ -21,7 +21,7 @@ class UsersTableSeeder extends Seeder
                 'email' => 'author@gmail.com',
                 'password' => Hash::make('123'),
                 'role' => 'admin',
-                'status' => 'active',
+                'isActive' => '1',
             ],
             // reviewer
             [
@@ -29,7 +29,7 @@ class UsersTableSeeder extends Seeder
                 'email' => 'reviewer@gmail.com',
                 'password' => Hash::make('123'),
                 'role' => 'reviewer',
-                'status' => 'active',
+                'isActive' => '1',
             ],
             // editor
             [
@@ -37,7 +37,7 @@ class UsersTableSeeder extends Seeder
                 'email' => 'editor@gmail.com',
                 'password' => Hash::make('123'),
                 'role' => 'editor',
-                'status' => 'active',
+                'isActive' => '1',
             ],
             // admin
             [
@@ -45,7 +45,7 @@ class UsersTableSeeder extends Seeder
                 'email' => 'admin@gmail.com',
                 'password' => Hash::make('123'),
                 'role' => 'admin',
-                'status' => 'active',
+                'isActive' => '1',
             ],
             // user
             [
@@ -53,7 +53,7 @@ class UsersTableSeeder extends Seeder
                 'email' => 'user@gmail.com',
                 'password' => Hash::make('123'),
                 'role' => 'user',
-                'status' => 'active',
+                'isActive' => '1',
             ]
             ]);
     }
