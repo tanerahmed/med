@@ -33,26 +33,40 @@
                     </a>
                 @endif
             </li>
-
+            {{-- Admin can see that button --}}
             @if (Auth::check() && Auth::user()->role === 'admin')
                 <li class="nav-item nav-category">Users</li>
                 <li class="nav-item">
-                    <a class="nav-link" data-bs-toggle="collapse" href="#users" role="button" aria-expanded="false" aria-controls="users">
-                      <i class="link-icon" data-feather="user"></i>
-                      <span class="link-title">Users</span>
-                      <i class="link-arrow" data-feather="chevron-down"></i>
+                    <a class="nav-link" data-bs-toggle="collapse" href="#users" role="button" aria-expanded="false"
+                        aria-controls="users">
+                        <i class="link-icon" data-feather="user"></i>
+                        <span class="link-title">Users</span>
+                        <i class="link-arrow" data-feather="chevron-down"></i>
                     </a>
                     <div class="collapse" id="users">
-                      <ul class="nav sub-menu">
-                        <li class="nav-item">
-                          <a href="{{ route('admin.users-list') }}" class="nav-link">List</a>
-                        </li>
-                        <li class="nav-item">
-                          <a href="{{ route('admin.users-create') }}" class="nav-link">Create</a>
-                        </li>
-                      </ul>
+                        <ul class="nav sub-menu">
+                            <li class="nav-item">
+                                <a href="{{ route('admin.users-list') }}" class="nav-link">List</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{{ route('admin.users-create') }}" class="nav-link">Create</a>
+                            </li>
+                        </ul>
                     </div>
-                  </li>
+                </li>
+            @endif
+
+            {{-- Admin and Editor can see that button --}}
+            @if (Auth::check() && (Auth::user()->role === 'admin' || Auth::user()->role === 'editor'))
+                {{-- Logs --}}
+                <li class="nav-item nav-category">Logs</li>
+                <li class="nav-item">
+                    {{-- Admin User --}}
+                    <a href="{{ route('logs.index') }}" class="nav-link">
+                        <i class="link-icon" data-feather="box"></i>
+                        <span class="link-title">Logs</span>
+                    </a>
+                </li>
             @endif
 
 
