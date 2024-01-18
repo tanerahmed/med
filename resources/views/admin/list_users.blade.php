@@ -24,6 +24,7 @@
                                     <th class="pt-0">Email</th>
                                     <th class="pt-0">Status</th>
                                     <th class="pt-0">Assign</th>
+                                    <th class="pt-0">Action</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -35,6 +36,13 @@
                                         <td>{{ $user->email }}</td>
                                         <td><span class="badge bg-{{ $user->status_color }}">{{ $user->status_text }}</span></td>
                                         <td>{{ $user->updated_at }}</td>
+                                        <td>
+                                            <form action="{{ route('admin.users-destroy', $user->id) }}" method="POST">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit" class="btn btn-danger btn-sm">Deleate</button>
+                                            </form>
+                                        </td>
                                     </tr>
                                 @endforeach
                             </tbody>

@@ -43,7 +43,11 @@ require __DIR__.'/auth.php';
 
 Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::get('/admin/dashboard', [AdminController::class, 'AdminDashboard'])->name('admin.dashboard');
-    Route::get('/admin/user/list', [AdminController::class, 'userList'])->name('admin.user-list');
+    Route::get('/admin/user/list', [AdminController::class, 'userList'])->name('admin.users-list');
+    Route::get('/admin/user/create', [AdminController::class, 'userCreate'])->name('admin.users-create');
+    Route::post('/admin/user/store', [AdminController::class, 'userStore'])->name('admin.users-store');
+    Route::delete('/admin/user/delete/{user}', [AdminController::class, 'userDestroy'])->name('admin.users-destroy');
+
 });
 
 Route::middleware(['auth', 'role:author'])->group(function () {
@@ -58,6 +62,11 @@ Route::middleware(['auth', 'role:reviewer'])->group(function () {
 Route::middleware(['auth', 'role:user'])->group(function () {
     Route::get('/user/dashboard', [UserController::class, 'UserDashboard'])->name('user.dashboard');
 });
+
+
+
+
+
 
 
 // Login with ORCID
