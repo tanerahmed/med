@@ -8,6 +8,8 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\AdminPanelAuthController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LogController;
+use App\Http\Controllers\GdprController;
+use App\Http\Controllers\EditorialPublishingPracticeController;
 
 /*
 |--------------------------------------------------------------------------
@@ -74,8 +76,11 @@ Route::middleware(['auth', 'role:user'])->group(function () {
 });
 
 
-// Logs
+
 Route::get('/logs', [LogController::class, 'index'])->name('logs.index');
+Route::get('/gdpr', [GdprController::class, 'index'])->name('gdpr');
+Route::get('/editorial-publishing-practice', [EditorialPublishingPracticeController::class, 'index'])->name('editorial_publishing_practice');
+Route::view('/contact-us', 'frontend.contact_us')->name('contact_us');
 
 
 

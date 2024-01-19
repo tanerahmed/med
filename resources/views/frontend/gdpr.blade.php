@@ -1,0 +1,1 @@
+<h1>GDPR text here</h1>
