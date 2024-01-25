@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->enum('type', ['original article', 'review', 'letter to the editor', 'case of the month/how do I do it']);
             $table->string('specialty');
-            $table->json('scientific_area')->nullable();
+            $table->string('scientific_area')->nullable();
             $table->text('title');
             $table->text('abstract');
             $table->string('keywords', 500);

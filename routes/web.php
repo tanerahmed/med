@@ -9,6 +9,7 @@ use App\Http\Controllers\AdminPanelAuthController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LogController;
 use App\Http\Controllers\GdprController;
+use App\Http\Controllers\ArticleController;
 use App\Http\Controllers\EditorialPublishingPracticeController;
 
 /*
@@ -54,26 +55,26 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::delete('/admin/user/delete/{user}', [AdminController::class, 'userDestroy'])->name('admin.users-destroy');
 
 });
-// Author
-Route::middleware(['auth', 'role:author'])->group(function () {
-    Route::get('/author/dashboard', [AuthorController::class, 'AuthorDashboard'])->name('author.dashboard');
+// Author + admin (админ може всичко!)
+// Route::middleware(['auth', 'role:author, admin'])->group(function () {
+//     Route::get('/author/dashboard', [AuthorController::class, 'AuthorDashboard'])->name('author.dashboard');
+//     Route::get('/article/create', [ArticleController::class, 'articleCreate'])->name('article.create');
 
+// });
+// // Editor
+// Route::middleware(['auth', 'role:editor'])->group(function () {
 
-});
-// Editor
-Route::middleware(['auth', 'role:editor'])->group(function () {
+// });
 
-});
+// // Reviewer
+// Route::middleware(['auth', 'role:reviewer'])->group(function () {
+//     Route::get('/reviewer/dashboard', [ReviewerController::class, 'ReviewerDashboard'])->name('reviewer.dashboard');
+// });
 
-// Reviewer
-Route::middleware(['auth', 'role:reviewer'])->group(function () {
-    Route::get('/reviewer/dashboard', [ReviewerController::class, 'ReviewerDashboard'])->name('reviewer.dashboard');
-});
-
-// User - just user
-Route::middleware(['auth', 'role:user'])->group(function () {
-    Route::get('/user/dashboard', [UserController::class, 'UserDashboard'])->name('user.dashboard');
-});
+// // User - just user
+// Route::middleware(['auth', 'role:user'])->group(function () {
+//     Route::get('/user/dashboard', [UserController::class, 'UserDashboard'])->name('user.dashboard');
+// });
 
 
 
@@ -82,6 +83,9 @@ Route::get('/gdpr', [GdprController::class, 'index'])->name('gdpr');
 Route::get('/editorial-publishing-practice', [EditorialPublishingPracticeController::class, 'index'])->name('editorial_publishing_practice');
 Route::view('/contact-us', 'frontend.contact_us')->name('contact_us');
 
+// article create
+Route::get('/article/create', [ArticleController::class, 'articleCreate'])->name('article.create');
+Route::post('/article/store', [ArticleController::class, 'articleStore'])->name('article.store');
 
 
 

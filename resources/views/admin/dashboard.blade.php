@@ -82,6 +82,9 @@
 
   <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 
+  <script src="{{ asset('../assets/js/article_form_validation.js') }}"></script>
+  <script src="{{ asset('../assets/js/dynamicFields.js') }}"></script>
+
 <script>
  @if(Session::has('message'))
  var type = "{{ Session::get('alert-type','info') }}"

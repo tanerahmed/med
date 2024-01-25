@@ -33,6 +33,8 @@
                     </a>
                 @endif
             </li>
+
+
             {{-- Admin can see that button --}}
             @if (Auth::check() && Auth::user()->role === 'admin')
                 <li class="nav-item nav-category">Users</li>
@@ -56,6 +58,7 @@
                 </li>
             @endif
 
+
             {{-- Admin and Editor can see that button --}}
             @if (Auth::check() && (Auth::user()->role === 'admin' || Auth::user()->role === 'editor'))
                 {{-- Logs --}}
@@ -70,6 +73,35 @@
             @endif
 
 
+            {{-- Admin and Editor can see that button --}}
+            @if (Auth::check() && (Auth::user()->role === 'author' || Auth::user()->role === 'admin'))
+                <li class="nav-item nav-category">Articles</li>
+                <li class="nav-item">
+                    <a class="nav-link" data-bs-toggle="collapse" href="#articles" role="button" aria-expanded="false"
+                        aria-controls="articles">
+                        <i class="link-icon" data-feather="unlock"></i>
+                        <span class="link-title">Articles</span>
+                        <i class="link-arrow" data-feather="chevron-down"></i>
+                    </a>
+                    <div class="collapse" id="articles"> <!-- Различен ID за подменюто Articles -->
+                        <ul class="nav sub-menu">
+                            <li class="nav-item">
+                                <a href="{{ route('admin.users-list') }}" class="nav-link">List</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{{ route('article.create') }}" class="nav-link">Create</a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+            @endif
+
+
         </ul>
     </div>
 </nav>
+
+
+{{-- 
+     --}}
+
