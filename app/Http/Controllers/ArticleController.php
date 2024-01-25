@@ -12,6 +12,7 @@ use App\Models\Figure;
 use App\Models\Table;
 use App\Models\SupplementaryFile;
 use App\Models\CoverLetter;
+use App\Models\Author;
 use Illuminate\Http\Request;
 
 class ArticleController extends Controller
@@ -121,7 +122,26 @@ class ArticleController extends Controller
             $coverLetter->save();
         }
 
+    // Обработка на данните за авторите
+    if ($request->has('authors')) {
+        foreach ($request->input('authors') as $authorData) {
+            // Създаване на нов автор и запис на данните от формата
+            $author = new Author();
+            $author->article_id = $article->id;
+            $author->first_name = $authorData['first_name'];
+            $author->middle_name = $authorData['middle_name'];
+            $author->family_name = $authorData['family_name'];
+            $author->primary_affiliation = $authorData['primary_affiliation'];
+            $author->contact_email = $authorData['contact'];
+            $author->author_contributions = $authorData['contributions'];
+            
+            // Запазване на новия автор в базата данни
+            $author->save();
 
+            // TODO Какво е точно това?
+            // $article->authors()->attach($author->id);// Свързване на новия автор със създадената статия
+        }
+    }
 
 
         return back()->with('success', 'Article created successfully.');

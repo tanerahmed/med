@@ -84,6 +84,7 @@
 
   <script src="{{ asset('../assets/js/article_form_validation.js') }}"></script>
   <script src="{{ asset('../assets/js/dynamicFields.js') }}"></script>
+  <script src="{{ asset('../assets/js/dynamicAddAuthors.js') }}"></script>
 
 <script>
  @if(Session::has('message'))
