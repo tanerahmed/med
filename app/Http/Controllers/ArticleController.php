@@ -14,11 +14,17 @@ use App\Models\SupplementaryFile;
 use App\Models\CoverLetter;
 use App\Models\Author;
 
+use Illuminate\Support\Facades\Mail;
+use App\Mail\CoAuthorRequestEmail;
+
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class ArticleController extends Controller
 {
+    public $articleTitle = '';
+    public $emails = [];
+
     public function articleCreate(Request $request)
     {
         return view('author.create');
@@ -48,6 +54,8 @@ class ArticleController extends Controller
     }
     public function articleStore(Request $request)
     {
+        $user = Auth::user();
+
         $validator = Validator::make($request->all(), [
             'type' => 'required|in:original article,review,letter to the editor,case of the month/how do I do it',
             'specialty' => 'required',
@@ -79,7 +87,7 @@ class ArticleController extends Controller
                 $article->grant_id = $request->input('grant_id');
                 $article->save();
 
-
+                $this->articleTitle = $article->title;
 
                 // TitlePage
                 foreach ($request->file('title_pages') as $file) {
@@ -152,18 +160,38 @@ class ArticleController extends Controller
                         $author->contact_email = $authorData['contact'];
                         $author->author_contributions = $authorData['contributions'];
                         $author->save();
+                        // prepare emails for notification
+                        array_push($this->emails,  $authorData['contact']);
                     }
                 }
             });
         } catch (\Exception $e) {
 
-            return back()->with('error', 'An error occurred while creating the article. Please try again.');
+            $notification = array(
+                'message'=> 'An error occurred while creating the article. Please try again.',
+                'alert-type'=>'danger'
+            );
+
+            return back()->with($notification);
+        }
+        
+        // Send Email
+        $subject = 'Co Author Request';
+        $body['name'] = $user->name;
+        $body['title'] = $this->articleTitle;
+        $body['link'] = "Clik to the<a href='#'>LINK</a> to aprrove.";
+        
+        foreach ($this->emails as $email) {
+            Mail::to($email)->send(new CoAuthorRequestEmail($subject, $body));
         }
 
-        return back()->with('success', 'Article created successfully.');
+        $notification = array(
+            'message'=> 'Article was created successfully.',
+            'alert-type'=>'success'
+        );
+        
+        return redirect()->route('article.list')->with($notification);
     }
-
-
 
 }
 
