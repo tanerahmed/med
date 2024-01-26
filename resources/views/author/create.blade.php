@@ -57,26 +57,11 @@
                             <label for="abstract" class="form-label"><strong>Type Abstract:</strong></label>
                             <textarea class="form-control" id="abstract" name="abstract" rows="3" required></textarea>
                         </div>
-
-                        <!-- Keywords -->
                         <div class="mb-3">
-                            <label for="Keywords" class="form-label">Type Keywords</label>
-                            <input type="text" class="form-control" name="keywords" id="keywords"
-                                placeholder="Add Keywords" required>
-                        </div>
-
-                        <!-- Funding name -->
-                        <div class="mb-3">
-                            <label for="funding_name" class="form-label">Type Funding name</label>
-                            <input type="text" class="form-control" name="funding_name" id="funding_name"
-                                placeholder="Add Funding name (Optional)">
-                        </div>
-
-                        <!-- Grand ID -->
-                        <div class="mb-3">
-                            <label for="grant_id" class="form-label">Type Grand ID</label>
-                            <input type="text" class="form-control" name="grant_id" id="grant_id"
-                                placeholder="Add Grand ID (Optional)">
+                            <label class="form-check-label" for="declarations">
+                                <input class="form-check-input" type="checkbox" id="declarations" required>
+                                I hereby declare that...
+                            </label>
                         </div>
                     </div>
 
@@ -126,16 +111,37 @@
                                 onchange="validateCoverLaterFileType()">
                             <div class="text-danger" id="cover_letter_error"></div>
                         </div>
+                        <!-- Keywords -->
+                        <div class="mb-3">
+                            <label for="Keywords" class="form-label"><strong>Type Keywords<strong></label>
+                            <input type="text" class="form-control" name="keywords" id="keywords"
+                                placeholder="Add Keywords" required>
+                        </div>
+
+                        <!-- Funding name -->
+                        <div class="mb-3">
+                            <label for="funding_name" class="form-label"><strong>Type Funding name<strong></label>
+                            <input type="text" class="form-control" name="funding_name" id="funding_name"
+                                placeholder="Add Funding name (Optional)">
+                        </div>
+
+                        <!-- Grand ID -->
+                        <div class="mb-3">
+                            <label for="grant_id" class="form-label"><strong>Type Grand ID<strong></label>
+                            <input type="text" class="form-control" name="grant_id" id="grant_id"
+                                placeholder="Add Grand ID (Optional)">
+                        </div>
                     </div>
                     <hr>
-                    <div class="col-md-6">
+                    <div class="col-md-12">
                         <!-- Контейнер за полетата на авторите -->
                         <div id="authorsContainer" class="row g-3"></div>
                     </div>
                     <div class="mb-3">
                         <button type="button" class="btn btn-primary" id="addAuthorButton">Add Author</button>
                     </div>
-                    <div class="mb-3">
+
+                    <div class="mb-3 d-flex justify-content-end">
                         <button type="submit" class="btn btn-success">Create Article</button>
                     </div>
                 </div>
