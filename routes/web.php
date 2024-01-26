@@ -88,7 +88,8 @@ Route::get('/article/create', [ArticleController::class, 'articleCreate'])->name
 Route::post('/article/store', [ArticleController::class, 'articleStore'])->name('article.store');
 Route::get('/articles',       [ArticleController::class, 'articleList'])->name('article.list');
 
-
+// Author
+Route::get('/author/dashboard', [AuthorController::class, 'AuthorDashboard'])->name('author.dashboard');
 
 
 // Login with ORCID
