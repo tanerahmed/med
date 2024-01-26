@@ -86,6 +86,8 @@ Route::view('/contact-us', 'frontend.contact_us')->name('contact_us');
 // article create
 Route::get('/article/create', [ArticleController::class, 'articleCreate'])->name('article.create');
 Route::post('/article/store', [ArticleController::class, 'articleStore'])->name('article.store');
+Route::get('/articles',       [ArticleController::class, 'articleList'])->name('article.list');
+
 
 
 

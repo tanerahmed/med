@@ -86,7 +86,7 @@
                     <div class="collapse" id="articles"> <!-- Различен ID за подменюто Articles -->
                         <ul class="nav sub-menu">
                             <li class="nav-item">
-                                <a href="{{ route('admin.users-list') }}" class="nav-link">List</a>
+                                <a href="{{ route('article.list') }}" class="nav-link">List</a>
                             </li>
                             <li class="nav-item">
                                 <a href="{{ route('article.create') }}" class="nav-link">Create</a>

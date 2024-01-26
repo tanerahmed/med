@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('articles', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('user_id')->nullable()->constrained()->onDelete('set null');
             $table->enum('type', ['original article', 'review', 'letter to the editor', 'case of the month/how do I do it']);
             $table->string('specialty');
             $table->string('scientific_area')->nullable();

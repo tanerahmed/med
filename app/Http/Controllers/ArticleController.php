@@ -13,7 +13,9 @@ use App\Models\Table;
 use App\Models\SupplementaryFile;
 use App\Models\CoverLetter;
 use App\Models\Author;
+
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ArticleController extends Controller
 {
@@ -22,6 +24,28 @@ class ArticleController extends Controller
         return view('author.create');
     }
 
+    public function articleList()
+    {
+        // Извличане на текущия логнат потребител
+        $user = Auth::user();
+
+        // Извличане на статиите на потребителя
+        $articles = $user->articles;
+
+
+        // TODO добави логика за статус на article !!!!!!!!!!!!!!s
+        foreach ($articles as $article) {
+            // $article->status_color = $article->isActive ? 'success' : 'danger';
+            $article->status_color = 'success';
+            // $article->status_text = $article->isActive ? 'Active' : 'Not Active';
+            $article->status_text =  'Active' ;
+        }
+
+
+        // Показване на изгледа с данните за статиите
+        return view('author.articles', ['articles' => $articles]);
+
+    }
     public function articleStore(Request $request)
     {
         $validator = Validator::make($request->all(), [
@@ -35,15 +59,16 @@ class ArticleController extends Controller
             'grant_id' => 'nullable',
             // Останалата валидация на данните тук...
         ]);
-    
+
         if ($validator->fails()) {
             $validator->getMessageBag()->toArray();
             return back()->with('error', 'An error occurred while validat data. Please try again with correct data.');
         }
-    
+
         try {
             DB::transaction(function () use ($request) {
                 $article = new Article();
+                $article->user_id = Auth::id();
                 $article->type = $request->input('type');
                 $article->specialty = $request->input('specialty');
                 $article->scientific_area = $request->input('scientific_area');
@@ -53,7 +78,7 @@ class ArticleController extends Controller
                 $article->funding_name = $request->input('funding_name');
                 $article->grant_id = $request->input('grant_id');
                 $article->save();
-    
+
 
 
                 // TitlePage
@@ -115,7 +140,7 @@ class ArticleController extends Controller
                     $coverLetter->file_path = $filePath;
                     $coverLetter->save();
                 }
-    
+
                 if ($request->has('authors')) {
                     foreach ($request->input('authors') as $authorData) {
                         $author = new Author();
@@ -131,14 +156,14 @@ class ArticleController extends Controller
                 }
             });
         } catch (\Exception $e) {
-            
+
             return back()->with('error', 'An error occurred while creating the article. Please try again.');
         }
-    
+
         return back()->with('success', 'Article created successfully.');
     }
 
-    
+
 
 }
 

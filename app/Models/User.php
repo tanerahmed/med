@@ -50,4 +50,9 @@ class User extends Authenticatable
         ->logOnly(['name', 'email', 'role']);
     }
 
+    public function articles()
+    {
+        return $this->hasMany(Article::class);
+    }
+
 }
