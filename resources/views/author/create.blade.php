@@ -9,12 +9,18 @@
         </div>
 
         <div class="container">
+            @if (session('error'))
+                <div class="alert alert-danger" role="alert">
+                    {{ session('error') }}
+                </div>
+            @endif
+
             <form action="{{ route('article.store') }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 <div class="row">
 
                     <!-- !!!!!!!!!!!! Първа колона !!!!!!!!!!!! -->
-                    <div class="col-md-6">
+                    {{-- <div class="col-md-6">
 
                         <!-- Choice type of article -->
                         <div class="mb-3">
@@ -131,7 +137,7 @@
                             <input type="text" class="form-control" name="grant_id" id="grant_id"
                                 placeholder="Add Grand ID (Optional)">
                         </div>
-                    </div>
+                    </div> --}}
                     <hr>
                     <div class="col-md-12">
                         <!-- Контейнер за полетата на авторите -->
@@ -150,6 +156,4 @@
     </div>
 @endsection
 
-<script>
-   
-</script>
+<script></script>

@@ -24,7 +24,6 @@ class ArticleController extends Controller
 
     public function articleStore(Request $request)
     {
-
         $validator = Validator::make($request->all(), [
             'type' => 'required|in:original article,review,letter to the editor,case of the month/how do I do it',
             'specialty' => 'required',
@@ -34,121 +33,112 @@ class ArticleController extends Controller
             'keywords' => 'required|max:500',
             'funding_name' => 'nullable',
             'grant_id' => 'nullable',
-            // File uplod
-            'title_pages.*' => 'required|mimes:doc,docx,LaTex doc|max:2048',
-            'manuscript.*' => 'required',
-            'figures.*' => 'required',
-            'tables.*' => 'required',
-            'supplementary.*' => 'required',
-            'cover_letter.*' => 'required',
-
+            // Останалата валидация на данните тук...
         ]);
-
+    
         if ($validator->fails()) {
-            $errors = $validator->getMessageBag()->toArray();
-            dd($errors); // Извежда всички грешки
-            return Redirect::back()->withErrors($validator)->withInput();
+            $validator->getMessageBag()->toArray();
+            return back()->with('error', 'An error occurred while validat data. Please try again with correct data.');
         }
+    
+        try {
+            DB::transaction(function () use ($request) {
+                $article = new Article();
+                $article->type = $request->input('type');
+                $article->specialty = $request->input('specialty');
+                $article->scientific_area = $request->input('scientific_area');
+                $article->title = $request->input('title');
+                $article->abstract = $request->input('abstract');
+                $article->keywords = $request->input('keywords');
+                $article->funding_name = $request->input('funding_name');
+                $article->grant_id = $request->input('grant_id');
+                $article->save();
+    
 
-        $article = new Article();
-        $article->type = $request->input('type');
-        $article->specialty = $request->input('specialty');
-        $article->scientific_area = $request->input('scientific_area');
-        $article->title = $request->input('title');
-        $article->abstract = $request->input('abstract');
-        $article->keywords = $request->input('keywords');
-        $article->funding_name = $request->input('funding_name');
-        $article->grant_id = $request->input('grant_id');
-        $article->save();
 
+                // TitlePage
+                foreach ($request->file('title_pages') as $file) {
+                    $filePath = $file->store('title_pages', 'public'); // Записва файла в папката storage/app/public/title_pages
 
-        // TitlePage
-        foreach ($request->file('title_pages') as $file) {
-            $filePath = $file->store('title_pages', 'public'); // Записва файла в папката storage/app/public/title_pages
+                    $titlePage = new TitlePage();
+                    $titlePage->article_id = $article->id;
+                    $titlePage->file_path = $filePath;
+                    $titlePage->save();
+                }
 
-            $titlePage = new TitlePage();
-            $titlePage->article_id = $article->id;
-            $titlePage->file_path = $filePath;
-            $titlePage->save();
-        }
+                // Manuscript
+                foreach ($request->file('manuscript') as $file) {
+                    $filePath = $file->store('manuscripts', 'public');
 
-        // Manuscript
-        foreach ($request->file('manuscript') as $file) {
-            $filePath = $file->store('manuscripts', 'public');
+                    $manuscript = new Manuscript();
+                    $manuscript->article_id = $article->id;
+                    $manuscript->file_path = $filePath;
+                    $manuscript->save();
+                }
 
-            $manuscript = new Manuscript();
-            $manuscript->article_id = $article->id;
-            $manuscript->file_path = $filePath;
-            $manuscript->save();
-        }
+                // Figures
+                foreach ($request->file('figures') as $file) {
+                    $filePath = $file->store('figures', 'public');
 
-        // Figures
-        foreach ($request->file('figures') as $file) {
-            $filePath = $file->store('figures', 'public');
+                    $figure = new Figure();
+                    $figure->article_id = $article->id;
+                    $figure->file_path = $filePath;
+                    $figure->save();
+                }
 
-            $figure = new Figure();
-            $figure->article_id = $article->id;
-            $figure->file_path = $filePath;
-            $figure->save();
-        }
+                // Tables
+                foreach ($request->file('tables') as $file) {
+                    $filePath = $file->store('tables', 'public');
 
-        // Tables
-        foreach ($request->file('tables') as $file) {
-            $filePath = $file->store('tables', 'public');
+                    $table = new Table();
+                    $table->article_id = $article->id;
+                    $table->file_path = $filePath;
+                    $table->save();
+                }
 
-            $table = new Table();
-            $table->article_id = $article->id;
-            $table->file_path = $filePath;
-            $table->save();
-        }
+                // Supplementary Files
+                foreach ($request->file('supplementary') as $file) {
+                    $filePath = $file->store('supplementary_files', 'public');
 
-        // Supplementary Files
-        foreach ($request->file('supplementary') as $file) {
-            $filePath = $file->store('supplementary_files', 'public');
+                    $supplementaryFile = new SupplementaryFile();
+                    $supplementaryFile->article_id = $article->id;
+                    $supplementaryFile->file_path = $filePath;
+                    $supplementaryFile->save();
+                }
 
-            $supplementaryFile = new SupplementaryFile();
-            $supplementaryFile->article_id = $article->id;
-            $supplementaryFile->file_path = $filePath;
-            $supplementaryFile->save();
-        }
+                // Cover Letter
+                foreach ($request->file('cover_letter') as $file) {
+                    $filePath = $file->store('cover_letters', 'public');
 
-        // Cover Letter
-        foreach ($request->file('cover_letter') as $file) {
-            $filePath = $file->store('cover_letters', 'public');
-
-            $coverLetter = new CoverLetter();
-            $coverLetter->article_id = $article->id;
-            $coverLetter->file_path = $filePath;
-            $coverLetter->save();
-        }
-
-    // Обработка на данните за авторите
-    if ($request->has('authors')) {
-        foreach ($request->input('authors') as $authorData) {
-            // Създаване на нов автор и запис на данните от формата
-            $author = new Author();
-            $author->article_id = $article->id;
-            $author->first_name = $authorData['first_name'];
-            $author->middle_name = $authorData['middle_name'];
-            $author->family_name = $authorData['family_name'];
-            $author->primary_affiliation = $authorData['primary_affiliation'];
-            $author->contact_email = $authorData['contact'];
-            $author->author_contributions = $authorData['contributions'];
+                    $coverLetter = new CoverLetter();
+                    $coverLetter->article_id = $article->id;
+                    $coverLetter->file_path = $filePath;
+                    $coverLetter->save();
+                }
+    
+                if ($request->has('authors')) {
+                    foreach ($request->input('authors') as $authorData) {
+                        $author = new Author();
+                        $author->article_id = $article->id;
+                        $author->first_name = $authorData['first_name'];
+                        $author->middle_name = $authorData['middle_name'];
+                        $author->family_name = $authorData['family_name'];
+                        $author->primary_affiliation = $authorData['primary_affiliation'];
+                        $author->contact_email = $authorData['contact'];
+                        $author->author_contributions = $authorData['contributions'];
+                        $author->save();
+                    }
+                }
+            });
+        } catch (\Exception $e) {
             
-            // Запазване на новия автор в базата данни
-            $author->save();
-
-            // TODO Какво е точно това?
-            // $article->authors()->attach($author->id);// Свързване на новия автор със създадената статия
+            return back()->with('error', 'An error occurred while creating the article. Please try again.');
         }
-    }
-
-
+    
         return back()->with('success', 'Article created successfully.');
-        // Пренасочване към страницата за успешно създаване или друго действие
-        // return redirect()->route('articles.index')->with('success', 'Article created successfully');
     }
 
+    
 
 }
 
