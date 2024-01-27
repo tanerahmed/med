@@ -22,6 +22,7 @@ return new class extends Migration
             $table->string('keywords', 500);
             $table->string('funding_name')->nullable();
             $table->string('grant_id')->nullable();
+            $table->enum('status', ['pending', 'accepted', 'accepted with revision', 'declined'])->default('pending');
             $table->timestamps();
         });
     }

@@ -55,4 +55,31 @@ class Article extends Model
     {
         return $this->hasMany(Author::class);
     }
+
+    public function reviews()
+    {
+        return $this->hasMany(Review::class);
+    }
+
+    public function isPending()
+    {
+        return $this->status === 'pending';
+    }
+
+    public function isAccepted()
+    {
+        return $this->status === 'accepted';
+    }
+
+    public function isAcceptedWithRevision()
+    {
+        return $this->status === 'accepted with revision';
+    }
+
+    public function isDeclined()
+    {
+        return $this->status === 'declined';
+    }
+
+
 }
