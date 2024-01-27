@@ -27,9 +27,9 @@
                     </a>
                     {{-- Reviewer User --}}
                 @elseif(Auth::check() && Auth::user()->role === 'reviewer')
-                    <a href="dashboard.html" class="nav-link">
+                    <a href="{{ route('reviewer.dashboard') }}" class="nav-link">
                         <i class="link-icon" data-feather="box"></i>
-                        <span class="link-title">reviewer Dashboard</span>
+                        <span class="link-title">Dashboard</span>
                     </a>
                 @endif
             </li>
@@ -90,6 +90,30 @@
                             </li>
                             <li class="nav-item">
                                 <a href="{{ route('article.create') }}" class="nav-link">Create</a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+            @endif
+
+
+            {{-- Admin can see that button --}}
+            @if (Auth::check() && (Auth::user()->role === 'reviewer' || Auth::user()->role === 'admin'))
+                <li class="nav-item nav-category">Articles for review</li>
+                <li class="nav-item">
+                    <a class="nav-link" data-bs-toggle="collapse" href="#users" role="button" aria-expanded="false"
+                        aria-controls="users">
+                        <i class="link-icon" data-feather="user"></i>
+                        <span class="link-title">Job</span>
+                        <i class="link-arrow" data-feather="chevron-down"></i>
+                    </a>
+                    <div class="collapse" id="users">
+                        <ul class="nav sub-menu">
+                            <li class="nav-item">
+                                <a href="{{ route('review.list') }}" class="nav-link">ToDo Review</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="#" class="nav-link">Reviewed</a>
                             </li>
                         </ul>
                     </div>

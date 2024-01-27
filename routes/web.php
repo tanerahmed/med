@@ -91,6 +91,9 @@ Route::get('/articles',       [ArticleController::class, 'articleList'])->name('
 // Author
 Route::get('/author/dashboard', [AuthorController::class, 'AuthorDashboard'])->name('author.dashboard');
 
+// Reviewer 
+Route::get('/reviewer/dashboard', [ReviewerController::class, 'ReviewerDashboard'])->name('reviewer.dashboard');
+Route::get('/review',       [ReviewerController::class, 'reviewList'])->name('review.list');
 
 // Login with ORCID
 Route::get('/login/orcid', 'Auth\LoginController@redirectToOrcid');

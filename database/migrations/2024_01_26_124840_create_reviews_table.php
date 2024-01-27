@@ -11,12 +11,13 @@ class CreateReviewsTable extends Migration
         Schema::create('reviews', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('article_id');
-            $table->enum('rating_1', ['accepted', 'accepted with revision', 'declined']);
-            $table->unsignedBigInteger('reviewer_id_1');
-            $table->enum('rating_2', ['accepted', 'accepted with revision', 'declined']);
-            $table->unsignedBigInteger('reviewer_id_2');
-            $table->enum('rating_3', ['accepted', 'accepted with revision', 'declined']);
-            $table->unsignedBigInteger('reviewer_id_3');
+
+            $table->enum('rating_1', ['accepted', 'accepted with revision', 'declined'])->nullable();
+            $table->unsignedBigInteger('reviewer_id_1')->nullable();
+            $table->enum('rating_2', ['accepted', 'accepted with revision', 'declined'])->nullable();
+            $table->unsignedBigInteger('reviewer_id_2')->nullable();
+            $table->enum('rating_3', ['accepted', 'accepted with revision', 'declined'])->nullable();
+            $table->unsignedBigInteger('reviewer_id_3')->nullable();
             $table->timestamps();
 
             $table->foreign('article_id')->references('id')->on('articles')->onDelete('cascade');
