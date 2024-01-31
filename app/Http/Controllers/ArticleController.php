@@ -69,8 +69,10 @@ class ArticleController extends Controller
         ]);
 
         if ($validator->fails()) {
-            $validator->getMessageBag()->toArray();
-            return back()->with('error', 'An error occurred while validat data. Please try again with correct data.');
+            $errors = $validator->errors()->all();
+            return back()->with('errors', $errors);
+            // $validator->getMessageBag()->toArray();
+            // return back()->with('error', 'An error occurred while validat data. Please try again with correct data.');
         }
 
         try {

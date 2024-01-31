@@ -170,6 +170,39 @@ function validateCoverLaterFileType() {
 }
 
 
+function validateZIPFileType() {
+
+    var allowedTypes = ['application/zip', 'application/x-zip-compressed', 'application/x-compressed', 'multipart/x-zip'];
+
+    var file = document.getElementById('zip_file').files[0]; // Вземете първия (единствен) файл от input
+
+    var isValid = false; // Предполагаме, че файла не е валиден по подразбиране
+
+    if (file && allowedTypes.indexOf(file.type) !== -1) {
+        // Проверка дали файлът съществува и дали неговият тип е в списъка с разрешени типове
+        isValid = true;
+    }
+
+    // for (var i = 0; i < files.length; i++) {
+    //     if (allowedTypes.indexOf(files[i].type) === -1) {
+    //         isValid = false;
+    //         break;
+    //     }
+    // }
+
+    if (isValid) {
+        // Файловете са валидни, няма грешка
+        document.getElementById('zip_file_error').innerText = '';
+    } else {
+        // Покажете съобщение за грешка
+        document.getElementById('zip_file_error').innerText =
+        'Invalid file type. Please select ZIP file.';
+        // Изчистете стойността на input полето
+        document.getElementById('zip_file').value = '';
+    }
+}
+
+
 
 
 

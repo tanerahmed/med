@@ -95,7 +95,7 @@ Route::get('/author/dashboard', [AuthorController::class, 'AuthorDashboard'])->m
 Route::get('/reviewer/dashboard',   [ReviewerController::class, 'ReviewerDashboard'])->name('reviewer.dashboard');
 Route::get('/review/list',          [ReviewerController::class, 'reviewList'])->name('review.list');
 Route::get('/review/{article}',     [ReviewerController::class, 'review'])->name('review');
-Route::post('/review/store',        [ReviewerController::class, 'reviewStore'])->name('review.store');
+Route::post('/review/store',        [ReviewerController::class, 'store'])->name('review.store');
 Route::get('/review-download-files/{article}',     [ReviewerController::class, 'downloadArticleFiles'])->name('review.downolad_files');
 
 

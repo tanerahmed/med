@@ -9,11 +9,20 @@
         </div>
 
         <div class="container">
-            @if (session('error'))
+            {{-- @if (session('error'))
                 <div class="alert alert-danger" role="alert">
                     {{ session('error') }}
                 </div>
-            @endif
+            @endif --}}
+            @if (session('errors'))
+            <div class="alert alert-danger">
+                <ul>
+                    @foreach (session('errors') as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
 
             <form action="{{ route('article.store') }}" method="POST" enctype="multipart/form-data">
                 @csrf

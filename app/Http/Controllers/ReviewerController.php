@@ -5,8 +5,13 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Validator;
 use App\Models\Review;
 use App\Models\Article;
+use App\Models\User;
+
+use Illuminate\Support\Facades\Mail;
+use App\Mail\ReviewArticleEmail;
 use ZipArchive;
 
 class ReviewerController extends Controller
@@ -62,14 +67,15 @@ class ReviewerController extends Controller
 
     public function downloadArticleFiles(Article $article)
     {
-
+        // TODO ЕТО ТАКА СЕ СЛАВА СНИМКИ ИЛИ ФАЙЛОВЕ В VIEW BLADE
+        // TODO <img src="{{  asset("storage/".  $article->figures[0]->file_path) }}" alt="" />
 
         // Създаване на нов ZIP архив
         $zip = new ZipArchive;
-        $zipFileName = "%article_id = ".$article->id.".zip";
+        $zipFileName = "article_id = ".$article->id.".zip";
 
         if ($zip->open($zipFileName, ZipArchive::CREATE) === TRUE) {
-            
+
             // TODO Тази директория има липсващи файлове не е АКТУАЛНА
             // foreach ($article->titlePage as $value) {
             //     $filePath = storage_path('app/public/' . $value->file_path);
@@ -118,18 +124,48 @@ class ReviewerController extends Controller
     public function store(Request $request)
     {
 
-        $request->validate([
-            'file' => 'required|mimes:pdf,xlx,csv|max:2048',
-        ]);
+       
 
-        $fileName = time() . '.' . $request->file->extension();
+        $user = Auth::user();
+        $req = $request->all();   
+        $articleId = $request->input('articleId');
+        $article = Article::find($articleId);
+        $user = User::find($article->user_id);
 
-        $request->file->move(public_path('uploads'), $fileName);
+        $zipFile = $req['zip_file'][0];
+        $zipFilePath = $zipFile->store('review_zip_files', 'public');
+        
 
-        // send email to Author and Editor
+        $filePath = storage_path('app/public/' . $zipFilePath);
+        $filePath = str_replace('\\', '/', $filePath);
 
 
-        // log the action
+
+        $body['articleId'] = $articleId;
+        $body['reviwer_name'] = $user->name;
+
+        $body['question1'] = $request->input('question1');
+        $body['question2'] = $request->input('question2');
+        $body['question3'] = $request->input('question3');
+        // $zipFile = $request->file('zip_file');
+        $body['zipFile'] = $zipFile;
+        $body['titlePages'] = $request->input('title_pages');
+        $body['manuscript'] = $request->input('manuscript');
+        $body['figures'] = $request->input('figures');
+        $body['tables'] = $request->input('tables');
+        $body['supplementary'] = $request->input('supplementary');
+        $body['coverLetter'] = $request->input('cover_letter');
+        $body['keywords'] = $request->input('keywords');
+        $body['title'] = $request->input('title');
+        $body['abstract'] = $request->input('abstract');
+    
+
+
+        $subject = "Review Article #".$articleId;
+        // $user->email == Author email
+        Mail::to($user->email)->send(new ReviewArticleEmail($subject, $body,  $filePath));
+
+        // TODO log the action
 
 
         // TODO  Save the recod in some model
