@@ -38,6 +38,9 @@
   <link rel="shortcut icon" href="{{asset('../assets/images/favicon.png') }} " />
 
   <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.css" >
+  {{-- jQuery --}}
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
 </head>
 
 <body>
@@ -85,6 +88,9 @@
   <script src="{{ asset('../assets/js/article_form_validation.js') }}"></script>
   <script src="{{ asset('../assets/js/dynamicFields.js') }}"></script>
   <script src="{{ asset('../assets/js/dynamicAddAuthors.js') }}"></script>
+  
+
+
 
 <script>
  @if(Session::has('message'))

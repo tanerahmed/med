@@ -22481,3 +22481,8 @@ div.tox .tox-dialog__body {
     margin-bottom: 20px; /* Добавя разстояние между авторите */
     border-radius: 5px; /* Закръгляване на ръбовете */
 }
+
+/* Review form wizard steps */
+.step {
+    display: none;
+}

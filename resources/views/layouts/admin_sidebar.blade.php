@@ -104,16 +104,13 @@
                     <a class="nav-link" data-bs-toggle="collapse" href="#users" role="button" aria-expanded="false"
                         aria-controls="users">
                         <i class="link-icon" data-feather="user"></i>
-                        <span class="link-title">Job</span>
+                        <span class="link-title">Review</span>
                         <i class="link-arrow" data-feather="chevron-down"></i>
                     </a>
                     <div class="collapse" id="users">
                         <ul class="nav sub-menu">
                             <li class="nav-item">
-                                <a href="{{ route('review.list') }}" class="nav-link">ToDo Review</a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="#" class="nav-link">Reviewed</a>
+                                <a href="{{ route('review.list') }}" class="nav-link">My Review</a>
                             </li>
                         </ul>
                     </div>
