@@ -20,6 +20,10 @@ class Article extends Model
         'grant_id',
     ];
 
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
     public function reviwers()
     {
         return $this->hasMany(Review::class);

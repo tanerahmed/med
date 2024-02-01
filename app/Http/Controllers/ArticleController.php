@@ -24,6 +24,7 @@ use Illuminate\Support\Facades\Auth;
 
 class ArticleController extends Controller
 {
+    public $articleId = '';
     public $articleTitle = '';
     public $emails = [];
 
@@ -40,45 +41,62 @@ class ArticleController extends Controller
         // Извличане на статиите на потребителя
         $articles = $user->articles;
 
+        // Admin got all articles!
+        if ($user->role === 'admin') {
+            $articles = Article::all();
+        }
+
         $preparedReviews = [];
 
         // foreach ($articles as $article) {
-            $reviews = Review::all();
+        $reviews = Review::all();
 
-            // Проверяваме само веднъж за празни ревюта
-            if ($reviews !== null) {
-                // Подготвяме ревюта
-                foreach ($reviews as $review) {
-                    $preparedReview = $review->toArray();
-        
-                    // Обработваме първия ревютор
-                    if ($review['reviewer_id_1']) {
-                        $preparedReview['reviewer1_name'] = User::find($review['reviewer_id_1'])->name;
-                    } else {
-                        $preparedReview['reviewer1_name'] = 'N/A';
-                    }
-        
-                    if ($review['reviewer_id_2']) {
-                        $preparedReview['reviewer2_name'] = User::find($review['reviewer_id_2'])->name;
-                    } else {
-                        $preparedReview['reviewer2_name'] = 'N/A';
-                    }
+        // Проверяваме само веднъж за празни ревюта
+        if (!$reviews->isEmpty()) {
+            // Подготвяме ревюта
+            foreach ($reviews as $review) {
+                $preparedReview = $review->toArray();
 
-                    if ($review['reviewer_id_3']) {
-                        $preparedReview['reviewer3_name'] = User::find($review['reviewer_id_3'])->name;
-                    } else {
-                        $preparedReview['reviewer3_name'] = 'N/A';
-                    }
-        
-                    // Добавяме подготвеното ревю към списъка с подготвени ревюта
-                    $preparedReviews[] = $preparedReview;
+                // Обработваме първия ревютор
+                if ($review['reviewer_id_1']) {
+                    $preparedReview['reviewer1_name'] = User::find($review['reviewer_id_1'])->name;
+                } else {
+                    $preparedReview['reviewer1_name'] = '';
                 }
-            } else {
-                // Ако няма ревюта, добавяме съобщението за липса на ревю
-                $preparedReviews[] = ['message' => 'There is no review'];
+
+                if ($review['reviewer_id_2']) {
+                    $preparedReview['reviewer2_name'] = User::find($review['reviewer_id_2'])->name;
+                } else {
+                    $preparedReview['reviewer2_name'] = '';
+                }
+
+                if ($review['reviewer_id_3']) {
+                    $preparedReview['reviewer3_name'] = User::find($review['reviewer_id_3'])->name;
+                } else {
+                    $preparedReview['reviewer3_name'] = '';
+                }
+
+                // Добавяме подготвеното ревю към списъка с подготвени ревюта
+                $preparedReviews[] = $preparedReview;
+
+                // Make status logic
+                // if ($review->rating_1 === null || $review->rating_2 === null) {
+                //     $articles[$review->article_id]['statusFromReview'] = '<button type="button" class="btn btn-secondary" disabled>Pending</button>';
+                // } elseif ($review->rating_1 === 'accepted' && $review->rating_2 === 'accepted') {
+                //     $articles[$review->article_id]['statusFromReview'] = '<button type="button" class="btn btn-success" disabled>Accepted</button>';
+                // } elseif (
+                //     ($review->rating_1 === 'accepted' && $review->rating_2 === 'accepted with revision') ||
+                //     ($review->rating_1 === 'accepted with revision' && $review->rating_2 === 'accepted')
+                // ) {
+                //     $articles[$review->article_id]['statusFromReview'] = '<button type="button" class="btn btn-warning" disabled>Accept with revision</button>';
+                // } elseif ($review->rating_1 === 'declined' || $review->rating_2 === 'declined') {
+                //     $articles[$review->article_id]['statusFromReview'] = '<button type="button" class="btn btn-danger" disabled>Declined</button>';
+                // }
+
+
             }
-        // }
-        // dd(  $preparedReviews);
+        }
+        // dd($articles);
         // Показване на изгледа с данните за статиите и ревютата
         return view('author.articles', ['articles' => $articles, 'preparedReviews' => $preparedReviews]);
 
@@ -120,6 +138,7 @@ class ArticleController extends Controller
                 $article->grant_id = $request->input('grant_id');
                 $article->save();
 
+                $this->articleId = $article->id;
                 $this->articleTitle = $article->title;
 
                 // TitlePage
@@ -194,35 +213,48 @@ class ArticleController extends Controller
                         $author->author_contributions = $authorData['contributions'];
                         $author->save();
                         // prepare emails for notification
-                        array_push($this->emails,  $authorData['contact']);
+                        array_push($this->emails, $authorData['contact']);
                     }
                 }
+
+                // Създаване на празен запис в таблицата Review
+                Review::create([
+                    'article_id' => $this->articleId ,
+                    'rating_1' => null,
+                    'reviewer_id_1' => null,
+                    'rating_2' => null,
+                    'reviewer_id_2' => null,
+                    'rating_3' => null,
+                    'reviewer_id_3' => null,
+                ]);
+
             });
         } catch (\Exception $e) {
 
             $notification = array(
-                'message'=> 'An error occurred while creating the article. Please try again.',
-                'alert-type'=>'danger'
+                'message' => 'An error occurred while creating the article. Please try again.',
+                'alert-type' => 'danger'
             );
 
             return back()->with($notification);
         }
-        
+
+
         // Send Email
         $subject = 'Co Author Request';
         $body['name'] = $user->name;
         $body['title'] = $this->articleTitle;
         $body['link'] = "Clik to the<a href='#'>LINK</a> to aprrove.";
-        
+
         foreach ($this->emails as $email) {
             Mail::to($email)->send(new CoAuthorRequestEmail($subject, $body));
         }
 
         $notification = array(
-            'message'=> 'Article was created successfully.',
-            'alert-type'=>'success'
+            'message' => 'Article was created successfully.',
+            'alert-type' => 'success'
         );
-        
+
         return redirect()->route('article.list')->with($notification);
     }
 

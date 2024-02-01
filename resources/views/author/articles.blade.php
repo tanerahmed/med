@@ -25,7 +25,7 @@
                                     <th class="pt-0">Type</th>
                                     <th class="pt-0">Specialty</th>
                                     <th class="pt-0">Scientific area</th>
-                                    <th class="pt-0">Status</th>
+                                    {{-- <th class="pt-0">Status</th> --}}
                                     <th class="pt-0">Date</th>
                                     <th class="pt-0">Download</th>
                                     <th class="pt-0">Reviews</th>
@@ -35,13 +35,14 @@
                                 @foreach($articles as $article)
                                     <tr>
                                         @if (Auth::check() && Auth::user()->role === 'admin')
-                                        <td>{{ Auth::user()->name }}</td>
+                                        <td>{{$article->user->name }}</td>
                                         @endif
                                         <td>{{ $article->id }}</td>
                                         <td>{{ $article->type }}</td>
                                         <td>{{ $article->specialty }}</td>
                                         <td>{{ $article->scientific_area }}</td>
-                                        <td><span class="badge bg-{{ $article->status_color }}">{{ $article->status_text }}</span></td>
+                                        {{-- <td><span class="badge bg-{{ $article->status_color }}">{{ $article->status_text }}</span></td> --}}
+                                        {{-- <td>{!! $article->statusFromReview !!}</td> --}}
                                         <td>{{ $article->updated_at }}</td>
                                         <td>
                                             <button>Html</button>
@@ -55,9 +56,9 @@
                                                 @else
                                                     @if ($preparedReview['article_id'] == $article->id)
                                                         <div class="review">
-                                                            <span>Reviewer 1: {{ $preparedReview['reviewer1_name'] }} - Rating: {{ $preparedReview['rating_1'] ?: 'N/A' }}</span><br>
-                                                            <span>Reviewer 2: {{ $preparedReview['reviewer2_name'] }} - Rating: {{ $preparedReview['rating_2'] ?: 'N/A' }}</span><br>
-                                                            <span>Reviewer 3: {{ $preparedReview['reviewer3_name'] }} - Rating: {{ $preparedReview['rating_3'] ?: 'N/A' }}</span><br>
+                                                            <span>{{ $preparedReview['reviewer1_name'] }} - {{ $preparedReview['rating_1'] ?: '' }}</span><br>
+                                                            <span>{{ $preparedReview['reviewer2_name'] }} - {{ $preparedReview['rating_2'] ?: '' }}</span><br>
+                                                            <span>{{ $preparedReview['reviewer3_name'] }} - {{ $preparedReview['rating_3'] ?: '' }}</span><br>
                                                             <!-- Добавете подобни редове за останалите ревютори -->
                                                         </div>
                                                     @endif
