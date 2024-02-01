@@ -20,7 +20,11 @@ class Article extends Model
         'grant_id',
     ];
 
-    // Define relationships
+    public function reviwers()
+    {
+        return $this->hasMany(Review::class);
+    }
+
     public function titlePage()
     {
         return $this->hasMany(TitlePage::class);

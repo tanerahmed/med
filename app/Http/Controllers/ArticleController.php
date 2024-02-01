@@ -13,6 +13,8 @@ use App\Models\Table;
 use App\Models\SupplementaryFile;
 use App\Models\CoverLetter;
 use App\Models\Author;
+use App\Models\User;
+use App\Models\Review;
 
 use Illuminate\Support\Facades\Mail;
 use App\Mail\CoAuthorRequestEmail;
@@ -38,18 +40,47 @@ class ArticleController extends Controller
         // Извличане на статиите на потребителя
         $articles = $user->articles;
 
+        $preparedReviews = [];
 
-        // TODO добави логика за статус на article !!!!!!!!!!!!!!s
-        foreach ($articles as $article) {
-            // $article->status_color = $article->isActive ? 'success' : 'danger';
-            $article->status_color = 'success';
-            // $article->status_text = $article->isActive ? 'Active' : 'Not Active';
-            $article->status_text =  'Active' ;
-        }
+        // foreach ($articles as $article) {
+            $reviews = Review::all();
 
+            // Проверяваме само веднъж за празни ревюта
+            if ($reviews !== null) {
+                // Подготвяме ревюта
+                foreach ($reviews as $review) {
+                    $preparedReview = $review->toArray();
+        
+                    // Обработваме първия ревютор
+                    if ($review['reviewer_id_1']) {
+                        $preparedReview['reviewer1_name'] = User::find($review['reviewer_id_1'])->name;
+                    } else {
+                        $preparedReview['reviewer1_name'] = 'N/A';
+                    }
+        
+                    if ($review['reviewer_id_2']) {
+                        $preparedReview['reviewer2_name'] = User::find($review['reviewer_id_2'])->name;
+                    } else {
+                        $preparedReview['reviewer2_name'] = 'N/A';
+                    }
 
-        // Показване на изгледа с данните за статиите
-        return view('author.articles', ['articles' => $articles]);
+                    if ($review['reviewer_id_3']) {
+                        $preparedReview['reviewer3_name'] = User::find($review['reviewer_id_3'])->name;
+                    } else {
+                        $preparedReview['reviewer3_name'] = 'N/A';
+                    }
+        
+                    // Добавяме подготвеното ревю към списъка с подготвени ревюта
+                    $preparedReviews[] = $preparedReview;
+                }
+            } else {
+                // Ако няма ревюта, добавяме съобщението за липса на ревю
+                $preparedReviews[] = ['message' => 'There is no review'];
+            }
+        // }
+        // dd(  $preparedReviews);
+        // Показване на изгледа с данните за статиите и ревютата
+        return view('author.articles', ['articles' => $articles, 'preparedReviews' => $preparedReviews]);
 
     }
     public function articleStore(Request $request)
