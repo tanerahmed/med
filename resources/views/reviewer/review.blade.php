@@ -93,7 +93,15 @@
                                 onchange="validateZIPFileType()">
                             <div class="text-danger" id="zip_file_error"></div>
                         </div>
-
+                        <div class="mb-3">
+                            <label for="field1" class="form-label"><strong>Select Rating:</strong></label>
+                            <select class="form-select" name="rating" aria-label="Default select example">
+                                <option value="" ></option>
+                                <option value="accepted">Accept</option>
+                                <option value="accepted with revision">Accepted with revision</option>
+                                <option value="declined">Declined</option>
+                            </select>
+                        </div>
 
                         {{-- Първа колона КРАЙ --}}
                     </div>

@@ -72,7 +72,7 @@ class ReviewerController extends Controller
 
         // Създаване на нов ZIP архив
         $zip = new ZipArchive;
-        $zipFileName = "article_id = ".$article->id.".zip";
+        $zipFileName = "article_id = " . $article->id . ".zip";
 
         if ($zip->open($zipFileName, ZipArchive::CREATE) === TRUE) {
 
@@ -123,31 +123,26 @@ class ReviewerController extends Controller
 
     public function store(Request $request)
     {
-
-       
-
+        $zipFile = '';
+        $filePath = '';
         $user = Auth::user();
-        $req = $request->all();   
+        $req = $request->all();
         $articleId = $request->input('articleId');
         $article = Article::find($articleId);
-        $user = User::find($article->user_id);
-
-        $zipFile = $req['zip_file'][0];
-        $zipFilePath = $zipFile->store('review_zip_files', 'public');
         
-
-        $filePath = storage_path('app/public/' . $zipFilePath);
-        $filePath = str_replace('\\', '/', $filePath);
-
-
-
+        if ($request->hasFile('zip_file')) {
+            $zipFile = $request->file('zip_file')[0];
+            $zipFilePath = $zipFile->store('review_zip_files', 'public');
+        
+            $filePath = storage_path('app/public/' . $zipFilePath);
+            $filePath = str_replace('\\', '/', $filePath);
+        }
+        
         $body['articleId'] = $articleId;
         $body['reviwer_name'] = $user->name;
-
         $body['question1'] = $request->input('question1');
         $body['question2'] = $request->input('question2');
         $body['question3'] = $request->input('question3');
-        // $zipFile = $request->file('zip_file');
         $body['zipFile'] = $zipFile;
         $body['titlePages'] = $request->input('title_pages');
         $body['manuscript'] = $request->input('manuscript');
@@ -158,17 +153,29 @@ class ReviewerController extends Controller
         $body['keywords'] = $request->input('keywords');
         $body['title'] = $request->input('title');
         $body['abstract'] = $request->input('abstract');
-    
 
-
-        $subject = "Review Article #".$articleId;
-        // $user->email == Author email
-        Mail::to($user->email)->send(new ReviewArticleEmail($subject, $body,  $filePath));
+        
+        $subject = "Review Article #" . $articleId;        
+        if (!empty($filePath)) {
+            Mail::to($user->email)->send(new ReviewArticleEmail($subject, $body, $filePath));
+        } else {
+            Mail::to($user->email)->send(new ReviewArticleEmail($subject, $body));
+        }
 
         // TODO log the action
 
 
-        // TODO  Save the recod in some model
+        $review = Review::where('article_id', $articleId)->first();
+
+        if ($review->reviewer_id_1 === $user->id) {
+            $review->rating_1 = $request->input('rating');
+        } elseif ($review->reviewer_id_2 === $user->id) {
+            $review->rating_2 = $request->input('rating');
+        } elseif ($review->reviewer_id_3 === $user->id) {
+            $review->rating_3 = $request->input('rating');
+        }
+        $review->save();
+
     }
 
 }

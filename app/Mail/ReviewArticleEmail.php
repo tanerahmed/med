@@ -1,12 +1,10 @@
 <?php
-
 namespace App\Mail;
 
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Address;
-
 use Illuminate\Mail\Mailables\Attachment;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
@@ -16,11 +14,12 @@ class ReviewArticleEmail extends Mailable
 {
     use Queueable, SerializesModels;
 
+    public $subject, $body, $zipFilePath;
+
     /**
      * Create a new message instance.
      */
-    public $subject, $body, $zipFilePath;
-    public function __construct($subject, $body, $zipFilePath)
+    public function __construct($subject, $body, $zipFilePath = null)
     {
         $this->subject = $subject;
         $this->body = $body;
@@ -55,11 +54,15 @@ class ReviewArticleEmail extends Mailable
      */
     public function attachments(): array
     {
-        // Attach the zip file
-        return [
-            Attachment::fromPath($this->zipFilePath)
-            ->as('article_files.zip')
-            ->withMime('application/zip')
-        ];
+        // Attach the zip file if the file path is provided
+        if (!empty($this->zipFilePath)) {
+            return [
+                Attachment::fromPath($this->zipFilePath)
+                    ->as('article_files.zip')
+                    ->withMime('application/zip')
+            ];
+        }
+
+        return [];
     }
 }
