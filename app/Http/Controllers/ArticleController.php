@@ -18,6 +18,7 @@ use App\Models\Review;
 
 use Illuminate\Support\Facades\Mail;
 use App\Mail\CoAuthorRequestEmail;
+use App\Mail\ReviewRequestEmail;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -293,14 +294,54 @@ class ArticleController extends Controller
                 'reviewer_id_3' => $request->input('reviewer_id_3'),
             ]);
             $notification = array(
-                'message'=> 'Review updated successfully.',
-                'alert-type'=>'success'
+                'message' => 'Review updated successfully.',
+                'alert-type' => 'success'
             );
 
             return redirect()->route('article.list')->with($notification);
         } else {
             return redirect()->back()->with('error', 'Review not found.');
         }
+    }
+
+
+    // първо провери дали reviwer_id го има в review, ако го няма тогава прати имейл
+    public function sendEmailForReviewRequest(Request $request, $id)
+    {
+        $review = Review::where('article_id', $id)->first();
+        if ($review) {
+            $reviewerIds = [$review->reviewer_id_1, $review->reviewer_id_2, $review->reviewer_id_3];
+            foreach (['reviewer_id_1', 'reviewer_id_2', 'reviewer_id_3'] as $reviewerIdKey) {
+                $reviewerId = $request->input($reviewerIdKey);
+
+                if ($reviewerId && !in_array($reviewerId, $reviewerIds)) {
+                    $user = User::find($reviewerId);
+
+                    if ($user) {
+                        $subject = 'Reviewer Request';
+                        $body = [
+                            'name' => $user->name,
+                            'article' => $id,
+                            'link' => '<a href="#">LINK</a> to approve.'
+                        ];
+
+                        Mail::to($user->email)->send(new ReviewRequestEmail($subject, $body));
+                    }
+                }
+            }
+            $notification = array(
+                'message' => 'Review requests was sent successfully.',
+                'alert-type' => 'success'
+            );
+            return redirect()->route('article.list')->with($notification);
+        }
+        
+        // Error
+        $notification = array(
+            'message' => 'There is a problem, plase try again later.',
+            'alert-type' => 'danger'
+        );
+        return redirect()->route('article.list')->with($notification);
     }
 
 }

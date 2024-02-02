@@ -89,6 +89,7 @@ Route::post('/article/store', [ArticleController::class, 'articleStore'])->name(
 Route::get('/articles',       [ArticleController::class, 'articleList'])->name('article.list');
 Route::get('/articles/{id}/edit', [ArticleController::class, 'edit'])->name('articles.edit');
 Route::put('/articles/{id}', [ArticleController::class, 'update'])->name('articles.update');
+Route::post('/articles/{id}', [ArticleController::class, 'sendEmailForReviewRequest'])->name('articles.sendEmailForReviewRequest');
 
 // Author
 Route::get('/author/dashboard', [AuthorController::class, 'AuthorDashboard'])->middleware('auth', 'role:author')->name('author.dashboard');
