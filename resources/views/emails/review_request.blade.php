@@ -10,7 +10,7 @@
     <p>Hello, {{ $body['name'] }}</p>
     <p> We would like to invite you to be reviwer on article - {{ $body['article'] }}</p>
 
-        <p>Click to the {!! $body['link'] !!} </p>
+        <p>Click to the <a href="{{$body['link']}}">LINK</a>  to approve it</p>
 
         {{-- TODO --}}
 

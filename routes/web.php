@@ -55,27 +55,6 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::delete('/admin/user/delete/{user}', [AdminController::class, 'userDestroy'])->name('admin.users-destroy');
 
 });
-// Author + admin (админ може всичко!)
-// Route::middleware(['auth', 'role:author, admin'])->group(function () {
-//     Route::get('/author/dashboard', [AuthorController::class, 'AuthorDashboard'])->name('author.dashboard');
-//     Route::get('/article/create', [ArticleController::class, 'articleCreate'])->name('article.create');
-
-// });
-// // Editor
-// Route::middleware(['auth', 'role:editor'])->group(function () {
-
-// });
-
-// // Reviewer
-// Route::middleware(['auth', 'role:reviewer'])->group(function () {
-//     Route::get('/reviewer/dashboard', [ReviewerController::class, 'ReviewerDashboard'])->name('reviewer.dashboard');
-// });
-
-// // User - just user
-// Route::middleware(['auth', 'role:user'])->group(function () {
-//     Route::get('/user/dashboard', [UserController::class, 'UserDashboard'])->name('user.dashboard');
-// });
-
 
 
 Route::get('/logs', [LogController::class, 'index'])->name('logs.index');
@@ -100,6 +79,11 @@ Route::get('/review/list',          [ReviewerController::class, 'reviewList'])->
 Route::get('/review/{article}',     [ReviewerController::class, 'review'])->name('review');
 Route::post('/review/store',        [ReviewerController::class, 'store'])->name('review.store');
 Route::get('/review-download-files/{article}',     [ReviewerController::class, 'downloadArticleFiles'])->name('review.downolad_files');
+
+
+Route::get('/reviews/request/{id}', [ReviewerController::class, 'editReviewRequest'])->middleware(['auth', 'role:reviewer'])->name('reviews.editReviewRequest');
+Route::put('/reviews/{id}', [ReviewerController::class, 'update'])->name('reviews.update');
+
 
 
 

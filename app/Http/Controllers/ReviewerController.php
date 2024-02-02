@@ -178,4 +178,11 @@ class ReviewerController extends Controller
 
     }
 
+
+    public function editReviewRequest($id)
+    {
+        $user = Auth::user();
+        dd('idva ot link',$id, '-- idva ot sesiata', $user->id);
+    }
+    
 }
