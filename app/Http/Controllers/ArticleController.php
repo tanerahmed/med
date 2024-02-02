@@ -322,7 +322,7 @@ class ArticleController extends Controller
                         $body = [
                             'name' => $user->name,
                             'article' => $id,
-                            'link' => 'http://127.0.0.1:8000/reviews/request/'.$user->id
+                            'link' => 'http://127.0.0.1:8000/reviews/request/'.$user->id.'/'.$review->id
                         ];
 
                         Mail::to($user->email)->send(new ReviewRequestEmail($subject, $body));

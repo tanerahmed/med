@@ -179,10 +179,31 @@ class ReviewerController extends Controller
     }
 
 
-    public function editReviewRequest($id)
+    public function editReviewRequest($user_id, $review_id)
     {
+
         $user = Auth::user();
-        dd('idva ot link',$id, '-- idva ot sesiata', $user->id);
+        // dd($user_id, $user->id );
+        if ($user->id != $user_id) {
+            abort(404);
+        }
+
+        $review = Review::find($review_id);
+
+        if ($review->reviewer_id_1 === null) {
+            $review->reviewer_id_1 = $user->id;
+        } elseif ($review->reviewer_id_2 === null) {
+            $review->reviewer_id_2 = $user->id;
+        } elseif ($review->reviewer_id_3 === null) {
+            $review->reviewer_id_3 = $user->id;
+        }
+        $review->save();
+
+        $notification = array(
+            'message' => 'You approve review request successfully.',
+            'alert-type' => 'success'
+        );
+        return redirect()->route('review.list')->with($notification);
     }
     
 }
