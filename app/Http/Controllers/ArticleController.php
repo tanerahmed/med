@@ -219,7 +219,7 @@ class ArticleController extends Controller
 
                 // Създаване на празен запис в таблицата Review
                 Review::create([
-                    'article_id' => $this->articleId ,
+                    'article_id' => $this->articleId,
                     'rating_1' => null,
                     'reviewer_id_1' => null,
                     'rating_2' => null,
@@ -256,6 +256,50 @@ class ArticleController extends Controller
         );
 
         return redirect()->route('article.list')->with($notification);
+    }
+
+    public function edit($id)
+    {
+        $article = Article::findOrFail($id);
+        $reviewers = User::where('role', 'reviewer')->get();
+        $review = Review::where('article_id', $id)->first();
+
+        // Предайте променливата $article към изгледа за редактиране на статията
+        return view('author.edit', compact('article', 'reviewers', 'review'));
+    }
+
+    public function update(Request $request, $id)
+    {
+        // Валидация на данните от формата за редактиране на статия
+        $request->validate([
+            // Добавете валидацията според вашите изисквания
+        ]);
+
+        // Намиране на статията за редактиране по предоставения идентификатор
+        // $article = Article::findOrFail($id);
+
+        // Обновяване на данните на статията с информацията от формата
+        // $article->update([
+        //     // Обновете съответно с полята, които трябва да се обновят
+        // ]);
+
+
+        $review = Review::where('article_id', $id)->first();
+        if ($review) {
+            // Обновете прегледа с информацията от формата
+            $review->update([
+                'reviewer_id_1' => $request->input('reviewer_id_1'),
+                'reviewer_id_2' => $request->input('reviewer_id_2'),
+                'reviewer_id_3' => $request->input('reviewer_id_3'),
+            ]);
+
+            return redirect()->route('article.list')->with('success', 'Review updated successfully.');
+        } else {
+            return redirect()->back()->with('error', 'Review not found.');
+        }
+
+        // Редирект към списъка със статии след успешно обновяване
+        return redirect()->route('articles.index')->with('success', 'Article updated successfully.');
     }
 
 }

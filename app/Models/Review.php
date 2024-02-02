@@ -30,4 +30,12 @@ class Review extends Model
         return $this->belongsTo(User::class);
     }
 
+    public function hasReviewer($reviewerId)
+    {
+        return $this->reviewer_id_1 == $reviewerId ||
+            $this->reviewer_id_2 == $reviewerId ||
+            $this->reviewer_id_3 == $reviewerId;
+    }
+
+
 }

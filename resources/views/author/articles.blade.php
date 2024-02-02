@@ -45,8 +45,8 @@
                                         {{-- <td>{!! $article->statusFromReview !!}</td> --}}
                                         <td>{{ $article->updated_at }}</td>
                                         <td>
-                                            <button>Html</button>
-                                            <button>PDF</button>
+                                            <a href="{{ route('articles.edit', $article->id) }}"><button type="button" class="btn btn-primary btn-sm">Update</button></a>
+                                            <a href="{{ route('review.downolad_files', $article->id) }}"><button type="button" class="btn btn-warning btn-sm">Dowload files</button></a>
                                         </td>
                                         <td>
                                             <!-- Разгъната секция за ревюта -->
@@ -56,9 +56,9 @@
                                                 @else
                                                     @if ($preparedReview['article_id'] == $article->id)
                                                         <div class="review">
-                                                            <span>{{ $preparedReview['reviewer1_name'] }} - {{ $preparedReview['rating_1'] ?: '' }}</span><br>
-                                                            <span>{{ $preparedReview['reviewer2_name'] }} - {{ $preparedReview['rating_2'] ?: '' }}</span><br>
-                                                            <span>{{ $preparedReview['reviewer3_name'] }} - {{ $preparedReview['rating_3'] ?: '' }}</span><br>
+                                                            <span>1.{{ $preparedReview['reviewer1_name'] }} - {{ $preparedReview['rating_1'] ?: '' }}</span><br>
+                                                            <span>2.{{ $preparedReview['reviewer2_name'] }} - {{ $preparedReview['rating_2'] ?: '' }}</span><br>
+                                                            <span>3.{{ $preparedReview['reviewer3_name'] }} - {{ $preparedReview['rating_3'] ?: '' }}</span><br>
                                                             <!-- Добавете подобни редове за останалите ревютори -->
                                                         </div>
                                                     @endif

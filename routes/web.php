@@ -87,6 +87,8 @@ Route::view('/contact-us', 'frontend.contact_us')->name('contact_us');
 Route::get('/article/create', [ArticleController::class, 'articleCreate'])->name('article.create');
 Route::post('/article/store', [ArticleController::class, 'articleStore'])->name('article.store');
 Route::get('/articles',       [ArticleController::class, 'articleList'])->name('article.list');
+Route::get('/articles/{id}/edit', [ArticleController::class, 'edit'])->name('articles.edit');
+Route::put('/articles/{id}', [ArticleController::class, 'update'])->name('articles.update');
 
 // Author
 Route::get('/author/dashboard', [AuthorController::class, 'AuthorDashboard'])->middleware('auth', 'role:author')->name('author.dashboard');

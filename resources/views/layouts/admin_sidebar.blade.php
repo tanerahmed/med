@@ -98,7 +98,7 @@
 
 
             {{-- Admin can see that button --}}
-            @if (Auth::check() && (Auth::user()->role === 'reviewer' || Auth::user()->role === 'admin'))
+            @if (Auth::check() && (Auth::user()->role === 'reviewer'))
                 <li class="nav-item nav-category">Articles for review</li>
                 <li class="nav-item">
                     <a class="nav-link" data-bs-toggle="collapse" href="#users" role="button" aria-expanded="false"
