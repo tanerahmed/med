@@ -292,14 +292,15 @@ class ArticleController extends Controller
                 'reviewer_id_2' => $request->input('reviewer_id_2'),
                 'reviewer_id_3' => $request->input('reviewer_id_3'),
             ]);
+            $notification = array(
+                'message'=> 'Review updated successfully.',
+                'alert-type'=>'success'
+            );
 
-            return redirect()->route('article.list')->with('success', 'Review updated successfully.');
+            return redirect()->route('article.list')->with($notification);
         } else {
             return redirect()->back()->with('error', 'Review not found.');
         }
-
-        // Редирект към списъка със статии след успешно обновяване
-        return redirect()->route('articles.index')->with('success', 'Article updated successfully.');
     }
 
 }
