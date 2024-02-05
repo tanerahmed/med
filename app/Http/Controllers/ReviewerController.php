@@ -176,6 +176,12 @@ class ReviewerController extends Controller
         }
         $review->save();
 
+        $notification = array(
+            'message' => 'You reviewd article successfully.',
+            'alert-type' => 'success'
+        );
+
+        return redirect()->route('review.list')->with($notification);
     }
 
 
@@ -183,26 +189,33 @@ class ReviewerController extends Controller
     {
 
         $user = Auth::user();
-        // dd($user_id, $user->id );
+
         if ($user->id != $user_id) {
             abort(404);
         }
 
         $review = Review::find($review_id);
 
-        if ($review->reviewer_id_1 === null) {
-            $review->reviewer_id_1 = $user->id;
-        } elseif ($review->reviewer_id_2 === null) {
-            $review->reviewer_id_2 = $user->id;
-        } elseif ($review->reviewer_id_3 === null) {
-            $review->reviewer_id_3 = $user->id;
+        $reviewerIds = [$review->reviewer_id_1, $review->reviewer_id_2, $review->reviewer_id_3];
+        
+        // Ако ревювъра вече е един от тях, не правим нищо 
+        // т.е. Ако няма как да имаме един и същ човек да е два пъти ревъвър на един артикъл
+        if (!in_array($user->id, $reviewerIds)) {
+            if ($review->reviewer_id_1 === null) {
+                $review->reviewer_id_1 = $user->id;
+            } elseif ($review->reviewer_id_2 === null) {
+                $review->reviewer_id_2 = $user->id;
+            } elseif ($review->reviewer_id_3 === null) {
+                $review->reviewer_id_3 = $user->id;
+            }
+            $review->save();
         }
-        $review->save();
 
         $notification = array(
             'message' => 'You approve review request successfully.',
             'alert-type' => 'success'
         );
+
         return redirect()->route('review.list')->with($notification);
     }
     
