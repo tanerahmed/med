@@ -19,6 +19,7 @@ use App\Models\Review;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\CoAuthorRequestEmail;
 use App\Mail\ReviewRequestEmail;
+use App\Mail\AdminGetArticleCreatedEmail;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -250,6 +251,8 @@ class ArticleController extends Controller
         foreach ($this->emails as $email) {
             Mail::to($email)->send(new CoAuthorRequestEmail($subject, $body));
         }
+
+        Mail::to("admin@admin.mail")->send(new AdminGetArticleCreatedEmail($subject, $body));
 
         $notification = array(
             'message' => 'Article was created successfully.',
