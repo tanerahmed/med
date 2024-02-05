@@ -12,10 +12,6 @@
 
         <p>Click to the <a href="{{$body['link']}}">LINK</a>  to approve it</p>
 
-        {{-- TODO --}}
-
-        Link za potvrajdenie 
-
     <p>Sincerely,</p>
     <p>Your Team</p>
 </body>

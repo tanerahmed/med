@@ -72,6 +72,11 @@ Route::post('/articles/{id}', [ArticleController::class, 'sendEmailForReviewRequ
 
 // Author
 Route::get('/author/dashboard', [AuthorController::class, 'AuthorDashboard'])->middleware('auth', 'role:author')->name('author.dashboard');
+// Co Author approve Thankyou Page
+Route::get('/co-author-approve/{article_id}/{authrom_email}', [ArticleController::class, 'coAuthorApprove'])->name('articles.coAuthorApprove');
+
+
+
 
 // Reviewer 
 Route::get('/reviewer/dashboard',   [ReviewerController::class, 'ReviewerDashboard'])->name('reviewer.dashboard');

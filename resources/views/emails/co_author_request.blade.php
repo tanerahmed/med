@@ -10,11 +10,7 @@
     <p>Hello,</p>
     <p> {{ $body['name'] }} would like to invite you to collaborate as a co-author on our project - {{ $body['title'] }}</p>
 
-        <p>Click to the {!! $body['link'] !!} </p>
-
-        {{-- TODO --}}
-
-        Link za potvrajdenie 
+        <p>Click to the <a href="{{ $body['link'] }}"> Link </a></p>
 
     <p>Sincerely,</p>
     <p>Your Team</p>

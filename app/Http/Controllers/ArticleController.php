@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Validator;
@@ -242,16 +243,19 @@ class ArticleController extends Controller
         }
 
 
-        // Send Email
+        // Send Email Co Authors
         $subject = 'Co Author Request';
         $body['name'] = $user->name;
         $body['title'] = $this->articleTitle;
-        $body['link'] = "Clik to the<a href='#'>LINK</a> to aprrove.";
+        $domain = URL::to('/');
 
         foreach ($this->emails as $email) {
+            $body['link'] = $domain.'/co-author-approve/'.$this->articleId.'/'.$email;
             Mail::to($email)->send(new CoAuthorRequestEmail($subject, $body));
         }
 
+        // Send Email to Admin 
+        $subject = "Created Article from: ". $user->name;
         Mail::to("admin@admin.mail")->send(new AdminGetArticleCreatedEmail($subject, $body));
 
         $notification = array(
@@ -322,10 +326,11 @@ class ArticleController extends Controller
 
                     if ($user) {
                         $subject = 'Reviewer Request';
+                        $domain = URL::to('/');
                         $body = [
                             'name' => $user->name,
                             'article' => $id,
-                            'link' => 'http://127.0.0.1:8000/reviews/request/'.$user->id.'/'.$review->id
+                            'link' => $domain.'/reviews/request/'.$user->id.'/'.$review->id
                         ];
 
                         Mail::to($user->email)->send(new ReviewRequestEmail($subject, $body));
@@ -345,6 +350,15 @@ class ArticleController extends Controller
             'alert-type' => 'danger'
         );
         return redirect()->route('article.list')->with($notification);
+    }
+
+    public function coAuthorApprove($articleId, $coAuthorEmail)
+    {
+        $author = Author::where('article_id', $articleId)->where('contact_email', $coAuthorEmail)->first();
+        $author->approved = true;
+        $author->save();
+
+        return view('co_author_accept_thanks_page');
     }
 
 }

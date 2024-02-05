@@ -17,7 +17,7 @@
                                 <thead>
                                     <tr>
                                         @if (Auth::check() && Auth::user()->role === 'admin')
-                                            <th class="pt-0">User</th>
+                                            <th class="pt-0">Author</th>
                                         @endif
                                         <th class="pt-0">#</th>
                                         <th class="pt-0">Type</th>
@@ -25,7 +25,7 @@
                                         <th class="pt-0">Scientific area</th>
                                         {{-- <th class="pt-0">Status</th> --}}
                                         <th class="pt-0">Date</th>
-                                        <th class="pt-0">Download</th>
+                                        <th class="pt-0">Actions</th>
                                         <th class="pt-0">Reviews</th>
                                     </tr>
                                 </thead>
