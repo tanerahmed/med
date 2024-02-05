@@ -12,6 +12,7 @@ use App\Models\User;
 
 use Illuminate\Support\Facades\Mail;
 use App\Mail\ReviewArticleEmail;
+use App\Mail\UserApproveReviewRequestEmail;
 use ZipArchive;
 
 class ReviewerController extends Controller
@@ -210,6 +211,13 @@ class ReviewerController extends Controller
             }
             $review->save();
         }
+
+ dd($review->article->id);
+        $subject = "Reviwer accept";
+        $body['user'] = $user->name;
+        $body['article_id'] = $review->article->id; 
+
+        Mail::to($user->email)->send(new UserApproveReviewRequestEmail($subject, $body));
 
         $notification = array(
             'message' => 'You approve review request successfully.',
