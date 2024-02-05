@@ -212,7 +212,6 @@ class ReviewerController extends Controller
             $review->save();
         }
 
- dd($review->article->id);
         $subject = "Reviwer accept";
         $body['user'] = $user->name;
         $body['article_id'] = $review->article->id; 
