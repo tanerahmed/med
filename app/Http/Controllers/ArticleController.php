@@ -16,6 +16,7 @@ use App\Models\CoverLetter;
 use App\Models\Author;
 use App\Models\User;
 use App\Models\Review;
+use App\Models\InvitedReviewer;
 
 use Illuminate\Support\Facades\Mail;
 use App\Mail\CoAuthorRequestEmail;
@@ -250,12 +251,12 @@ class ArticleController extends Controller
         $domain = URL::to('/');
 
         foreach ($this->emails as $email) {
-            $body['link'] = $domain.'/co-author-approve/'.$this->articleId.'/'.$email;
+            $body['link'] = $domain . '/co-author-approve/' . $this->articleId . '/' . $email;
             Mail::to($email)->send(new CoAuthorRequestEmail($subject, $body));
         }
 
         // Send Email to Admin 
-        $subject = "Created Article from: ". $user->name;
+        $subject = "Created Article from: " . $user->name;
         Mail::to("admin@admin.mail")->send(new AdminGetArticleCreatedEmail($subject, $body));
 
         $notification = array(
@@ -272,8 +273,11 @@ class ArticleController extends Controller
         $reviewers = User::where('role', 'reviewer')->get();
         $review = Review::where('article_id', $id)->first();
 
+        // Получаване на списъка с поканените рецензенти за съответната статия
+        $invitedReviewers = InvitedReviewer::where('article_id', $id)->get();
+// dd($invitedReviewers    );
         // Предайте променливата $article към изгледа за редактиране на статията
-        return view('author.edit', compact('article', 'reviewers', 'review'));
+        return view('author.edit', compact('article', 'reviewers', 'review', 'invitedReviewers'));
     }
 
     public function update(Request $request, $id)
@@ -312,9 +316,9 @@ class ArticleController extends Controller
     }
 
 
-    // първо провери дали reviwer_id го има в review, ако го няма тогава прати имейл
     public function sendEmailForReviewRequest(Request $request, $id)
     {
+
         $review = Review::where('article_id', $id)->first();
         if ($review) {
             $reviewerIds = [$review->reviewer_id_1, $review->reviewer_id_2, $review->reviewer_id_3];
@@ -330,10 +334,13 @@ class ArticleController extends Controller
                         $body = [
                             'name' => $user->name,
                             'article' => $id,
-                            'link' => $domain.'/reviews/request/'.$user->id.'/'.$review->id
+                            'link' => $domain . '/reviews/request/' . $user->id . '/' . $review->id
                         ];
 
                         Mail::to($user->email)->send(new ReviewRequestEmail($subject, $body));
+
+                        // Запазваме информация за поканения рецензент в таблицата
+                        InvitedReviewer::saveInvitedReviewer($id, $user->id);
                     }
                 }
             }
@@ -343,7 +350,7 @@ class ArticleController extends Controller
             );
             return redirect()->route('article.list')->with($notification);
         }
-        
+
         // Error
         $notification = array(
             'message' => 'There is a problem, plase try again later.',
