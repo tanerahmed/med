@@ -86,7 +86,9 @@ Route::post('/review/store',        [ReviewerController::class, 'store'])->name(
 Route::get('/review-download-files/{article}',     [ReviewerController::class, 'downloadArticleFiles'])->name('review.downolad_files');
 
 
-Route::get('/reviews/request/{user_id}/{review_id}', [ReviewerController::class, 'editReviewRequest'])->middleware(['auth', 'role:reviewer'])->name('reviews.editReviewRequest');
+Route::get('/reviews/request/{user_id}/{review_id}', [ReviewerController::class, 'approveReviewRequest'])->middleware(['auth', 'role:reviewer'])->name('reviews.approveReviewRequest');
+Route::get('/reviews/request/reject/{user_id}/{review_id}', [ReviewerController::class, 'rejectReviewRequest'])->middleware(['auth', 'role:reviewer'])->name('reviews.rejectReviewRequest');
+
 Route::put('/reviews/{id}', [ReviewerController::class, 'update'])->name('reviews.update');
 
 

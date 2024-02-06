@@ -9,10 +9,12 @@ use Illuminate\Support\Facades\Validator;
 use App\Models\Review;
 use App\Models\Article;
 use App\Models\User;
+use App\Models\InvitedReviewer;
 
 use Illuminate\Support\Facades\Mail;
 use App\Mail\ReviewArticleEmail;
 use App\Mail\UserApproveReviewRequestEmail;
+use App\Mail\UserRejectReviewRequestEmail;
 use ZipArchive;
 
 class ReviewerController extends Controller
@@ -130,15 +132,15 @@ class ReviewerController extends Controller
         $req = $request->all();
         $articleId = $request->input('articleId');
         $article = Article::find($articleId);
-        
+
         if ($request->hasFile('zip_file')) {
             $zipFile = $request->file('zip_file')[0];
             $zipFilePath = $zipFile->store('review_zip_files', 'public');
-        
+
             $filePath = storage_path('app/public/' . $zipFilePath);
             $filePath = str_replace('\\', '/', $filePath);
         }
-        
+
         $body['articleId'] = $articleId;
         $body['reviwer_name'] = $user->name;
         $body['question1'] = $request->input('question1');
@@ -155,8 +157,8 @@ class ReviewerController extends Controller
         $body['title'] = $request->input('title');
         $body['abstract'] = $request->input('abstract');
 
-        
-        $subject = "Review Article #" . $articleId;        
+
+        $subject = "Review Article #" . $articleId;
         if (!empty($filePath)) {
             Mail::to($user->email)->send(new ReviewArticleEmail($subject, $body, $filePath));
         } else {
@@ -186,7 +188,7 @@ class ReviewerController extends Controller
     }
 
 
-    public function editReviewRequest($user_id, $review_id)
+    public function approveReviewRequest($user_id, $review_id)
     {
 
         $user = Auth::user();
@@ -198,7 +200,7 @@ class ReviewerController extends Controller
         $review = Review::find($review_id);
 
         $reviewerIds = [$review->reviewer_id_1, $review->reviewer_id_2, $review->reviewer_id_3];
-        
+
         // Ако ревювъра вече е един от тях, не правим нищо 
         // т.е. Ако няма как да имаме един и същ човек да е два пъти ревъвър на един артикъл
         if (!in_array($user->id, $reviewerIds)) {
@@ -212,13 +214,16 @@ class ReviewerController extends Controller
             $review->save();
         }
 
+        // Reviwer Rejected request!
+
+
         $subject = "Reviwer accept";
         $body['user'] = $user->name;
-        $body['article_id'] = $review->article->id; 
+        $body['article_id'] = $review->article->id;
 
-        // send to admin
-        Mail::to($user->email)->send(new UserApproveReviewRequestEmail($subject, $body));
         // send to author
+        Mail::to($user->email)->send(new UserApproveReviewRequestEmail($subject, $body));
+        // send to  admin
         Mail::to('admin@gmail.com')->send(new UserApproveReviewRequestEmail($subject, $body));
 
         $notification = array(
@@ -228,5 +233,38 @@ class ReviewerController extends Controller
 
         return redirect()->route('review.list')->with($notification);
     }
-    
+
+    public function rejectReviewRequest($user_id, $review_id)
+    {
+        $user = Auth::user();
+
+        if ($user->id != $user_id) {
+            abort(404);
+        }
+        $review = Review::find($review_id);
+
+        $invitedReviewer = new InvitedReviewer();
+        $invitedReviewer->article_id = $review->article->id;
+        $invitedReviewer->user_id = $user->id;
+        $invitedReviewer->rejected = true;
+        $invitedReviewer->save();
+
+        $subject = "Reviwer rejected";
+        $body['user'] = $user->name;
+        $body['article_id'] = $review->article->id;
+
+        // send to author
+        Mail::to($user->email)->send(new UserRejectReviewRequestEmail($subject, $body));
+        // send to  admin
+        Mail::to('admin@gmail.com')->send(new UserRejectReviewRequestEmail($subject, $body));
+
+        $notification = array(
+            'message' => 'You reject review request successfully.',
+            'alert-type' => 'danger'
+        );
+
+        return redirect()->route('review.list')->with($notification);
+
+    }
+
 }

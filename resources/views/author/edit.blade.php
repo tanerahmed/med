@@ -112,7 +112,11 @@
                 <h5>Invited reviewers:</h5>
                 <ul>
                     @foreach ($invitedReviewers as $invitedReviewer)
-                        <li>{{ $invitedReviewer->user->name }}</li>
+                        <li>{{ $invitedReviewer->user->name }} 
+                            @if ($invitedReviewer->rejected)
+                            <span style="color: red"> - REJECTED</span>
+                            @endif
+                        </li>
                     @endforeach
                 </ul>
             </div>

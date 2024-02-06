@@ -9,7 +9,7 @@ class InvitedReviewer extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['article_id', 'user_id'];
+    protected $fillable = ['article_id', 'user_id', 'rejected'];
     
     public static function saveInvitedReviewer($articleId, $userId)
     {

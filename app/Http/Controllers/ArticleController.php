@@ -275,7 +275,7 @@ class ArticleController extends Controller
 
         // Получаване на списъка с поканените рецензенти за съответната статия
         $invitedReviewers = InvitedReviewer::where('article_id', $id)->get();
-// dd($invitedReviewers    );
+
         // Предайте променливата $article към изгледа за редактиране на статията
         return view('author.edit', compact('article', 'reviewers', 'review', 'invitedReviewers'));
     }
@@ -334,7 +334,8 @@ class ArticleController extends Controller
                         $body = [
                             'name' => $user->name,
                             'article' => $id,
-                            'link' => $domain . '/reviews/request/' . $user->id . '/' . $review->id
+                            'link_approve' => $domain . '/reviews/request/' . $user->id . '/' . $review->id,
+                            'link_reject' => $domain . '/reviews/request/reject/' . $user->id . '/' . $review->id,
                         ];
 
                         Mail::to($user->email)->send(new ReviewRequestEmail($subject, $body));
