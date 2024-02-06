@@ -15,14 +15,14 @@
                 </div>
             @endif --}}
             @if (session('errors'))
-            <div class="alert alert-danger">
-                <ul>
-                    @foreach (session('errors') as $error)
-                        <li>{{ $error }}</li>
-                    @endforeach
-                </ul>
-            </div>
-        @endif
+                <div class="alert alert-danger">
+                    <ul>
+                        @foreach (session('errors') as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
 
             <form action="{{ route('article.store') }}" method="POST" enctype="multipart/form-data">
                 @csrf
@@ -78,49 +78,74 @@
                     <div class="col-md-6">
                         <!-- Upload Title Page -->
                         <div class="mb-3">
-                            <label for="title_pages" class="form-label"><strong>Upload Title Page: </strong><i>(doc, docx, LaTeX doc)</i></label>
+                            <label for="title_pages" class="form-label"><strong>Upload Title Page: </strong><i>(doc, docx,
+                                    LaTeX doc)</i></label>
+                            <div id="title_pages_selected_files"></div>
                             <input type="file" name="title_pages[]" multiple class="form-control" id="title_pages"
-                                onchange="validateTitlePageFileType()">
+                                onchange="validateTitlePageFileType(); displaySelectedFiles('title_pages')">
                             <div class="text-danger" id="title_page_error"></div>
                         </div>
+
+
                         <!-- Manuscript -->
                         <div class="mb-3">
-                            <label for="manuscript" class="form-label"><strong>Upload Manuscript: </strong><i>(doc, docx, LaTeX doc)</i></label>
+                            <label for="manuscript" class="form-label"><strong>Upload Manuscript: </strong><i>(doc, docx,
+                                    LaTeX doc)</i></label>
+                            <div id="manuscript_selected_files"></div>
                             <input type="file" name="manuscript[]" multiple class="form-control" id="manuscript"
-                                onchange="validateManuscriptFileType()">
+                                onchange="validateManuscriptFileType(); displaySelectedFiles('manuscript')">
                             <div class="text-danger" id="manuscript_error"></div>
                         </div>
+
+
                         <!-- Figures -->
                         <div class="mb-3">
-                            <label for="figures" class="form-label"><strong>Upload Figures: </strong> <i>(jpg, tiff)</i></label>
+                            <label for="figures" class="form-label"><strong>Upload Figures: </strong> <i>(jpg,
+                                    tiff)</i></label>
+                            <div id="figures_selected_files"></div>
                             <input type="file" name="figures[]" multiple class="form-control" id="figures"
-                                onchange="validateFiguresFileType()">
+                                onchange="validateFiguresFileType(); displaySelectedFiles('figures')">
                             <div class="text-danger" id="figures_error"></div>
                         </div>
+
+
                         <!-- Tables -->
                         <div class="mb-3">
-                            <label for="tables" class="form-label"><strong>Upload Tables: </strong><i>(doc, docx)</i></label>
+                            <label for="tables" class="form-label"><strong>Upload Tables: </strong><i>(doc,
+                                    docx)</i></label>
+                            <div id="tables_selected_files"></div>
                             <input type="file" name="tables[]" multiple class="form-control" id="tables"
-                                onchange="validateTablesFileType()">
+                                onchange="validateTablesFileType(); displaySelectedFiles('tables')">
                             <div class="text-danger" id="tables_error"></div>
                         </div>
+
+
                         <!-- Supplementary -->
                         <div class="mb-3">
-                            <label for="supplementary" class="form-label"><strong>Upload Supplementary: </strong><i>(doc, docx, xls, xlsx, pdf, jpg, tiff)</i></label>
+                            <label for="supplementary" class="form-label"><strong>Upload Supplementary: </strong><i>(doc,
+                                    docx, xls, xlsx, pdf, jpg, tiff)</i></label>
+                            <div id="supplementary_selected_files"></div>
                             <input type="file" name="supplementary[]" multiple class="form-control"
-                                id="supplementary" onchange="validateSupplementaryFileType()">
+                                id="supplementary"
+                                onchange="validateSupplementaryFileType(); displaySelectedFiles('supplementary')">
                             <div class="text-danger" id="supplementary_error"></div>
                         </div>
+
+
                         <!-- Cover Later -->
                         <div class="mb-3">
                             <label for="cover_letter" class="form-label"><strong>Upload Cover Later:</strong></label>
+                            <div id="cover_letter_selected_files"></div>
                             <input type="file" name="cover_letter[]" multiple class="form-control" id="cover_letter"
-                                onchange="validateCoverLaterFileType()">
+                                onchange="validateCoverLaterFileType(); displaySelectedFiles('cover_letter')">
                             <div class="text-danger" id="cover_letter_error"></div>
                         </div>
+
+
                         <!-- Keywords -->
                         <div class="mb-3">
-                            <label for="Keywords" class="form-label"><strong>Type Keywords: </strong> <i>(separate with a comma)</i></label>
+                            <label for="Keywords" class="form-label"><strong>Type Keywords: </strong> <i>(separate with a
+                                    comma)</i></label>
                             <input type="text" class="form-control" name="keywords" id="keywords"
                                 placeholder="Add Keywords" required>
                         </div>
@@ -157,4 +182,16 @@
     </div>
 @endsection
 
-<script></script>
+<script>
+    function displaySelectedFiles(inputId) {
+        var input = document.getElementById(inputId);
+        var fileList = input.files;
+        var fileNames = "";
+        for (var i = 0; i < fileList.length; i++) {
+            fileNames += "<span style='font-weight: bold; font-style: italic;'>" + fileList[i].name + "</span>, ";
+        }
+        fileNames = fileNames.slice(0, -2); // Изтриване на последната запетая и интервал
+        var selectedFilesDiv = document.getElementById(inputId + '_selected_files');
+        selectedFilesDiv.innerHTML = fileNames;
+    }
+</script>
