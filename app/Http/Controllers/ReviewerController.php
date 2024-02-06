@@ -216,7 +216,10 @@ class ReviewerController extends Controller
         $body['user'] = $user->name;
         $body['article_id'] = $review->article->id; 
 
+        // send to admin
         Mail::to($user->email)->send(new UserApproveReviewRequestEmail($subject, $body));
+        // send to author
+        Mail::to('admin@gmail.com')->send(new UserApproveReviewRequestEmail($subject, $body));
 
         $notification = array(
             'message' => 'You approve review request successfully.',

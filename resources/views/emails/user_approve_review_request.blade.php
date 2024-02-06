@@ -7,7 +7,7 @@
     <title>Review Request Email</title>
 </head>
 <body>
-    <p>Hello, Admin</p>
+    <p>Hello,</p>
     <p> {{ $body['user'] }} accept to be reviewer on Article #ID - {{ $body['article_id'] }}</p>
 
     <p>Sincerely,</p>
