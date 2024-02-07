@@ -22,6 +22,7 @@ use Illuminate\Support\Facades\Mail;
 use App\Mail\CoAuthorRequestEmail;
 use App\Mail\ReviewRequestEmail;
 use App\Mail\AdminGetArticleCreatedEmail;
+use App\Mail\ArticleEditEmail;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -147,7 +148,7 @@ class ArticleController extends Controller
 
                 // TitlePage
                 foreach ($request->file('title_pages') as $file) {
-                    $filePath = $file->store('title_pages', 'public'); // Записва файла в папката storage/app/public/title_pages
+                    $filePath = $file->store('title_pages/' . $this->articleId, 'public'); // Записва файла в папката storage/app/public/title_pages
 
                     $titlePage = new TitlePage();
                     $titlePage->article_id = $article->id;
@@ -157,7 +158,7 @@ class ArticleController extends Controller
 
                 // Manuscript
                 foreach ($request->file('manuscript') as $file) {
-                    $filePath = $file->store('manuscripts', 'public');
+                    $filePath = $file->store('manuscripts/' . $this->articleId, 'public');
 
                     $manuscript = new Manuscript();
                     $manuscript->article_id = $article->id;
@@ -167,7 +168,7 @@ class ArticleController extends Controller
 
                 // Figures
                 foreach ($request->file('figures') as $file) {
-                    $filePath = $file->store('figures', 'public');
+                    $filePath = $file->store('figures/' . $this->articleId, 'public');
 
                     $figure = new Figure();
                     $figure->article_id = $article->id;
@@ -177,7 +178,7 @@ class ArticleController extends Controller
 
                 // Tables
                 foreach ($request->file('tables') as $file) {
-                    $filePath = $file->store('tables', 'public');
+                    $filePath = $file->store('tables/' . $this->articleId, 'public');
 
                     $table = new Table();
                     $table->article_id = $article->id;
@@ -187,7 +188,7 @@ class ArticleController extends Controller
 
                 // Supplementary Files
                 foreach ($request->file('supplementary') as $file) {
-                    $filePath = $file->store('supplementary_files', 'public');
+                    $filePath = $file->store('supplementary_files/' . $this->articleId, 'public');
 
                     $supplementaryFile = new SupplementaryFile();
                     $supplementaryFile->article_id = $article->id;
@@ -197,7 +198,7 @@ class ArticleController extends Controller
 
                 // Cover Letter
                 foreach ($request->file('cover_letter') as $file) {
-                    $filePath = $file->store('cover_letters', 'public');
+                    $filePath = $file->store('cover_letters/' . $this->articleId, 'public');
 
                     $coverLetter = new CoverLetter();
                     $coverLetter->article_id = $article->id;
@@ -315,6 +316,170 @@ class ArticleController extends Controller
         }
     }
 
+    public function articleEdit($articleId)
+    {
+        $article = Article::findOrFail($articleId);
+        return view('author.articleEdit', compact('article'));
+    }
+
+    public function articleUpdate(Request $request, $articleId)
+    {
+        $user = Auth::user();
+
+        $validator = Validator::make($request->all(), [
+            // Валидацията на данните тук...
+        ]);
+
+        try {
+            DB::transaction(function () use ($request, $articleId) {
+                $article = Article::findOrFail($articleId);
+
+                if ($request->has('type')) {
+                    $article->type = $request->input('type');
+                }
+                if ($request->has('specialty')) {
+                    $article->specialty = $request->input('specialty');
+                }
+                if ($request->has('scientific_area')) {
+                    $article->scientific_area = $request->input('scientific_area');
+                }
+                if ($request->has('title')) {
+                    $article->title = $request->input('title');
+                }
+                if ($request->has('abstract')) {
+                    $article->abstract = $request->input('abstract');
+                }
+                if ($request->has('keywords')) {
+                    $article->keywords = $request->input('keywords');
+                }
+                if ($request->has('funding_name')) {
+                    $article->funding_name = $request->input('funding_name');
+                }
+                if ($request->has('grant_id')) {
+                    $article->grant_id = $request->input('grant_id');
+                }
+                $article->save();
+
+                $this->articleId = $article->id;
+                $this->articleTitle = $article->title;
+
+                // Пример за обновяване на TitlePage записи
+                if ($request->hasFile('title_pages')) {
+                    TitlePage::where('article_id', $articleId)->delete();
+                    foreach ($request->file('title_pages') as $file) {
+                        $filePath = $file->store('title_pages/' . $this->articleId, 'public');
+                        $titlePage = new TitlePage();
+                        $titlePage->article_id = $article->id;
+                        $titlePage->file_path = $filePath;
+                        $titlePage->save();
+                    }
+                }
+                // Manuscript
+                if ($request->hasFile('title_pages')) {
+                    Manuscript::where('article_id', $articleId)->delete();
+                    foreach ($request->file('manuscript') as $file) {
+                        $filePath = $file->store('manuscripts/' . $this->articleId, 'public');
+
+                        $manuscript = new Manuscript();
+                        $manuscript->article_id = $article->id;
+                        $manuscript->file_path = $filePath;
+                        $manuscript->save();
+                    }
+                }
+
+                // Figures
+                if ($request->hasFile('figures')) {
+                    Figure::where('article_id', $articleId)->delete();
+                    foreach ($request->file('figures') as $file) {
+                        $filePath = $file->store('figures/' . $this->articleId, 'public');
+
+                        $figure = new Figure();
+                        $figure->article_id = $article->id;
+                        $figure->file_path = $filePath;
+                        $figure->save();
+                    }
+                }
+
+                // Tables
+                if ($request->hasFile('tables')) {
+                    Table::where('article_id', $articleId)->delete();
+                    foreach ($request->file('tables') as $file) {
+                        $filePath = $file->store('tables/' . $this->articleId, 'public');
+
+                        $table = new Table();
+                        $table->article_id = $article->id;
+                        $table->file_path = $filePath;
+                        $table->save();
+                    }
+                }
+
+                // Supplementary Files
+                if ($request->hasFile('supplementary')) {
+                    SupplementaryFile::where('article_id', $articleId)->delete();
+                    foreach ($request->file('supplementary') as $file) {
+                        $filePath = $file->store('supplementary_files/' . $this->articleId, 'public');
+
+                        $supplementaryFile = new SupplementaryFile();
+                        $supplementaryFile->article_id = $article->id;
+                        $supplementaryFile->file_path = $filePath;
+                        $supplementaryFile->save();
+                    }
+                }
+
+                // Cover Letter
+                if ($request->hasFile('cover_letter')) {
+                    CoverLetter::where('article_id', $articleId)->delete();
+                    foreach ($request->file('cover_letter') as $file) {
+                        $filePath = $file->store('cover_letters/' . $this->articleId, 'public');
+
+                        $coverLetter = new CoverLetter();
+                        $coverLetter->article_id = $article->id;
+                        $coverLetter->file_path = $filePath;
+                        $coverLetter->save();
+                    }
+                }
+
+            });
+        } catch (\Exception $e) {
+            $notification = [
+                'message' => 'An error occurred while updating the article. Please try again.',
+                'alert-type' => 'danger'
+            ];
+            return back()->with($notification);
+        }
+
+        // Send Email to Admin 
+        $subject = "Edit Article : " . $this->articleTitle;
+        $body['article_id'] = $this->articleId;
+        $body['title'] = $this->articleTitle;
+        Mail::to("admin@admin.mail")->send(new ArticleEditEmail($subject, $body));
+
+        // Send Email to Reviewers 
+        $review = Review::where('article_id', $articleId)->first();
+        if ($review) {
+            $reviewerIds = [$review->reviewer_id_1, $review->reviewer_id_2, $review->reviewer_id_3];
+
+            foreach ($reviewerIds as $reviewerId) {
+                if ($reviewerId) {
+                    $user = User::find($reviewerId);
+                    if ($user) {
+                        Mail::to($user->email)->send(new ArticleEditEmail($subject, $body));
+                    }
+                }
+            }
+        }
+
+
+
+        // TODO Logs
+
+        $notification = [
+            'message' => 'Article was updated successfully.',
+            'alert-type' => 'success'
+        ];
+        return redirect()->route('article.list')->with($notification);
+
+    }
 
     public function sendEmailForReviewRequest(Request $request, $id)
     {

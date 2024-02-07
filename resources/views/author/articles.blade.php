@@ -23,6 +23,7 @@
                                         <th class="pt-0">Type</th>
                                         <th class="pt-0">Specialty</th>
                                         <th class="pt-0">Scientific area</th>
+                                        <th class="pt-0">Title</th>
                                         {{-- <th class="pt-0">Status</th> --}}
                                         <th class="pt-0">Date</th>
                                         <th class="pt-0">Actions</th>
@@ -39,19 +40,19 @@
                                             <td>{{ $article->type }}</td>
                                             <td>{{ $article->specialty }}</td>
                                             <td>{{ $article->scientific_area }}</td>
+                                            <td>{{ $article->title }}</td>
                                             {{-- <td><span class="badge bg-{{ $article->status_color }}">{{ $article->status_text }}</span></td> --}}
                                             {{-- <td>{!! $article->statusFromReview !!}</td> --}}
                                             <td>{{ $article->updated_at }}</td>
                                             <td>
                                                 @if (Auth::check() && Auth::user()->role === 'admin')
-                                                    <a href="{{ route('articles.edit', $article->id) }}"><button
-                                                            type="button"
-                                                            class="btn btn-primary btn-sm">Update</button></a>
+                                                    <a href="{{ route('articles.edit', $article->id) }}" class="btn btn-primary btn-sm">Reviews<i class="fas fa-users"></i></a>
                                                 @endif
-                                                <a href="{{ route('review.downolad_files', $article->id) }}"><button
-                                                        type="button" class="btn btn-warning btn-sm">Dowload
-                                                        files</button></a>
+                                                <a href="{{ route('articles.articleEdit', $article->id) }}" class="btn btn-warning btn-sm">Edit<i class="fas fa-edit"></i></a>
+                                                <a href="{{ route('review.downolad_files', $article->id) }}" class="btn btn-success btn-sm">Download<i class="fas fa-download"></i></a>
+                                                <i class="fas fa-clock"></i>
                                             </td>
+                                            
                                             <td>
                                                 <!-- Разгъната секция за ревюта -->
                                                 @foreach ($preparedReviews as $preparedReview)
