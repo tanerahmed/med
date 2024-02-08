@@ -5,6 +5,8 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
+
+
 class Review extends Model
 {
     use HasFactory;
@@ -17,7 +19,6 @@ class Review extends Model
         'reviewer_id_2',
         'rating_3',
         'reviewer_id_3',
-        // Добавете останалите полета тук...
     ];
 
     public function article()
@@ -36,6 +37,5 @@ class Review extends Model
             $this->reviewer_id_2 == $reviewerId ||
             $this->reviewer_id_3 == $reviewerId;
     }
-
 
 }

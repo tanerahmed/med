@@ -17,6 +17,9 @@ use App\Mail\UserApproveReviewRequestEmail;
 use App\Mail\UserRejectReviewRequestEmail;
 use ZipArchive;
 
+// Activity Log
+
+
 class ReviewerController extends Controller
 {
     public function ReviewerDashboard()
@@ -70,8 +73,6 @@ class ReviewerController extends Controller
 
     public function downloadArticleFiles(Article $article)
     {
-        // TODO ЕТО ТАКА СЕ СЛАВА СНИМКИ ИЛИ ФАЙЛОВЕ В VIEW BLADE
-        // TODO <img src="{{  asset("storage/".  $article->figures[0]->file_path) }}" alt="" />
 
         // Създаване на нов ZIP архив
         $zip = new ZipArchive;
@@ -79,7 +80,9 @@ class ReviewerController extends Controller
 
         if ($zip->open($zipFileName, ZipArchive::CREATE) === TRUE) {
 
-            // TODO Тази директория има липсващи файлове не е АКТУАЛНА
+            // TODO Тази директория има липсващи файлове не е АКТУАЛНА 
+            // TODO Откоментирай когато занулиш БД
+
             // foreach ($article->titlePage as $value) {
             //     $filePath = storage_path('app/public/' . $value->file_path);
             //     $filePath = str_replace('\\', '/', $filePath);
@@ -160,24 +163,28 @@ class ReviewerController extends Controller
 
         $subject = "Review Article #" . $articleId;
         if (!empty($filePath)) {
-            Mail::to($user->email)->send(new ReviewArticleEmail($subject, $body, $filePath));
+            //TODO  Mail::to($user->email)->send(new ReviewArticleEmail($subject, $body, $filePath));
         } else {
-            Mail::to($user->email)->send(new ReviewArticleEmail($subject, $body));
+            //TODO  Mail::to($user->email)->send(new ReviewArticleEmail($subject, $body));
         }
-
-        // TODO log the action
 
 
         $review = Review::where('article_id', $articleId)->first();
-
+        $rating = $request->input('rating');
         if ($review->reviewer_id_1 === $user->id) {
-            $review->rating_1 = $request->input('rating');
+            $review->rating_1 = $rating;
         } elseif ($review->reviewer_id_2 === $user->id) {
-            $review->rating_2 = $request->input('rating');
+            $review->rating_2 = $rating;
         } elseif ($review->reviewer_id_3 === $user->id) {
-            $review->rating_3 = $request->input('rating');
+            $review->rating_3 = $rating;
         }
         $review->save();
+
+        // Activity LOG
+        activity()
+            ->performedOn($review)
+            ->withProperties(['rating' => $rating, 'article_id' => $article->id])
+            ->log('raited'); // action create, edit, delete
 
         $notification = array(
             'message' => 'You reviewd article successfully.',
@@ -212,9 +219,14 @@ class ReviewerController extends Controller
                 $review->reviewer_id_3 = $user->id;
             }
             $review->save();
+
+            // Activity LOG
+            activity()
+                ->performedOn($review)
+                ->withProperties(['approveReviewRequest' => $review->article->id])
+                ->log('approve review'); // action create, edit, delete
         }
 
-        // Reviwer Rejected request!
 
 
         $subject = "Reviwer accept";
@@ -222,9 +234,9 @@ class ReviewerController extends Controller
         $body['article_id'] = $review->article->id;
 
         // send to author
-        Mail::to($user->email)->send(new UserApproveReviewRequestEmail($subject, $body));
+        //TODO Mail::to($user->email)->send(new UserApproveReviewRequestEmail($subject, $body));
         // send to  admin
-        Mail::to('admin@gmail.com')->send(new UserApproveReviewRequestEmail($subject, $body));
+        //TODO  Mail::to('admin@gmail.com')->send(new UserApproveReviewRequestEmail($subject, $body));
 
         $notification = array(
             'message' => 'You approve review request successfully.',
@@ -249,14 +261,20 @@ class ReviewerController extends Controller
         $invitedReviewer->rejected = true;
         $invitedReviewer->save();
 
+        // Activity LOG
+        activity()
+            ->performedOn($review)
+            ->withProperties(['rejectReviewRequest' => $review->article->id])
+            ->log('reject review'); // action create, edit, delete
+
         $subject = "Reviwer rejected";
         $body['user'] = $user->name;
         $body['article_id'] = $review->article->id;
 
         // send to author
-        Mail::to($user->email)->send(new UserRejectReviewRequestEmail($subject, $body));
+        //TODO    Mail::to($user->email)->send(new UserRejectReviewRequestEmail($subject, $body));
         // send to  admin
-        Mail::to('admin@gmail.com')->send(new UserRejectReviewRequestEmail($subject, $body));
+        //TODO   Mail::to('admin@gmail.com')->send(new UserRejectReviewRequestEmail($subject, $body));
 
         $notification = array(
             'message' => 'You reject review request successfully.',
