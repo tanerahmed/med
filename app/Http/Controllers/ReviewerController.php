@@ -180,11 +180,35 @@ class ReviewerController extends Controller
         }
         $review->save();
 
+        $acceptedCount = 0;
+        if ($review->rating_1 === 'accepted') {
+            $acceptedCount++;
+        }
+        if ($review->rating_2 === 'accepted') {
+            $acceptedCount++;
+        }
+        if ($review->rating_3 === 'accepted') {
+            $acceptedCount++;
+        }
+        
+        if ($acceptedCount >= 2) {
+            // Ако има поне два "accepted" рейтинга, извикваме метода за създаване на XML файла
+            $xmlController = new XMLController();
+            $response = $xmlController->generateXML($article);
+
+            // Проверка на резултата и връщане на пренасочване или съобщение за грешка
+            if ($response->getStatusCode() === 200) {
+                // Значи XML файлат е създаден успешно
+            }
+        }
+
+
+
         // Activity LOG
         activity()
             ->performedOn($review)
             ->withProperties(['rating' => $rating, 'article_id' => $article->id])
-            ->log('raited'); // action create, edit, delete
+            ->log('raited'); 
 
         $notification = array(
             'message' => 'You reviewd article successfully.',

@@ -11,6 +11,7 @@ use App\Http\Controllers\LogController;
 use App\Http\Controllers\GdprController;
 use App\Http\Controllers\ArticleController;
 use App\Http\Controllers\EditorialPublishingPracticeController;
+use App\Http\Controllers\XMLController;
 
 /*
 |--------------------------------------------------------------------------
@@ -94,8 +95,6 @@ Route::get('/reviews/request/{user_id}/{review_id}', [ReviewerController::class,
 Route::get('/reviews/request/reject/{user_id}/{review_id}', [ReviewerController::class, 'rejectReviewRequest'])->middleware(['auth', 'role:reviewer'])->name('reviews.rejectReviewRequest');
 
 Route::put('/reviews/{id}', [ReviewerController::class, 'update'])->name('reviews.update');
-
-
 
 
 

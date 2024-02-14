@@ -66,6 +66,9 @@
                                                 @if (isset($log->properties['rejectReviewRequest']))
                                                     <b>Article ID {{ $log->properties['rejectReviewRequest'] }}</b> -
                                                 @endif
+                                                @if (isset($log->properties['xmlFIleError']))
+                                                    <b>There is a problem with create XML file for Article ID {{ $log->properties['xmlFIleError'] }}</b>
+                                                @endif
 
 
 

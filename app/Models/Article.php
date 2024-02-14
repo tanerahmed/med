@@ -33,6 +33,12 @@ class Article extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    public function xmlFiles()
+    {
+        return $this->hasMany(XMLFile::class);
+    }
+
     public function reviwers()
     {
         return $this->hasMany(Review::class);
