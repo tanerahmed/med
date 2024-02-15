@@ -196,6 +196,10 @@ class ReviewerController extends Controller
             $xmlController = new XMLController();
             $response = $xmlController->generateXML($article);
 
+            // Ъпдейтваме и Article table и му даваме да е ACCEPTED!
+            $article->status = 'accepted';
+            $article->save();
+
             // Проверка на резултата и връщане на пренасочване или съобщение за грешка
             if ($response->getStatusCode() === 200) {
                 // Значи XML файлат е създаден успешно
