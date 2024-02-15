@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Dashboard;
+use App\Http\Controllers\CanvaHomeController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AuthorController;
@@ -27,9 +28,7 @@ use App\Http\Controllers\XMLController;
 
 
 
-Route::get('/', function () {
-    return view('canva.home');
-});
+Route::get('/', [CanvaHomeController::class, 'index'])->name('canvaHome.index');
 
 
 Route::get('/dashboard', [Dashboard::class, 'index'])->middleware(['auth', 'verified'])->name('dashboard');

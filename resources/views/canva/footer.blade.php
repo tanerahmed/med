@@ -120,7 +120,7 @@
 
 										<div class="row col-mb-30">
 											<div class="col-lg-6">
-												<div class="counter counter-small"><span data-from="50" data-to="15065421" data-refresh-interval="80" data-speed="3000" data-comma="true"></span></div>
+												<div class="counter counter-small"><span data-from="50" data-to="12345" data-refresh-interval="80" data-speed="3000" data-comma="true"></span></div>
 												<h5 class="mb-0">Total Downloads</h5>
 											</div>
 
@@ -158,13 +158,13 @@
 												</a>
 												<a href="#" class="ms-1"><small class="d-block"><strong>Like Us</strong><br>on Facebook</small></a>
 											</div>
-											<div class="col-6 col-md-12 col-lg-6 d-flex align-items-center">
+											{{-- <div class="col-6 col-md-12 col-lg-6 d-flex align-items-center">
 												<a href="#" class="social-icon text-white border-transparent bg-rss me-2 mb-0 float-none">
 													<i class="fa-solid fa-rss"></i>
 													<i class="fa-solid fa-rss"></i>
 												</a>
 												<a href="#" class="ms-1"><small class="d-block"><strong>Subscribe</strong><br>to RSS Feeds</small></a>
-											</div>
+											</div> --}}
 										</div>
 
 									</div>
@@ -187,8 +187,8 @@
 					<div class="row col-mb-30">
 
 						<div class="col-md-6 text-center text-md-start">
-							Copyrights &copy; 2023 All Rights Reserved by Canvas Inc.<br>
-							<div class="copyright-links"><a href="#">Terms of Use</a> / <a href="#">Privacy Policy</a></div>
+							Copyrights &copy; 2024 All Rights Reserved by Canvas Inc.<br>
+							<div class="copyright-links"><a href="#">Terms of Use</a> | <a href="#">Privacy Policy</a> | <a href="#">Tehnical publishing practice</a></div>
 						</div>
 
 						<div class="col-md-6 text-center text-md-end">
@@ -206,26 +206,6 @@
 								<a href="#" class="social-icon border-transparent si-small h-bg-google">
 									<i class="fa-brands fa-google"></i>
 									<i class="fa-brands fa-google"></i>
-								</a>
-
-								<a href="#" class="social-icon border-transparent si-small h-bg-pinterest">
-									<i class="fa-brands fa-pinterest-p"></i>
-									<i class="fa-brands fa-pinterest-p"></i>
-								</a>
-
-								<a href="#" class="social-icon border-transparent si-small h-bg-vimeo">
-									<i class="fa-brands fa-vimeo-v"></i>
-									<i class="fa-brands fa-vimeo-v"></i>
-								</a>
-
-								<a href="#" class="social-icon border-transparent si-small h-bg-github">
-									<i class="fa-brands fa-github"></i>
-									<i class="fa-brands fa-github"></i>
-								</a>
-
-								<a href="#" class="social-icon border-transparent si-small h-bg-yahoo">
-									<i class="fa-brands fa-yahoo"></i>
-									<i class="fa-brands fa-yahoo"></i>
 								</a>
 
 								<a href="#" class="social-icon border-transparent si-small me-0 h-bg-linkedin">
