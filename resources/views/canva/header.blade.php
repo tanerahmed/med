@@ -121,7 +121,7 @@
 									<a class="menu-link" href="{{route ('journal_info')}}"><div>Jornal info</div></a>
 								</li>
                                 <li class="menu-item">
-									<a class="menu-link" href="index.html"><div>Editorial and peer review proces</div></a>
+									<a class="menu-link" href="{{route ('editorial_and_peer_review_proces')}}"><div>Editorial and peer review proces</div></a>
 								</li>
                                 <li class="menu-item">
 									<a class="menu-link" href="index.html"><div>Editorial board</div></a>

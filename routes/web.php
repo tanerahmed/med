@@ -98,6 +98,7 @@ Route::put('/reviews/{id}', [ReviewerController::class, 'update'])->name('review
 
 Route::get('/gdpr', function () { return view('canva.gdpr'); })->name('gdpr');
 Route::get('/journal-info', function () { return view('canva.journal_info'); })->name('journal_info');
+Route::get('/editorial-peer-review-process', function () { return view('canva.editorial_and_peer_review_proces'); })->name('editorial_and_peer_review_proces');
 
 
 // Login with ORCID
