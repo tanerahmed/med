@@ -104,7 +104,7 @@ Route::get('/editorial-peer-review-process', function () { return view('canva.ed
 
 
 Route::get('/articles',   [CanvaArticlesController::class, 'listArticles'])->name('canva.listArticles');
-Route::get('/articles/{specialty_id}',   [CanvaArticlesController::class, 'listArticlesBySpecialty'])->name('canva.listArticlesBySpecialty');
+Route::get('/articles/{specialty}',   [CanvaArticlesController::class, 'listArticlesBySpecialty'])->name('canva.listArticlesBySpecialty');
 
 
 // Login with ORCID

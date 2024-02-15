@@ -86,18 +86,10 @@
 
                             <div class="widget">
 
-                                <h4>Tag Cloud</h4>
+                                <h4>Specialty Filtre</h4>
                                 <div class="tagcloud">
-                                    <a href="#">general</a>
-                                    <a href="#">videos</a>
-                                    <a href="#">music</a>
-                                    <a href="#">media</a>
-                                    <a href="#">photography</a>
-                                    <a href="#">parallax</a>
-                                    <a href="#">ecommerce</a>
-                                    <a href="#">terms</a>
-                                    <a href="#">coupons</a>
-                                    <a href="#">modern</a>
+                                    <a href="{{ route('canva.listArticlesBySpecialty', 'УНГ') }}" class="{{ $activeSpecialty === 'УНГ' ? 'active' : '' }}">УНГ</a>
+                                    <a href="{{ route('canva.listArticlesBySpecialty', 'Урология') }}" class="{{ $activeSpecialty === 'Урология' ? 'active' : '' }}">Урология</a>
                                 </div>
 
                             </div>

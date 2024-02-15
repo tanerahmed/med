@@ -14,13 +14,12 @@ class CanvaArticlesController extends Controller
         return view('canva.listArticles', compact('articles'));
     }
 
-    public function listArticlesBySpecialty($specialty_id)
+    public function listArticlesBySpecialty($specialty)
     {
-
-        $articles = Article::where('status', 'accepted')->where('specialty', $specialty_id)->get();
-
-
-
+        $articles = Article::where('status', 'accepted')->where('specialty', $specialty)->get();
+        $activeSpecialty = $specialty;
+        
+        return view('canva.listArticles', compact('articles', 'activeSpecialty'));
     }
 
 
