@@ -96,6 +96,8 @@ Route::get('/reviews/request/reject/{user_id}/{review_id}', [ReviewerController:
 Route::put('/reviews/{id}', [ReviewerController::class, 'update'])->name('reviews.update');
 
 
+Route::get('/gdpr', function () { return view('canva.gdpr'); })->name('gdpr');
+
 
 // Login with ORCID
 Route::get('/login/orcid', 'Auth\LoginController@redirectToOrcid');
