@@ -118,7 +118,7 @@
 									</ul>
 								</li>
                                 <li class="menu-item">
-									<a class="menu-link" href="index.html"><div>Jornal info</div></a>
+									<a class="menu-link" href="{{route ('journal_info')}}"><div>Jornal info</div></a>
 								</li>
                                 <li class="menu-item">
 									<a class="menu-link" href="index.html"><div>Editorial and peer review proces</div></a>
