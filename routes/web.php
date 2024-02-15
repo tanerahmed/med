@@ -14,6 +14,7 @@ use App\Http\Controllers\GdprController;
 use App\Http\Controllers\ArticleController;
 use App\Http\Controllers\EditorialPublishingPracticeController;
 use App\Http\Controllers\XMLController;
+use App\Http\Controllers\CanvaArticlesController;
 
 /*
 |--------------------------------------------------------------------------
@@ -95,10 +96,15 @@ Route::get('/reviews/request/reject/{user_id}/{review_id}', [ReviewerController:
 
 Route::put('/reviews/{id}', [ReviewerController::class, 'update'])->name('reviews.update');
 
+// CANVAS TEMPLATE
 
 Route::get('/gdpr', function () { return view('canva.gdpr'); })->name('gdpr');
 Route::get('/journal-info', function () { return view('canva.journal_info'); })->name('journal_info');
 Route::get('/editorial-peer-review-process', function () { return view('canva.editorial_and_peer_review_proces'); })->name('editorial_and_peer_review_proces');
+
+
+Route::get('/articles',   [CanvaArticlesController::class, 'listArticles'])->name('canva.listArticles');
+Route::get('/articles/{specialty_id}',   [CanvaArticlesController::class, 'listArticlesBySpecialty'])->name('canva.listArticlesBySpecialty');
 
 
 // Login with ORCID

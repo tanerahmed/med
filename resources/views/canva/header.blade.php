@@ -118,6 +118,9 @@
 									</ul>
 								</li>
                                 <li class="menu-item">
+									<a class="menu-link" href="{{route ('canva.listArticles')}}"><div>Articles</div></a>
+								</li>
+                                <li class="menu-item">
 									<a class="menu-link" href="{{route ('journal_info')}}"><div>Jornal info</div></a>
 								</li>
                                 <li class="menu-item">
