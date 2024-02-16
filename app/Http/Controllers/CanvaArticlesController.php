@@ -44,6 +44,12 @@ class CanvaArticlesController extends Controller
         return view('canva.listArticles', compact('articles', 'activeSpecialty'));
     }
 
+    public function showArticle(Article $article)
+    {
+        return view('canva.showArticle', compact('article'));
+    }
+
+
     // Взима артикълс на отделното списание - issue
     // public function listArticlesByIssue($issueId)
     // {

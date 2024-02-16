@@ -12,7 +12,7 @@
 
                 <nav aria-label="breadcrumb">
                     <ol class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="#">Home</a></li>
+                        <li class="breadcrumb-item"><a href="/">Home</a></li>
                         <li class="breadcrumb-item active" aria-current="page">Articles</li>
                     </ol>
                 </nav>
@@ -47,21 +47,14 @@
                                             </div>
                                             <div class="col-md-8 ps-md-4">
                                                 <div class="entry-title title-sm">
-                                                    <h2><a href="blog-single-full.html">{{ $article->title }}</a></h2>
+                                                    <h2><a href={{ route('canva.showArticle', $article->id)}}>{{ $article->title }}</a></h2>
                                                 </div>
                                                 <div class="entry-meta">
                                                     <ul>
-                                                        <li><i
-                                                                class="uil uil-schedule"></i>{{ $article->updated_at->format('Y-m-d') }}
-                                                        </li>
-                                                        <li><a href="#"><i
-                                                                    class="uil uil-user"></i>{{ $article->user->name }}</a>
-                                                        </li>
-                                                        <li><i class="uil uil-folder-open"></i>{{ $article->specialty }}
-                                                        </li>
-                                                        <li><i
-                                                                class="uil uil-folder-open"></i>{{ $article->scientific_area }}
-                                                        </li>
+                                                        <li><i class="uil uil-schedule"></i>{{ $article->updated_at->format('Y-m-d') }}</li>
+                                                        <li><i class="uil uil-user"></i>{{ $article->user->name }}</li>
+                                                        <li><i class="uil uil-folder-open"></i>{{ $article->specialty }}</li>
+                                                        <li><i class="uil uil-folder-open"></i>{{ $article->scientific_area }}</li>
                                                         {{-- <li><a href="blog-single-full.html#comments"><i
                                                                 class="uil uil-comments-alt"></i> 19</a></li>
                                                     <li><a href="#"><i class="uil uil-film"></i></a></li> --}}

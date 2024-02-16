@@ -33568,3 +33568,13 @@ body.dark {
     border-width: 2px;
     border-color: #1abc9c;
 }
+
+
+
+
+
+/* Article page SCROLL */
+.article-scroll{
+    max-height: 800px;
+    overflow-y: auto;
+}
