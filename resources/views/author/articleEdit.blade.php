@@ -56,6 +56,12 @@
                             <label for="abstract" class="form-label"><strong>Type Abstract:</strong></label>
                             <textarea class="form-control" id="abstract" name="abstract" rows="8">{{$article->title}}</textarea>
                         </div>
+
+                        <div class="mb-3">
+                            <label for="issue_id" class="form-label"><strong>Issue ID: </strong></label>
+                            <input type="text" class="form-control" name="issue_id" id="issue_id"
+                                placeholder="" value="{{$article->issue_id}}">
+                        </div>
                         {{-- <div class="mb-3">
                             <label class="form-check-label" for="declarations">
                                 <input class="form-check-input" type="checkbox" id="declarations" required>

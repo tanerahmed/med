@@ -358,6 +358,9 @@ class ArticleController extends Controller
                 if ($request->has('grant_id')) {
                     $article->grant_id = $request->input('grant_id');
                 }
+                if ($request->has('issue_id')) {
+                    $article->issue_id = $request->input('issue_id');
+                }
                 $article->save();
 
                 $this->articleId = $article->id;

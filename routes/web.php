@@ -64,16 +64,16 @@ Route::get('/editorial-publishing-practice', [EditorialPublishingPracticeControl
 Route::view('/contact-us', 'frontend.contact_us')->name('contact_us');
 
 // article create
-Route::get('/article/create', [ArticleController::class, 'articleCreate'])->name('article.create');
-Route::post('/article/store', [ArticleController::class, 'articleStore'])->name('article.store');
-Route::get('/articles',       [ArticleController::class, 'articleList'])->name('article.list');
-Route::get('/articles/{id}/edit', [ArticleController::class, 'edit'])->name('articles.edit');
+Route::get('/article_/create', [ArticleController::class, 'articleCreate'])->name('article.create');
+Route::post('/article_/store', [ArticleController::class, 'articleStore'])->name('article.store');
+Route::get('/articles_',       [ArticleController::class, 'articleList'])->name('article.list');
+Route::get('/articles_/{id}/edit', [ArticleController::class, 'edit'])->name('articles.edit');
 
-Route::get('/articles/{id}/article-edit', [ArticleController::class, 'articleEdit'])->name('articles.articleEdit');
-Route::put('/articles/article-edit/{id}', [ArticleController::class, 'articleUpdate'])->name('articles.articleUpdate');
+Route::get('/articles_/{id}/article-edit', [ArticleController::class, 'articleEdit'])->name('articles.articleEdit');
+Route::put('/articles_/article-edit/{id}', [ArticleController::class, 'articleUpdate'])->name('articles.articleUpdate');
 
-Route::put('/articles/{id}', [ArticleController::class, 'update'])->name('articles.update');
-Route::post('/articles/{id}', [ArticleController::class, 'sendEmailForReviewRequest'])->name('articles.sendEmailForReviewRequest');
+Route::put('/articles_/{id}', [ArticleController::class, 'update'])->name('articles.update');
+Route::post('/articles_/{id}', [ArticleController::class, 'sendEmailForReviewRequest'])->name('articles.sendEmailForReviewRequest');
 
 // Author
 Route::get('/author/dashboard', [AuthorController::class, 'AuthorDashboard'])->middleware('auth', 'role:author')->name('author.dashboard');

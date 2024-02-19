@@ -26,6 +26,7 @@
                                         <th class="pt-0">Title</th>
                                         {{-- <th class="pt-0">Status</th> --}}
                                         <th class="pt-0">Date</th>
+                                        <th class="pt-0">Issue</th>
                                         <th class="pt-0">Actions</th>
                                         <th class="pt-0">Reviews</th>
                                     </tr>
@@ -44,6 +45,7 @@
                                             {{-- <td><span class="badge bg-{{ $article->status_color }}">{{ $article->status_text }}</span></td> --}}
                                             {{-- <td>{!! $article->statusFromReview !!}</td> --}}
                                             <td>{{ $article->updated_at }}</td>
+                                            <td>{{ $article->issue_id }}</td>
                                             <td>
                                                 @if (Auth::check() && Auth::user()->role === 'admin')
                                                     <a href="{{ route('articles.edit', $article->id) }}" class="btn btn-primary btn-sm">Reviews<i class="fas fa-users"></i></a>
