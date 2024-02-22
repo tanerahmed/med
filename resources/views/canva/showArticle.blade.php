@@ -248,6 +248,7 @@
                                             <iframe style="width: 100%; height: 1000px" src="https://view.officeapps.live.com/op/embed.aspx?src=https://calibre-ebook.com/downloads/demos/demo.docx" frameborder="0"></iframe>
                                         </div> 
                                         <p> PDFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF</p>
+                                        {{-- Тук трябва да показваме PDF само с достъпването на пътя до него --}}
                                         <iframe src="{{ asset('storage/dummy-pdf.pdf') }}" width="50%" height="900">
                                             This browser does not support PDFs. Please download the PDF to view it: <a href="{{ asset('storage/dummy-pdf.pdf') }}">Download PDF</a>
                                         </iframe>
