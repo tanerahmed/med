@@ -147,63 +147,75 @@ class ArticleController extends Controller
                 $this->articleTitle = $article->title;
 
                 // TitlePage
-                foreach ($request->file('title_pages') as $file) {
-                    $filePath = $file->store('title_pages/' . $this->articleId, 'public'); // Записва файла в папката storage/app/public/title_pages
+                if ($request->hasFile('title_pages')) {
+                    foreach ($request->file('title_pages') as $file) {
+                        $filePath = $file->store('title_pages/' . $this->articleId, 'public'); // Записва файла в папката storage/app/public/title_pages
 
-                    $titlePage = new TitlePage();
-                    $titlePage->article_id = $article->id;
-                    $titlePage->file_path = $filePath;
-                    $titlePage->save();
+                        $titlePage = new TitlePage();
+                        $titlePage->article_id = $article->id;
+                        $titlePage->file_path = $filePath;
+                        $titlePage->save();
+                    }
                 }
 
                 // Manuscript
-                foreach ($request->file('manuscript') as $file) {
-                    $filePath = $file->store('manuscripts/' . $this->articleId, 'public');
+                if ($request->hasFile('manuscript')) {
+                    foreach ($request->file('manuscript') as $file) {
+                        $filePath = $file->store('manuscripts/' . $this->articleId, 'public');
 
-                    $manuscript = new Manuscript();
-                    $manuscript->article_id = $article->id;
-                    $manuscript->file_path = $filePath;
-                    $manuscript->save();
+                        $manuscript = new Manuscript();
+                        $manuscript->article_id = $article->id;
+                        $manuscript->file_path = $filePath;
+                        $manuscript->save();
+                    }
                 }
 
                 // Figures
-                foreach ($request->file('figures') as $file) {
-                    $filePath = $file->store('figures/' . $this->articleId, 'public');
+                if ($request->hasFile('figures')) {
+                    foreach ($request->file('figures') as $file) {
+                        $filePath = $file->store('figures/' . $this->articleId, 'public');
 
-                    $figure = new Figure();
-                    $figure->article_id = $article->id;
-                    $figure->file_path = $filePath;
-                    $figure->save();
+                        $figure = new Figure();
+                        $figure->article_id = $article->id;
+                        $figure->file_path = $filePath;
+                        $figure->save();
+                    }
                 }
 
                 // Tables
-                foreach ($request->file('tables') as $file) {
-                    $filePath = $file->store('tables/' . $this->articleId, 'public');
+                if ($request->hasFile('tables')) {
+                    foreach ($request->file('tables') as $file) {
+                        $filePath = $file->store('tables/' . $this->articleId, 'public');
 
-                    $table = new Table();
-                    $table->article_id = $article->id;
-                    $table->file_path = $filePath;
-                    $table->save();
+                        $table = new Table();
+                        $table->article_id = $article->id;
+                        $table->file_path = $filePath;
+                        $table->save();
+                    }
                 }
 
                 // Supplementary Files
-                foreach ($request->file('supplementary') as $file) {
-                    $filePath = $file->store('supplementary_files/' . $this->articleId, 'public');
+                if ($request->hasFile('supplementary')) {
+                    foreach ($request->file('supplementary') as $file) {
+                        $filePath = $file->store('supplementary_files/' . $this->articleId, 'public');
 
-                    $supplementaryFile = new SupplementaryFile();
-                    $supplementaryFile->article_id = $article->id;
-                    $supplementaryFile->file_path = $filePath;
-                    $supplementaryFile->save();
+                        $supplementaryFile = new SupplementaryFile();
+                        $supplementaryFile->article_id = $article->id;
+                        $supplementaryFile->file_path = $filePath;
+                        $supplementaryFile->save();
+                    }
                 }
 
                 // Cover Letter
-                foreach ($request->file('cover_letter') as $file) {
-                    $filePath = $file->store('cover_letters/' . $this->articleId, 'public');
+                if ($request->hasFile('cover_letter')) {
+                    foreach ($request->file('cover_letter') as $file) {
+                        $filePath = $file->store('cover_letters/' . $this->articleId, 'public');
 
-                    $coverLetter = new CoverLetter();
-                    $coverLetter->article_id = $article->id;
-                    $coverLetter->file_path = $filePath;
-                    $coverLetter->save();
+                        $coverLetter = new CoverLetter();
+                        $coverLetter->article_id = $article->id;
+                        $coverLetter->file_path = $filePath;
+                        $coverLetter->save();
+                    }
                 }
 
                 if ($request->has('authors')) {
@@ -232,9 +244,13 @@ class ArticleController extends Controller
                     'rating_3' => null,
                     'reviewer_id_3' => null,
                 ]);
+                $notification = array(
+                    'message' => 'Article created successfully.',
+                    'alert-type' => 'success'
+                );
 
-            });
-        } catch (\Exception $e) {
+            }); // transaction
+        } catch (Exception $e) {
 
             $notification = array(
                 'message' => 'An error occurred while creating the article. Please try again.',
@@ -258,7 +274,7 @@ class ArticleController extends Controller
 
         // Send Email to Admin 
         $subject = "Created Article from: " . $user->name;
-       // TODO Mail::to("admin@admin.mail")->send(new AdminGetArticleCreatedEmail($subject, $body));
+        // TODO Mail::to("admin@admin.mail")->send(new AdminGetArticleCreatedEmail($subject, $body));
 
         $notification = array(
             'message' => 'Article was created successfully.',
@@ -455,7 +471,7 @@ class ArticleController extends Controller
         $subject = "Edit Article : " . $this->articleTitle;
         $body['article_id'] = $this->articleId;
         $body['title'] = $this->articleTitle;
-       // TODO Mail::to("admin@admin.mail")->send(new ArticleEditEmail($subject, $body));
+        // TODO Mail::to("admin@admin.mail")->send(new ArticleEditEmail($subject, $body));
 
         // Send Email to Reviewers 
         $review = Review::where('article_id', $articleId)->first();
@@ -466,7 +482,7 @@ class ArticleController extends Controller
                 if ($reviewerId) {
                     $user = User::find($reviewerId);
                     if ($user) {
-                     // TODO   Mail::to($user->email)->send(new ArticleEditEmail($subject, $body));
+                        // TODO   Mail::to($user->email)->send(new ArticleEditEmail($subject, $body));
                     }
                 }
             }
@@ -502,7 +518,7 @@ class ArticleController extends Controller
                             'link_reject' => $domain . '/reviews/request/reject/' . $user->id . '/' . $review->id,
                         ];
 
-                      // TODO  Mail::to($user->email)->send(new ReviewRequestEmail($subject, $body));
+                        // TODO  Mail::to($user->email)->send(new ReviewRequestEmail($subject, $body));
 
                         // Запазваме информация за поканения рецензент в таблицата
                         InvitedReviewer::saveInvitedReviewer($id, $user->id);

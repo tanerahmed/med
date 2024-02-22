@@ -2,15 +2,17 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\Request;
 use App\Models\Article;
+use PhpOffice\PhpWord\IOFactory;
 
 class CanvaArticlesController extends Controller
 {
     public function listArticles()
     {
         $articles = Article::where('status', 'accepted')->get();
-        $activeSpecialty = ''; 
+        $activeSpecialty = '';
 
         return view('canva.listArticles', compact('articles', 'activeSpecialty'));
     }
@@ -30,7 +32,7 @@ class CanvaArticlesController extends Controller
         $activeSpecialty = '';
 
         // Търсене на статии по ключова дума
-        $articles = Article::where(function($query) use ($keyword) {
+        $articles = Article::where(function ($query) use ($keyword) {
             $query->where('title', 'like', "%{$keyword}%")
                 ->orWhere('abstract', 'like', "%{$keyword}%")
                 ->orWhere('keywords', 'like', "%{$keyword}%")
@@ -39,13 +41,14 @@ class CanvaArticlesController extends Controller
                 ->orWhere('funding_name', 'like', "%{$keyword}%")
                 ->orWhere('grant_id', 'like', "%{$keyword}%");
         })->get();
-    
+
 
         return view('canva.listArticles', compact('articles', 'activeSpecialty'));
     }
 
     public function showArticle(Article $article)
     {
+       
         return view('canva.showArticle', compact('article'));
     }
 
