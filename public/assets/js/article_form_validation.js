@@ -57,7 +57,7 @@ function validateManuscriptFileType() {
 
 function validateFiguresFileType() {
 
-    var allowedTypes = ['image/jpeg', 'image/tiff'];
+    var allowedTypes = ['image/jpeg',];
 
     var files = document.getElementById('figures').files;
 
@@ -77,7 +77,7 @@ function validateFiguresFileType() {
     } else {
         // Покажете съобщение за грешка
         document.getElementById('figures_error').innerText =
-        'Invalid file type. Please select jpg or TIFF files.';
+        'Invalid file type. Please select jpg files.';
         // Изчистете стойността на input полето
         document.getElementById('figures').value = '';
     }
@@ -114,7 +114,7 @@ function validateTablesFileType() {
 
 function validateSupplementaryFileType() {
 
-    var allowedTypes = ['application/vnd.openxmlformats-officedocument.wordprocessingml.document', 'application/msword', 'application/vnd.ms-excel', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', 'application/pdf', 'image/jpeg', 'image/tiff'];
+    var allowedTypes = ['application/vnd.openxmlformats-officedocument.wordprocessingml.document', 'application/msword', 'application/vnd.ms-excel', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', 'application/pdf', 'image/png','image/jpeg'];
 
     var files = document.getElementById('supplementary').files;
 
@@ -134,7 +134,7 @@ function validateSupplementaryFileType() {
     } else {
         // Покажете съобщение за грешка
         document.getElementById('supplementary_error').innerText =
-        'Invalid file type. Please select doc, docx, xls, xlsx, pdf, jpg or tiff files.';
+        'Invalid file type. Please select doc, docx, xls, xlsx, pdf or jpg files.';
         // Изчистете стойността на input полето
         document.getElementById('supplementary').value = '';
     }

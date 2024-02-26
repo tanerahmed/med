@@ -41,9 +41,10 @@
                                         <div class="grid-inner row g-0">
                                             <div class="col-md-4">
                                                 <div class="entry-image">
-                                                    <img src=" {{ asset('storage/' . $article->figures[0]->file_path) }}"
-                                                        alt="">
-                                                </div>
+                                                    <a href={{ route('canva.showArticle', $article->id)}}>
+                                                    <img src="{{ asset('storage/' . $article->figures[0]->file_path) }}" alt="" style="width: 200px !important; ">
+                                                </a>
+                                                  </div>
                                             </div>
                                             <div class="col-md-8 ps-md-4">
                                                 <div class="entry-title title-sm">
@@ -110,3 +111,10 @@
         </div>
     </section><!-- #content end -->
 @endsection
+
+
+<script>
+
+
+
+</script>

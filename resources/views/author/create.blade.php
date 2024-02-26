@@ -69,7 +69,8 @@
                                 <option value="Oral and maxillofacial surgery">Oral and maxillofacial surgery</option>
                                 <option value="Dermatology">Dermatology</option>
                                 <option value="Emergency medicine">Emergency medicine</option>
-                                <option value="Health informatics/Clinical informatics">Health informatics/Clinical informatics</option>
+                                <option value="Health informatics/Clinical informatics">Health informatics/Clinical
+                                    informatics</option>
                                 <option value="Nursing">Nursing</option>
                                 <option value="Nutrition and dietetics">Nutrition and dietetics</option>
                                 <option value="Physiotherapy">Physiotherapy</option>
@@ -118,7 +119,8 @@
                                 <option value="Colorectal surgery">Colorectal surgery</option>
                                 <option value="Transplant surgery">Transplant surgery</option>
                                 <option value="Trauma surgery">Trauma surgery</option>
-                                <option value="Hepatobiliary and pancreatic surgery">Hepatobiliary and pancreatic surgery</option>
+                                <option value="Hepatobiliary and pancreatic surgery">Hepatobiliary and pancreatic surgery
+                                </option>
                                 <option value="Bariatric surgery">Bariatric surgery</option>
                                 <option value="Cardiothoracic surgery">Cardiothoracic surgery</option>
                                 <option value="Neurosurgery">Neurosurgery</option>
@@ -138,7 +140,8 @@
                         </div>
                         <!-- Scientific Area -->
                         <div class="mb-3">
-                            <label for="scientific_area" class="form-label"><strong>Choice Scientific Area:</strong></label>
+                            <label for="scientific_area" class="form-label"><strong>Choice Scientific
+                                    Area:</strong></label>
                             <select class="form-select" id="scientific_area" name="scientific_area"
                                 aria-label="Default select example">
                             </select>
@@ -187,8 +190,12 @@
 
                         <!-- Figures -->
                         <div class="mb-3">
-                            <label for="figures" class="form-label"><strong>Upload Figures: </strong> <i>(jpg,
-                                    tiff)</i></label>
+                            <label for="figures" class="form-label"><strong>Upload Figures: </strong> <i>(jpg)</i> <a
+                                    href="https://www.iloveimg.com/convert-to-jpg/tiff-to-jpg" target="_blank"><span
+                                        style="color: red;" data-bs-toggle="tooltip" data-bs-placement="right"
+                                        title="Please click and visit online convertet to convert Tiff file to JPG">tiff
+                                        ?</span></a>
+                            </label>
                             <div id="figures_selected_files"></div>
                             <input type="file" name="figures[]" multiple class="form-control" id="figures"
                                 onchange="validateFiguresFileType(); displaySelectedFiles('figures')">
@@ -210,7 +217,12 @@
                         <!-- Supplementary -->
                         <div class="mb-3">
                             <label for="supplementary" class="form-label"><strong>Upload Supplementary: </strong><i>(doc,
-                                    docx, xls, xlsx, pdf, jpg, tiff)</i></label>
+                                    docx, xls, xlsx, pdf, png, jpg) </i><a
+                                    href="https://www.iloveimg.com/convert-to-jpg/tiff-to-jpg" target="_blank"><span
+                                        style="color: red;" data-bs-toggle="tooltip" data-bs-placement="right"
+                                        title="Please click and visit online convertet to convert Tiff file to JPG">tiff
+                                        ?</span></a>
+                            </label>
                             <div id="supplementary_selected_files"></div>
                             <input type="file" name="supplementary[]" multiple class="form-control"
                                 id="supplementary"
@@ -221,7 +233,8 @@
 
                         <!-- Cover Later -->
                         <div class="mb-3">
-                            <label for="cover_letter" class="form-label"><strong>Upload Cover Later:</strong></label>
+                            <label for="cover_letter" class="form-label"><strong>Upload Cover Later:</strong><i>(doc, docx,
+                                LaTeX doc)</i></label>
                             <div id="cover_letter_selected_files"></div>
                             <input type="file" name="cover_letter[]" multiple class="form-control" id="cover_letter"
                                 onchange="validateCoverLaterFileType(); displaySelectedFiles('cover_letter')">
