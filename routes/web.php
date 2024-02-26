@@ -59,9 +59,6 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
 
 
 Route::get('/logs', [LogController::class, 'index'])->name('logs.index');
-Route::get('/gdpr', [GdprController::class, 'index'])->name('gdpr');
-Route::get('/editorial-publishing-practice', [EditorialPublishingPracticeController::class, 'index'])->name('editorial_publishing_practice');
-Route::view('/contact-us', 'frontend.contact_us')->name('contact_us');
 
 // article create
 Route::get('/article_/create', [ArticleController::class, 'articleCreate'])->name('article.create');
@@ -89,24 +86,35 @@ Route::get('/review/list',          [ReviewerController::class, 'reviewList'])->
 Route::get('/review/{article}',     [ReviewerController::class, 'review'])->name('review');
 Route::post('/review/store',        [ReviewerController::class, 'store'])->name('review.store');
 Route::get('/review-download-files/{article}',     [ReviewerController::class, 'downloadArticleFiles'])->name('review.downolad_files');
-
-
 Route::get('/reviews/request/{user_id}/{review_id}', [ReviewerController::class, 'approveReviewRequest'])->middleware(['auth', 'role:reviewer'])->name('reviews.approveReviewRequest');
 Route::get('/reviews/request/reject/{user_id}/{review_id}', [ReviewerController::class, 'rejectReviewRequest'])->middleware(['auth', 'role:reviewer'])->name('reviews.rejectReviewRequest');
-
 Route::put('/reviews/{id}', [ReviewerController::class, 'update'])->name('reviews.update');
 
+
+
 // CANVAS TEMPLATE
-
+Route::get('/current-issue',     [CanvaHomeController::class, 'getCurrentIssue'])->name('current_issue');
+Route::get('/journal-info',     [CanvaHomeController::class, 'getJornalInfo'])->name('journal_info');
 Route::get('/gdpr', function () { return view('canva.gdpr'); })->name('gdpr');
-Route::get('/journal-info', function () { return view('canva.journal_info'); })->name('journal_info');
+// Route::get('/journal-info', function () { return view('canva.journal_info'); })->name('journal_info');
 Route::get('/editorial-peer-review-process', function () { return view('canva.editorial_and_peer_review_proces'); })->name('editorial_and_peer_review_proces');
+Route::get('/editorial-publishing-practice', [EditorialPublishingPracticeController::class, 'index'])->name('editorial_publishing_practice');
+Route::view('/editorial-board', 'frontend.editorial_board')->name('editorial_board');
+Route::view('ethical-publishing-practice', 'frontend.ethical_publishing_practice')->name('ethical_publishing_practice');
+Route::view('/contact-us', 'frontend.contact_us')->name('contact_us');
+Route::view('/submission-guidance', 'frontend.submission_guidance')->name('submission_guidance');
+Route::view('/tehnical-publishing-practice', 'frontend.tehnical_publishing_practice')->name('tehnical_publishing_practice');
 
 
+
+// Front End 
 Route::get('/articles',   [CanvaArticlesController::class, 'listArticles'])->name('canva.listArticles');
 Route::get('/article/{article}',   [CanvaArticlesController::class, 'showArticle'])->name('canva.showArticle');
 Route::get('/articles/search', [CanvaArticlesController::class, 'search'])->name('canva.article.search');
 Route::get('/articles/{specialty}',   [CanvaArticlesController::class, 'listArticlesBySpecialty'])->name('canva.listArticlesBySpecialty');
+
+
+
 
 
 // Login with ORCID

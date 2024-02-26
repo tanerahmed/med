@@ -7,7 +7,7 @@
 				<div class="container">
 
 					<div class="fancy-title title-border title-center">
-						<h3>Contact US</h3>
+						<h3>ethical-publishing-practice</h3>
 					</div>
 
 				</div>

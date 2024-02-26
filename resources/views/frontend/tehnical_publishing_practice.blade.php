@@ -1,3 +1,6 @@
+
+
+
 @extends('canva.home')
 @section('content')
 
@@ -7,7 +10,7 @@
 				<div class="container">
 
 					<div class="fancy-title title-border title-center">
-						<h3>Contact US</h3>
+						<h3>tehnical_publishing_practice</h3>
 					</div>
 
 				</div>
@@ -19,3 +22,5 @@
 
 
 @endsection
+
+

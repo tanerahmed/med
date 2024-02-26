@@ -188,7 +188,7 @@
 
 						<div class="col-md-6 text-center text-md-start">
 							Copyrights &copy; 2024 All Rights Reserved by Canvas Inc.<br>
-							<div class="copyright-links"><a href="#">Terms of Use</a> | <a href="{{ route('gdpr') }}">GDPR</a> | <a href="#">Tehnical publishing practice</a></div>
+							<div class="copyright-links"><a href="{{ route('ethical_publishing_practice') }}">Ethical Publishing Practice</a> | <a href="{{ route('gdpr') }}">GDPR</a> | <a href="{{ route('contact_us') }}">Contact us</a></div>
 						</div>
 
 						<div class="col-md-6 text-center text-md-end">

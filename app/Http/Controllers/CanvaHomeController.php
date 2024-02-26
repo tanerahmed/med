@@ -9,9 +9,25 @@ class CanvaHomeController extends Controller
     public function index()
     {
 
-        $currentIssue = 'get current ishue from DB';
-        $archive = 'get last issues line from articles';
+        // Home page
 
         return view('canva.home', compact('currentIssue', 'archive'));
     }
+
+
+    public function getCurrentIssue()
+    {
+        $currentIssue = 'get current ishue from DB';
+        $archive = 'get last issues line from articles';
+
+        return view('frontend.current_issue', compact('currentIssue', 'archive'));
+    }
+
+
+    public function getJornalInfo()
+    {
+        return view('frontend.journal_info');
+    }
+
+
 }
