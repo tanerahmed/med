@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Article;
 
 class CanvaHomeController extends Controller
 {
@@ -11,16 +12,16 @@ class CanvaHomeController extends Controller
 
         // Home page
 
-        return view('canva.home', compact('currentIssue', 'archive'));
+        return view('canva.home');
     }
 
 
     public function getCurrentIssue()
     {
-        $currentIssue = 'get current ishue from DB';
-        $archive = 'get last issues line from articles';
+        $lastArticle = Article::latest()->first();
 
-        return view('frontend.current_issue', compact('currentIssue', 'archive'));
+        return view('canva.showArticle', ['article' => $lastArticle]);
+        // return view('frontend.current_issue',  ['article' => $lastArticle]);
     }
 
 
