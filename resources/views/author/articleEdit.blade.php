@@ -54,7 +54,7 @@
                         <!-- Abstract -->
                         <div class="mb-3">
                             <label for="abstract" class="form-label"><strong>Type Abstract:</strong></label>
-                            <textarea class="form-control" id="abstract" name="abstract" rows="8">{{$article->title}}</textarea>
+                            <textarea class="form-control" id="abstract" name="abstract" rows="8">{{$article->abstract}}</textarea>
                         </div>
 
                         <div class="mb-3">
