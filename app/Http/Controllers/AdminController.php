@@ -7,6 +7,7 @@ use App\Models\User;
 
 class AdminController extends Controller
 {
+    // TANER TEST 01.03 
     public function AdminDashboard()
     {
         // Return NOTIFICATION message to view
