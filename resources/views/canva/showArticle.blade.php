@@ -1,12 +1,9 @@
-
 @extends('canva.home')
 @section('content')
-
-        
-        <!-- Document Wrapper
-        ============================================= -->
-        <div id="wrapper">
-		{{-- <section id="content">
+    <!-- Document Wrapper
+                    ============================================= -->
+    <div id="wrapper">
+        {{-- <section id="content">
 			<div class="content-wrap">
 		<!-- Page Title
 		============================================= -->
@@ -30,86 +27,91 @@
 			</div>
 		</section><!-- .page-title end --> --}}
 
-		<!-- Content
-		============================================= -->
-		<section id="content">
-			<div class="content-wrap">
-				<div class="container">
+        <!-- Content
+              ============================================= -->
+        <section id="content">
+            <div class="content-wrap">
+                <div class="container">
 
-					<div class="row gx-5 col-mb-80">
-						<!-- Post Content
-						============================================= -->
-						<main class="postcontent col-lg-9">
+                    <div class="row gx-5 col-mb-80">
+                        <!-- Post Content
+                  ============================================= -->
+                        <main class="postcontent col-lg-9">
 
-							<div class="single-post mb-0">
+                            <div class="single-post mb-0">
 
-								<!-- Single Post
-								============================================= -->
-								<div class="entry article-scroll">
+                                <!-- Single Post
+                    ============================================= -->
+                                <div class="entry article-scroll">
                                     <p id='article-title' style="margin-bottom: 70px;"></p>
-									<!-- Entry Title
-									============================================= -->
-									<div class="entry-title">
-										<h2>{{$article->title}}</h2>
-									</div><!-- .entry-title end -->
+                                    <!-- Entry Title
+                     ============================================= -->
+                                    <div class="entry-title">
+                                        <h2>{{ $article->title }}</h2>
+                                    </div><!-- .entry-title end -->
 
-									<!-- Entry Meta
-									============================================= -->
-									<div class="entry-meta">
-										<ul>
-                                            <li><i class="uil uil-schedule"></i>{{ $article->updated_at->format('Y-m-d') }}</li>
+                                    <!-- Entry Meta
+                     ============================================= -->
+                                    <div class="entry-meta">
+                                        <ul>
+                                            <li><i class="uil uil-schedule"></i>{{ $article->updated_at->format('Y-m-d') }}
+                                            </li>
                                             <li><i class="uil uil-user"></i>{{ $article->user->name }}</li>
                                             <li><i class="uil uil-folder-open"></i>{{ $article->specialty }}</li>
                                             <li><i class="uil uil-folder-open"></i>{{ $article->scientific_area }}</li>
-										</ul>
-									</div><!-- .entry-meta end -->
+                                        </ul>
+                                    </div><!-- .entry-meta end -->
 
-									<!-- Entry Image
-									============================================= -->
-									{{-- <div class="entry-image">
+                                    <!-- Entry Image
+                     ============================================= -->
+                                    {{-- <div class="entry-image">
 										<a href="#"><img src="images/blog/full/1.jpg" alt="Blog Single"></a>
 									</div><!-- .entry-image end --> --}}
 
-									<!-- Entry Content
-									============================================= -->
-									<div class="entry-content mt-0">
+                                    <!-- Entry Content
+                     ============================================= -->
+                                    <div class="entry-content mt-0">
 
 
                                         <p id='abstract' style="margin-bottom: 70px;"></p>
-                                        <h3 >Abstract</h3>
+                                        <h3>Abstract</h3>
 
                                         <p id='keywords' style="margin-bottom: 90px;"></p>
                                         <h3 id="keywords">Keywords</h3>
-                                        <p>{{$article->keywords}}</p>
+                                        <p>{{ $article->keywords }}</p>
 
-                                    @if (isset($article->tables))
-                                        <p id='table' style="margin-bottom: 90px;"></p>
-                                        <h3 id="table">Tables</h3>
-                                        <div class="row justify-content-center">
-                                            {{-- Дали не трябва да е DOWNLOADable file? --}}
-                                            @foreach ($article->tables as $tables)
-                                            <p>https://blmprime.com/storage/{{$tables->file_path}}</p>
-                                            <iframe style="width: 100%; height: 1000px" src="https://view.officeapps.live.com/op/embed.aspx?src=https://blmprime.com/storage/{{$tables->file_path}}" frameborder="0"></iframe>
-                                            {{-- <iframe style="width: 100%; height: 1000px" src="https://view.officeapps.live.com/op/embed.aspx?src=https://calibre-ebook.com/downloads/demos/demo.docx" frameborder="0"></iframe> --}}
+                                        @if (isset($article->tables))
+                                            <p id='table' style="margin-bottom: 90px;"></p>
+                                            <h3 id="table">Tables</h3>
+                                            <div class="row justify-content-center">
+                                                {{-- Дали не трябва да е DOWNLOADable file? --}}
+                                                @foreach ($article->tables as $tables)
+                                                    <iframe style="width: 100%; height: 1000px"
+                                                        src="https://view.officeapps.live.com/op/embed.aspx?src=https://blmprime.com/storage/{{ $tables->file_path }}"
+                                                        frameborder="0"></iframe>
+                                                    {{-- <iframe style="width: 100%; height: 1000px" src="https://view.officeapps.live.com/op/embed.aspx?src=https://calibre-ebook.com/downloads/demos/demo.docx" frameborder="0"></iframe> --}}
+                                                @endforeach
+                                            </div>
+                                        @endif
+                                        @if (isset($article->supplementaryFiles))
+                                            @foreach ($article->supplementaryFiles as $file)
+                                                @if (str_ends_with($file, '.pdf'))
+                                                    <iframe src="{{ asset('storage/'.$file) }}" width="50%"
+                                                        height="900">
+                                                        This browser does not support PDFs. Please download the PDF to view
+                                                        it: <a href="{{ asset('storage/'.$file) }}">Download PDF</a>
+                                                    </iframe>
+                                                @endif
                                             @endforeach
-                                        </div> 
-                                    @endif
+                                        @endif
 
+                                    </div>
+                                </div><!-- .entry end -->
 
+                                <!-- Post Single - Share
+                      ============================================= -->
 
-                                        <p> PDFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF</p>
-                                        {{-- Тук трябва да показваме PDF само с достъпването на пътя до него --}}
-                                        <iframe src="{{ asset('storage/dummy-pdf.pdf') }}" width="50%" height="900">
-                                            This browser does not support PDFs. Please download the PDF to view it: <a href="{{ asset('storage/dummy-pdf.pdf') }}">Download PDF</a>
-                                        </iframe>
-                                       
-									</div>
-								</div><!-- .entry end -->
-
-									<!-- Post Single - Share
-										============================================= -->
-
-								{{-- <h4 class="fs-4 fw-medium">Recommended for you - Тука можем да сложим </h4>
+                                {{-- <h4 class="fs-4 fw-medium">Recommended for you - Тука можем да сложим </h4>
 
 								<div class="related-posts row posts-md g-4">
 									<div class="entry col-12 col-md-6">
@@ -165,42 +167,39 @@
 									</div>
 								</div> --}}
 
-	
-
-							</div>
-
-						</main><!-- .postcontent end -->
-
-						<!-- Sidebar
-						============================================= -->
-						<aside class="sidebar col-lg-3">
-							<div class="sidebar-widgets-wrap">
-
-								<div class="widget">
-
-									<h4>Contnts</h4>
-									<div class="tagcloud">
-										<a href="#article-title">Article title</a>
-										<a href="#abstract">Abstract</a>
-										<a href="#keywords">Keywords</a>
-										<a href="#">Manoscript</a>
-									</div>
-
-								</div>
-
-							</div>
-						</aside><!-- .sidebar end -->
-					</div>
-
-				</div>
-			</div>
-		</section><!-- #content end -->
-
-			</div>
-		</section><!-- #content end -->
-
-	</div><!-- #wrapper end -->
 
 
+                            </div>
 
-    @endsection
+                        </main><!-- .postcontent end -->
+
+                        <!-- Sidebar
+                  ============================================= -->
+                        <aside class="sidebar col-lg-3">
+                            <div class="sidebar-widgets-wrap">
+
+                                <div class="widget">
+
+                                    <h4>Contnts</h4>
+                                    <div class="tagcloud">
+                                        <a href="#article-title">Article title</a>
+                                        <a href="#abstract">Abstract</a>
+                                        <a href="#keywords">Keywords</a>
+                                        <a href="#">Manoscript</a>
+                                    </div>
+
+                                </div>
+
+                            </div>
+                        </aside><!-- .sidebar end -->
+                    </div>
+
+                </div>
+            </div>
+        </section><!-- #content end -->
+
+    </div>
+    </section><!-- #content end -->
+
+    </div><!-- #wrapper end -->
+@endsection
