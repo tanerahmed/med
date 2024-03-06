@@ -82,14 +82,20 @@
                                         <h3 id="keywords">Keywords</h3>
                                         <p>{{$article->keywords}}</p>
 
+                                    @if (isset($article->tables))
                                         <p id='table' style="margin-bottom: 90px;"></p>
                                         <h3 id="table">Tables</h3>
-                                            Когато е на лайв сложи нашите неща
-
                                         <div class="row justify-content-center">
                                             {{-- Дали не трябва да е DOWNLOADable file? --}}
-                                            <iframe style="width: 100%; height: 1000px" src="https://view.officeapps.live.com/op/embed.aspx?src=https://calibre-ebook.com/downloads/demos/demo.docx" frameborder="0"></iframe>
+                                            @foreach ($article->tables as $tables)
+                                            <iframe style="width: 100%; height: 1000px" src="https://view.officeapps.live.com/op/embed.aspx?src=https://lmprime.com/storage/.{{$tables->file_path}}" frameborder="0"></iframe>
+                                            {{-- <iframe style="width: 100%; height: 1000px" src="https://view.officeapps.live.com/op/embed.aspx?src=https://calibre-ebook.com/downloads/demos/demo.docx" frameborder="0"></iframe> --}}
+                                            @endforeach
                                         </div> 
+                                    @endif
+
+
+
                                         <p> PDFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF</p>
                                         {{-- Тук трябва да показваме PDF само с достъпването на пътя до него --}}
                                         <iframe src="{{ asset('storage/dummy-pdf.pdf') }}" width="50%" height="900">
