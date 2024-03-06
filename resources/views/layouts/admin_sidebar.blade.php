@@ -13,25 +13,29 @@
         <ul class="nav">
             <li class="nav-item nav-category">Main</li>
             <li class="nav-item">
-                {{-- Admin User --}}
+{{-- 
                 @if (Auth::check() && Auth::user()->role === 'admin')
                     <a href="dashboard.html" class="nav-link">
                         <i class="link-icon" data-feather="box"></i>
                         <span class="link-title">Dashboard</span>
                     </a>
-                    {{-- Editor User --}}
+
                 @elseif(Auth::check() && Auth::user()->role === 'editor')
                     <a href="dashboard.html" class="nav-link">
                         <i class="link-icon" data-feather="box"></i>
                         <span class="link-title">EDITOR Dashboard</span>
                     </a>
-                    {{-- Reviewer User --}}
+
                 @elseif(Auth::check() && Auth::user()->role === 'reviewer')
                     <a href="{{ route('reviewer.dashboard') }}" class="nav-link">
                         <i class="link-icon" data-feather="box"></i>
                         <span class="link-title">Dashboard</span>
                     </a>
-                @endif
+                @endif --}}
+                <a href="{{route('dashboard')}}" class="nav-link">
+                    <i class="link-icon" data-feather="box"></i>
+                    <span class="link-title">Dashboard</span>
+                </a>
             </li>
 
 
