@@ -105,7 +105,7 @@
                                                     </iframe>
                                                 @elseif (str_ends_with($file->file_path, '.jpg'))
                                                 йййййййййййййййййййййййййййййййй
-                                                    <img src="{{ base_path('storage/'$file->file_path) }}" alt="" />
+                                                    <img src="{{ base_path('storage/'.$file->file_path) }}" alt="" />
                                                 @endif
                                             @endforeach
                                         @endif
