@@ -163,9 +163,9 @@ class ReviewerController extends Controller
 
         $subject = "Review Article #" . $articleId;
         if (!empty($filePath)) {
-            //TODO  Mail::to($user->email)->send(new ReviewArticleEmail($subject, $body, $filePath));
+            Mail::to($user->email)->send(new ReviewArticleEmail($subject, $body, $filePath));
         } else {
-            //TODO  Mail::to($user->email)->send(new ReviewArticleEmail($subject, $body));
+            Mail::to($user->email)->send(new ReviewArticleEmail($subject, $body));
         }
 
 
@@ -190,7 +190,7 @@ class ReviewerController extends Controller
         if ($review->rating_3 === 'accepted') {
             $acceptedCount++;
         }
-        
+
         if ($acceptedCount >= 2) {
             // Ако има поне два "accepted" рейтинга, извикваме метода за създаване на XML файла
             $xmlController = new XMLController();
@@ -212,7 +212,7 @@ class ReviewerController extends Controller
         activity()
             ->performedOn($review)
             ->withProperties(['rating' => $rating, 'article_id' => $article->id])
-            ->log('raited'); 
+            ->log('raited');
 
         $notification = array(
             'message' => 'You reviewd article successfully.',
@@ -262,9 +262,9 @@ class ReviewerController extends Controller
         $body['article_id'] = $review->article->id;
 
         // send to author
-        //TODO Mail::to($user->email)->send(new UserApproveReviewRequestEmail($subject, $body));
+        Mail::to($user->email)->send(new UserApproveReviewRequestEmail($subject, $body));
         // send to  admin
-        //TODO  Mail::to('admin@gmail.com')->send(new UserApproveReviewRequestEmail($subject, $body));
+        Mail::to('admin@gmail.com')->send(new UserApproveReviewRequestEmail($subject, $body));
 
         $notification = array(
             'message' => 'You approve review request successfully.',
@@ -300,9 +300,9 @@ class ReviewerController extends Controller
         $body['article_id'] = $review->article->id;
 
         // send to author
-        //TODO    Mail::to($user->email)->send(new UserRejectReviewRequestEmail($subject, $body));
+        Mail::to($user->email)->send(new UserRejectReviewRequestEmail($subject, $body));
         // send to  admin
-        //TODO   Mail::to('admin@gmail.com')->send(new UserRejectReviewRequestEmail($subject, $body));
+        Mail::to('admin@gmail.com')->send(new UserRejectReviewRequestEmail($subject, $body));
 
         $notification = array(
             'message' => 'You reject review request successfully.',

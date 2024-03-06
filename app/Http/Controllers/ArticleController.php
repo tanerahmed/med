@@ -244,7 +244,7 @@ class ArticleController extends Controller
                     'rating_3' => null,
                     'reviewer_id_3' => null,
                 ]);
-                $notification = array(
+                $notification = array (
                     'message' => 'Article created successfully.',
                     'alert-type' => 'success'
                 );
@@ -269,12 +269,12 @@ class ArticleController extends Controller
 
         foreach ($this->emails as $email) {
             $body['link'] = $domain . '/co-author-approve/' . $this->articleId . '/' . $email;
-            // TODO Mail::to($email)->send(new CoAuthorRequestEmail($subject, $body));
+            Mail::to($email)->send(new CoAuthorRequestEmail($subject, $body));
         }
 
         // Send Email to Admin 
         $subject = "Created Article from: " . $user->name;
-        // TODO Mail::to("admin@admin.mail")->send(new AdminGetArticleCreatedEmail($subject, $body));
+        Mail::to("admin@admin.mail")->send(new AdminGetArticleCreatedEmail($subject, $body));
 
         $notification = array(
             'message' => 'Article was created successfully.',
@@ -471,7 +471,7 @@ class ArticleController extends Controller
         $subject = "Edit Article : " . $this->articleTitle;
         $body['article_id'] = $this->articleId;
         $body['title'] = $this->articleTitle;
-        // TODO Mail::to("admin@admin.mail")->send(new ArticleEditEmail($subject, $body));
+        Mail::to("admin@admin.mail")->send(new ArticleEditEmail($subject, $body));
 
         // Send Email to Reviewers 
         $review = Review::where('article_id', $articleId)->first();
@@ -482,7 +482,7 @@ class ArticleController extends Controller
                 if ($reviewerId) {
                     $user = User::find($reviewerId);
                     if ($user) {
-                        // TODO   Mail::to($user->email)->send(new ArticleEditEmail($subject, $body));
+                        Mail::to($user->email)->send(new ArticleEditEmail($subject, $body));
                     }
                 }
             }
@@ -518,7 +518,7 @@ class ArticleController extends Controller
                             'link_reject' => $domain . '/reviews/request/reject/' . $user->id . '/' . $review->id,
                         ];
 
-                        // TODO  Mail::to($user->email)->send(new ReviewRequestEmail($subject, $body));
+                        Mail::to($user->email)->send(new ReviewRequestEmail($subject, $body));
 
                         // Запазваме информация за поканения рецензент в таблицата
                         InvitedReviewer::saveInvitedReviewer($id, $user->id);
