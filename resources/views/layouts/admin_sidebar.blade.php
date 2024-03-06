@@ -13,53 +13,40 @@
         <ul class="nav">
             <li class="nav-item nav-category">Main</li>
             <li class="nav-item">
-{{-- 
-                @if (Auth::check() && Auth::user()->role === 'admin')
-                    <a href="dashboard.html" class="nav-link">
-                        <i class="link-icon" data-feather="box"></i>
-                        <span class="link-title">Dashboard</span>
-                    </a>
-
-                @elseif(Auth::check() && Auth::user()->role === 'editor')
-                    <a href="dashboard.html" class="nav-link">
-                        <i class="link-icon" data-feather="box"></i>
-                        <span class="link-title">EDITOR Dashboard</span>
-                    </a>
-
-                @elseif(Auth::check() && Auth::user()->role === 'reviewer')
-                    <a href="{{ route('reviewer.dashboard') }}" class="nav-link">
-                        <i class="link-icon" data-feather="box"></i>
-                        <span class="link-title">Dashboard</span>
-                    </a>
-                @endif --}}
-                <a href="{{route('dashboard')}}" class="nav-link">
-                    <i class="link-icon" data-feather="box"></i>
+                <a href="{{ route('canvaHome.index') }}" class="nav-link">
+                    <i class="link-icon" data-feather="layout"></i>
+                    <span class="link-title">Web Site</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="{{ route('dashboard') }}" class="nav-link">
+                    <i class="link-icon" data-feather="home"></i>
                     <span class="link-title">Dashboard</span>
                 </a>
             </li>
 
 
-            {{-- Admin can see that button --}}
-            @if (Auth::check() && Auth::user()->role === 'admin')
-                <li class="nav-item nav-category">Users</li>
-                <li class="nav-item">
-                    <a class="nav-link" data-bs-toggle="collapse" href="#users" role="button" aria-expanded="false"
-                        aria-controls="users">
-                        <i class="link-icon" data-feather="user"></i>
-                        <span class="link-title">Users</span>
-                        <i class="link-arrow" data-feather="chevron-down"></i>
-                    </a>
-                    <div class="collapse" id="users">
-                        <ul class="nav sub-menu">
-                            <li class="nav-item">
-                                <a href="{{ route('admin.users-list') }}" class="nav-link">List</a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="{{ route('admin.users-create') }}" class="nav-link">Create</a>
-                            </li>
-                        </ul>
-                    </div>
-                </li>
+                {{-- Admin can see that button --}}
+                @if (Auth::check() && Auth::user()->role === 'admin')
+            <li class="nav-item nav-category">Users</li>
+            <li class="nav-item">
+                <a class="nav-link" data-bs-toggle="collapse" href="#users" role="button" aria-expanded="false"
+                    aria-controls="users">
+                    <i class="link-icon" data-feather="user"></i>
+                    <span class="link-title">Users</span>
+                    <i class="link-arrow" data-feather="chevron-down"></i>
+                </a>
+                <div class="collapse" id="users">
+                    <ul class="nav sub-menu">
+                        <li class="nav-item">
+                            <a href="{{ route('admin.users-list') }}" class="nav-link">List</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{ route('admin.users-create') }}" class="nav-link">Create</a>
+                        </li>
+                    </ul>
+                </div>
+            </li>
             @endif
 
 
@@ -70,7 +57,7 @@
                 <li class="nav-item">
                     {{-- Admin User --}}
                     <a href="{{ route('logs.index') }}" class="nav-link">
-                        <i class="link-icon" data-feather="box"></i>
+                        <i class="link-icon" data-feather="rotate-ccw"></i>
                         <span class="link-title">Logs</span>
                     </a>
                 </li>
@@ -83,7 +70,7 @@
                 <li class="nav-item">
                     <a class="nav-link" data-bs-toggle="collapse" href="#articles" role="button" aria-expanded="false"
                         aria-controls="articles">
-                        <i class="link-icon" data-feather="unlock"></i>
+                        <i class="link-icon" data-feather="folder"></i>
                         <span class="link-title">Articles</span>
                         <i class="link-arrow" data-feather="chevron-down"></i>
                     </a>
@@ -102,7 +89,7 @@
 
 
             {{-- Admin can see that button --}}
-            @if (Auth::check() && (Auth::user()->role === 'reviewer'))
+            @if (Auth::check() && Auth::user()->role === 'reviewer')
                 <li class="nav-item nav-category">Articles for review</li>
                 <li class="nav-item">
                     <a class="nav-link" data-bs-toggle="collapse" href="#users" role="button" aria-expanded="false"
@@ -129,4 +116,3 @@
 
 {{-- 
      --}}
-
