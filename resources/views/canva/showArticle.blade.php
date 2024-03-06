@@ -104,8 +104,7 @@
                                                         it: <a href="{{ asset('storage/' . $file->file_path) }}">Download PDF</a>
                                                     </iframe>
                                                 @elseif (str_ends_with($file->file_path, '.jpg'))
-                                                йййййййййййййййййййййййййййййййй
-                                                    <img src="{{ base_path('storage/'.$file->file_path) }}" alt="" />
+                                                    <img src="{{ 'https://blmprime.com/storage/'.$file->file_path }}" alt="" />
                                                 @endif
                                             @endforeach
                                         @endif
