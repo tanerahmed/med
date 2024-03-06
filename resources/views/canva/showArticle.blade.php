@@ -1,7 +1,7 @@
 @extends('canva.home')
 @section('content')
     <!-- Document Wrapper
-                        ============================================= -->
+                            ============================================= -->
     <div id="wrapper">
         {{-- <section id="content">
 			<div class="content-wrap">
@@ -28,30 +28,30 @@
 		</section><!-- .page-title end --> --}}
 
         <!-- Content
-                  ============================================= -->
+                      ============================================= -->
         <section id="content">
             <div class="content-wrap">
                 <div class="container">
 
                     <div class="row gx-5 col-mb-80">
                         <!-- Post Content
-                      ============================================= -->
+                          ============================================= -->
                         <main class="postcontent col-lg-9">
 
                             <div class="single-post mb-0">
 
                                 <!-- Single Post
-                        ============================================= -->
+                            ============================================= -->
                                 <div class="entry article-scroll">
                                     <p id='article-title' style="margin-bottom: 70px;"></p>
                                     <!-- Entry Title
-                         ============================================= -->
+                             ============================================= -->
                                     <div class="entry-title">
                                         <h2>{{ $article->title }}</h2>
                                     </div><!-- .entry-title end -->
 
                                     <!-- Entry Meta
-                         ============================================= -->
+                             ============================================= -->
                                     <div class="entry-meta">
                                         <ul>
                                             <li><i class="uil uil-schedule"></i>{{ $article->updated_at->format('Y-m-d') }}
@@ -63,13 +63,13 @@
                                     </div><!-- .entry-meta end -->
 
                                     <!-- Entry Image
-                         ============================================= -->
+                             ============================================= -->
                                     {{-- <div class="entry-image">
 										<a href="#"><img src="images/blog/full/1.jpg" alt="Blog Single"></a>
 									</div><!-- .entry-image end --> --}}
 
                                     <!-- Entry Content
-                         ============================================= -->
+                             ============================================= -->
                                     <div class="entry-content mt-0">
 
 
@@ -94,17 +94,19 @@
                                             </div>
                                         @endif
                                         @if (isset($article->supplementaryFiles))
-                                            
+                                            <p id='supplementaryFiles' style="margin-bottom: 90px;"></p>
+                                            <h3 id="supplementaryFiles">Supllementary Files</h3>
                                             @foreach ($article->supplementaryFiles as $file)
                                                 @if (str_ends_with($file->file_path, '.pdf'))
-                                                    PDSSSSS
                                                     <iframe src="{{ asset('storage/' . $file->file_path) }}" width="50%"
                                                         height="900">
                                                         This browser does not support PDFs. Please download the PDF to view
-                                                        it: <a href="{{ asset('storage/' . $file->file_path) }}">Download PDF</a>
+                                                        it: <a href="{{ asset('storage/' . $file->file_path) }}">Download
+                                                            PDF</a>
                                                     </iframe>
                                                 @elseif (str_ends_with($file->file_path, '.jpg'))
-                                                    <img src="{{ 'https://blmprime.com/storage/'.$file->file_path }}" alt="" />
+                                                    <img src="{{ 'https://blmprime.com/storage/' . $file->file_path }}"
+                                                        alt="" />
                                                 @endif
                                             @endforeach
                                         @endif
@@ -113,7 +115,7 @@
                                 </div><!-- .entry end -->
 
                                 <!-- Post Single - Share
-                          ============================================= -->
+                              ============================================= -->
 
                                 {{-- <h4 class="fs-4 fw-medium">Recommended for you - Тука можем да сложим </h4>
 
@@ -178,7 +180,7 @@
                         </main><!-- .postcontent end -->
 
                         <!-- Sidebar
-                      ============================================= -->
+                          ============================================= -->
                         <aside class="sidebar col-lg-3">
                             <div class="sidebar-widgets-wrap">
 
@@ -190,6 +192,7 @@
                                         <a href="#abstract">Abstract</a>
                                         <a href="#keywords">Keywords</a>
                                         <a href="#">Manoscript</a>
+                                        <a href="#supplementaryFiles">Supllementary Files</a>
                                     </div>
 
                                 </div>
