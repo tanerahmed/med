@@ -20,7 +20,10 @@ class Dashboard extends Controller
             return redirect()->route('author.dashboard');
         } elseif ($user->role === 'reviewer') {
             return redirect()->route('reviewer.dashboard');
-        } else{
+        } elseif ($user->role === 'user') {
+            return redirect()->route('canvaHome.index');
+        }
+         else{
             abort(404);
         }
 
