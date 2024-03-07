@@ -38,7 +38,7 @@ class AuthenticatedSessionController extends Controller
         }elseif($request->user()->role === 'reviewer'){
             $url = "reviewer/dashboard";
         }elseif($request->user()->role === 'user'){
-            $url = "user/dashboard";
+            $url = "/";
         }
         // Return Toster NOTIFICATION message to view. Just for test I did it
         $notification = array(
