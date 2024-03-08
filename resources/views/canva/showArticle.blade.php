@@ -75,6 +75,7 @@
 
                                         <p id='abstract' style="margin-bottom: 70px;"></p>
                                         <h3>Abstract</h3>
+                                        <p>{{ $article->abstract }}</p>
 
                                         <p id='keywords' style="margin-bottom: 90px;"></p>
                                         <h3 id="keywords">Keywords</h3>
