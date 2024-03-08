@@ -251,7 +251,7 @@ class ReviewerController extends Controller
             // Activity LOG
             activity()
                 ->performedOn($review)
-                ->withProperties(['approveReviewRequest' => $review->article->id])
+                ->withProperties(['approveReviewRequestArticleId' => $review->article->id])
                 ->log('approve review'); // action create, edit, delete
         }
 
