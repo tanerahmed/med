@@ -228,7 +228,7 @@ class ReviewerController extends Controller
 
         $user = Auth::user();
 
-        if ($user->id != $user_id) {
+        if ($user->id != intval($user_id)) {
             abort(404);
         }
 

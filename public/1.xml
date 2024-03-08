@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<article>
+  <specialty>Урология</specialty>
+  <scientific_area>дамска урология</scientific_area>
+  <title>This is the title111112222333555</title>
+  <abstract>This is the title11111222244442222222222222222222222</abstract>
+  <ObjectList>
+    <Object Type="keyword">
+      <Param Name="value">1111</Param>
+    </Object>
+    <Object Type="keyword">
+      <Param Name="value"> 2222</Param>
+    </Object>
+    <Object Type="keyword">
+      <Param Name="value"> 333333</Param>
+    </Object>
+  </ObjectList>
+  <funding_name>rrrrrr</funding_name>
+  <grant_id>12345</grant_id>
+  <author>
+    <first_name>Zara</first_name>
+    <middle_name>вв</middle_name>
+    <family_name>Computers</family_name>
+    <primary_affiliation>xcx</primary_affiliation>
+    <contact>office@zaracomputers.bg</contact>
+    <contributions>xxccx</contributions>
+  </author>
+</article>

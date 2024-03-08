@@ -9,7 +9,8 @@
 <body>
     <p>Hello, {{ $body['name'] }}</p>
     <p> We would like to invite you to be reviwer on article - {{ $body['article'] }}</p>
-
+        <h4><strong>* Before clicking on the email, please make sure you are logged in! <a href="https://blmprime.com/">blmprime.com</a></strong></h4>
+        
         <p>Click to <a href="{{$body['link_approve']}}">Approve</a> it</p>
         <p>-- OR --</p>
         <p>Click to <a href="{{$body['link_reject']}}">Reject</a> it</p>
