@@ -174,7 +174,7 @@
                                   </li>
                                   <li class="menu-item">
                                       <a class="menu-link" href="{{route('tehnical_publishing_practice')}}">
-                                          <div><i class="bi-hypnotize"></i>Tehnical publishing practice</div>
+                                          <div><i class="bi-hypnotize"></i>Ethical publishing practices</div>
                                       </a>
                                   </li>
                               </ul>
