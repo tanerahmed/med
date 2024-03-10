@@ -70,7 +70,7 @@
               <!-- Logo
      ============================================= -->
               <div id="logo" class="me-0 me-lg-auto">
-                  <a href="index.html">
+                  <a href="/">
                       <img class="logo-default" srcset="images/logo.png, images/logo@2x.png 2x" src="images/logo@2x.png"
                           alt="Canvas Logo">
                       <img class="logo-dark" srcset="images/logo-dark.png, images/logo-dark@2x.png 2x"
@@ -116,7 +116,7 @@
 
                       <ul class="menu-container">
                           <li class="menu-item">
-                              <a class="menu-link" href="index.html">
+                              <a class="menu-link" href="/">
                                   <div>Home</div>
                               </a>
                           </li>
