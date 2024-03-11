@@ -57,23 +57,26 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
 
 });
 
+Route::middleware(['auth'])->group(function () {
+    Route::get('/logs', [LogController::class, 'index'])->name('logs.index');
 
-Route::get('/logs', [LogController::class, 'index'])->name('logs.index');
+    // article create
+    Route::get('/article_/create', [ArticleController::class, 'articleCreate'])->name('article.create');
+    Route::post('/article_/store', [ArticleController::class, 'articleStore'])->name('article.store');
+    Route::get('/articles_',       [ArticleController::class, 'articleList'])->name('article.list');
+    Route::get('/articles_/{id}/edit', [ArticleController::class, 'edit'])->name('articles.edit');
 
-// article create
-Route::get('/article_/create', [ArticleController::class, 'articleCreate'])->name('article.create');
-Route::post('/article_/store', [ArticleController::class, 'articleStore'])->name('article.store');
-Route::get('/articles_',       [ArticleController::class, 'articleList'])->name('article.list');
-Route::get('/articles_/{id}/edit', [ArticleController::class, 'edit'])->name('articles.edit');
+    Route::get('/articles_/{id}/article-edit', [ArticleController::class, 'articleEdit'])->name('articles.articleEdit');
+    Route::put('/articles_/article-edit/{id}', [ArticleController::class, 'articleUpdate'])->name('articles.articleUpdate');
 
-Route::get('/articles_/{id}/article-edit', [ArticleController::class, 'articleEdit'])->name('articles.articleEdit');
-Route::put('/articles_/article-edit/{id}', [ArticleController::class, 'articleUpdate'])->name('articles.articleUpdate');
+    Route::put('/articles_/{id}', [ArticleController::class, 'update'])->name('articles.update');
+    Route::post('/articles_/{id}', [ArticleController::class, 'sendEmailForReviewRequest'])->name('articles.sendEmailForReviewRequest');
 
-Route::put('/articles_/{id}', [ArticleController::class, 'update'])->name('articles.update');
-Route::post('/articles_/{id}', [ArticleController::class, 'sendEmailForReviewRequest'])->name('articles.sendEmailForReviewRequest');
+    // Author
+    Route::get('/author/dashboard', [AuthorController::class, 'AuthorDashboard'])->middleware('auth', 'role:author')->name('author.dashboard');
+});
 
-// Author
-Route::get('/author/dashboard', [AuthorController::class, 'AuthorDashboard'])->middleware('auth', 'role:author')->name('author.dashboard');
+
 // Co Author approve Thankyou Page
 Route::get('/co-author-approve/{article_id}/{authrom_email}', [ArticleController::class, 'coAuthorApprove'])->name('articles.coAuthorApprove');
 

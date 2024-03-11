@@ -35,6 +35,14 @@ class ArticleController extends Controller
 
     public function articleCreate(Request $request)
     {
+
+        $user = Auth::user();
+       // dd($user->role );
+
+        if ($user->role !== "admin" && $user->role !== "author") {
+            abort(403);
+        }
+
         return view('author.create');
     }
 

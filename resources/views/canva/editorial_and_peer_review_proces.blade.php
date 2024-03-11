@@ -7,7 +7,7 @@
 				<div class="container">
 
 					<div class="fancy-title title-border title-center">
-						<h3>Editorial and peer review proces</h3>
+						<h3>Peer review proces</h3>
 					</div>
 
 				</div>

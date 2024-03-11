@@ -17,6 +17,7 @@ class AuthenticatedSessionController extends Controller
      */
     public function create(): View
     {
+        session()->put('url.intended', url()->previous());
         return view('auth.login');
     }
 
@@ -46,7 +47,10 @@ class AuthenticatedSessionController extends Controller
             'alert-type'=>'info'
         );
 
-        return redirect()->intended($url)->with($notification);
+       // return redirect()->intended($url)->with($notification);
+
+        //redirect to url intended
+        return redirect()->intended(session()->get('url.intended', '/home'));
     }
 
     /**

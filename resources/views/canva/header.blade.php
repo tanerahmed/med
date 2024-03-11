@@ -154,7 +154,7 @@
                           </li>
                           <li class="menu-item">
                               <a class="menu-link" href="{{ route('editorial_and_peer_review_proces') }}">
-                                  <div>Editorial and peer review proces</div>
+                                  <div>Peer review process</div>
                               </a>
                           </li>
                           <li class="menu-item">
@@ -163,8 +163,8 @@
                               </a>
                           </li>
                           <li class="menu-item">
-                              <a class="menu-link" href="#">
-                                  <div>Submit</div>
+                              <a class="menu-link" href="{{ route('article.create')}}">
+                                  <div>Submit article</div>
                               </a>
                               <ul class="sub-menu-container">
                                   <li class="menu-item">
