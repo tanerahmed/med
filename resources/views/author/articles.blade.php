@@ -50,7 +50,11 @@
                                                 @if (Auth::check() && Auth::user()->role === 'admin')
                                                     <a href="{{ route('articles.edit', $article->id) }}" class="btn btn-primary btn-sm">Reviews<i class="fas fa-users"></i></a>
                                                 @endif
-                                                <a href="{{ route('articles.articleEdit', $article->id) }}" class="btn btn-warning btn-sm">Edit<i class="fas fa-edit"></i></a>
+                                                @if (Auth::user()->role === 'author' && $article->isAccepted)
+                                                    <a href="{{ route('articles.articleEdit', $article->id) }}" class="btn btn-warning btn-sm disabled" >Full Accept<i class="fas fa-edit"></i></a>
+                                                @else
+                                                    <a href="{{ route('articles.articleEdit', $article->id) }}" class="btn btn-warning btn-sm">Edit<i class="fas fa-edit"></i></a>
+                                                @endif
                                                 <a href="{{ route('review.downolad_files', $article->id) }}" class="btn btn-success btn-sm">Download<i class="fas fa-download"></i></a>
                                                 <i class="fas fa-clock"></i>
                                             </td>
