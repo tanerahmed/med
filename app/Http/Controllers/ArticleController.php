@@ -236,6 +236,8 @@ class ArticleController extends Controller
                         $author->primary_affiliation = $authorData['primary_affiliation'];
                         $author->contact_email = $authorData['contact'];
                         $author->author_contributions = $authorData['contributions'];
+                        // APPROVED == 1 ?!?
+                        $author->approved = 1;
                         $author->save();
                         // prepare emails for notification
                         array_push($this->emails, $authorData['contact']);
@@ -276,7 +278,7 @@ class ArticleController extends Controller
         $domain = URL::to('/');
 
         foreach ($this->emails as $email) {
-            $body['link'] = $domain . '/co-author-approve/' . $this->articleId . '/' . $email;
+           // $body['link'] = $domain . '/co-author-approve/' . $this->articleId . '/' . $email;
             Mail::to($email)->send(new CoAuthorRequestEmail($subject, $body));
         }
 
