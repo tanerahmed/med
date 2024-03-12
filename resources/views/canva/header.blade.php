@@ -130,16 +130,13 @@
                                   <div>Archive</div>
                               </a>
                               <ul class="sub-menu-container">
-                                  <li class="menu-item">
-                                      <a class="menu-link" href="#">
-                                          <div><i class="bi-hypnotize"></i>Isue 1</div>
-                                      </a>
-                                  </li>
-                                  <li class="menu-item">
-                                      <a class="menu-link" href="#">
-                                          <div><i class="bi-hypnotize"></i>Isue 2</div>
-                                      </a>
-                                  </li>
+                                @foreach ($issueIds as $id)
+                                <li class="menu-item">
+                                    <a class="menu-link" href="{{ route('canva.listArticlesByIssue', $id)}}">
+                                        <div><i class="bi-hypnotize"></i>Issue {{$id}}</div>
+                                    </a>
+                                </li>
+                                @endforeach
                               </ul>
                           </li>
                           <li class="menu-item">

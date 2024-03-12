@@ -10,9 +10,11 @@ class CanvaHomeController extends Controller
     public function index()
     {
 
-        // Home page
-
-        return view('canva.home');
+        // get issue ids
+        $articles = Article::all();
+        $issueIds = $articles->pluck('issue_id')->unique()->toArray();
+    
+        return view('canva.home', ['issueIds' => $issueIds]);
     }
 
 

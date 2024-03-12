@@ -116,6 +116,8 @@ Route::get('/article/{article}',   [CanvaArticlesController::class, 'showArticle
 Route::get('/articles/search', [CanvaArticlesController::class, 'search'])->name('canva.article.search');
 Route::get('/articles/{specialty}',   [CanvaArticlesController::class, 'listArticlesBySpecialty'])->name('canva.listArticlesBySpecialty');
 
+Route::get('/issue/{id}',   [CanvaArticlesController::class, 'listArticlesByIssue'])->name('canva.listArticlesByIssue');
+
 
 
 
