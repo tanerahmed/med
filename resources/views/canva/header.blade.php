@@ -131,11 +131,13 @@
                               </a>
                               <ul class="sub-menu-container">
                                 @foreach ($issueIds as $id)
-                                <li class="menu-item">
-                                    <a class="menu-link" href="{{ route('canva.listArticlesByIssue', $id)}}">
-                                        <div><i class="bi-hypnotize"></i>Issue {{$id}}</div>
-                                    </a>
-                                </li>
+                                    @if ($id)
+                                        <li class="menu-item">
+                                            <a class="menu-link" href="{{ route('canva.listArticlesByIssue', $id)}}">
+                                                <div><i class="bi-hypnotize"></i>Issue {{$id}}</div>
+                                            </a>
+                                        </li>
+                                    @endif
                                 @endforeach
                               </ul>
                           </li>
