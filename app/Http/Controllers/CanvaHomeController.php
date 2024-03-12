@@ -29,8 +29,83 @@ class CanvaHomeController extends Controller
 
     public function getJornalInfo()
     {
-        return view('frontend.journal_info');
+        $articles = Article::all();
+        $issueIds = $articles->pluck('issue_id')->unique()->toArray();
+
+        return view('frontend.journal_info', ['issueIds' => $issueIds]);
     }
 
+    
+    
+    public function gdpr()
+    {
+        // get issue ids
+        $articles = Article::all();
+        $issueIds = $articles->pluck('issue_id')->unique()->toArray();
+ 
+        return view('frontend.gdpr', ['issueIds' => $issueIds]);
+    }
+    
+    public function editorial_and_peer_review_proces()
+    {
+        // get issue ids
+        $articles = Article::all();
+        $issueIds = $articles->pluck('issue_id')->unique()->toArray();
+ 
+        return view('frontend.editorial_publishing_practice', ['issueIds' => $issueIds]);
+    }
+    public function editorialBoard()
+    {
+        // Логика за получаване на issue IDs
+        $articles = Article::all();
+        $issueIds = $articles->pluck('issue_id')->unique()->toArray();
+
+        return view('frontend.editorial_board', ['issueIds' => $issueIds]);
+    }
+
+    public function ethicalPublishingPractice()
+    {
+        // Логика за получаване на issue IDs
+        $articles = Article::all();
+        $issueIds = $articles->pluck('issue_id')->unique()->toArray();
+
+        return view('frontend.ethical_publishing_practice', ['issueIds' => $issueIds]);
+    }
+
+    public function contactUs()
+    {
+        // Логика за получаване на issue IDs
+        $articles = Article::all();
+        $issueIds = $articles->pluck('issue_id')->unique()->toArray();
+
+        return view('frontend.contact_us', ['issueIds' => $issueIds]);
+    }
+
+    public function submissionGuidance()
+    {
+        // Логика за получаване на issue IDs
+        $articles = Article::all();
+        $issueIds = $articles->pluck('issue_id')->unique()->toArray();
+
+        return view('frontend.submission_guidance', ['issueIds' => $issueIds]);
+    }
+
+    public function tehnicalPublishingPractice()
+    {
+        // Логика за получаване на issue IDs
+        $articles = Article::all();
+        $issueIds = $articles->pluck('issue_id')->unique()->toArray();
+
+        return view('frontend.tehnical_publishing_practice', ['issueIds' => $issueIds]);
+    }
+
+    public function editorial_publishing_practice()
+    {
+        // Логика за получаване на issue IDs
+        $articles = Article::all();
+        $issueIds = $articles->pluck('issue_id')->unique()->toArray();
+
+        return view('frontend.editorial_publishing_practice', ['issueIds' => $issueIds]);
+    }
 
 }

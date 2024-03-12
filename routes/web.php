@@ -98,15 +98,16 @@ Route::put('/reviews/{id}', [ReviewerController::class, 'update'])->name('review
 // CANVAS TEMPLATE
 Route::get('/current-issue',     [CanvaHomeController::class, 'getCurrentIssue'])->name('current_issue');
 Route::get('/journal-info',     [CanvaHomeController::class, 'getJornalInfo'])->name('journal_info');
-Route::get('/gdpr', function () { return view('canva.gdpr'); })->name('gdpr');
-// Route::get('/journal-info', function () { return view('canva.journal_info'); })->name('journal_info');
-Route::get('/editorial-peer-review-process', function () { return view('canva.editorial_and_peer_review_proces'); })->name('editorial_and_peer_review_proces');
-Route::get('/editorial-publishing-practice', [EditorialPublishingPracticeController::class, 'index'])->name('editorial_publishing_practice');
-Route::view('/editorial-board', 'frontend.editorial_board')->name('editorial_board');
-Route::view('ethical-publishing-practice', 'frontend.ethical_publishing_practice')->name('ethical_publishing_practice');
-Route::view('/contact-us', 'frontend.contact_us')->name('contact_us');
-Route::view('/submission-guidance', 'frontend.submission_guidance')->name('submission_guidance');
-Route::view('/tehnical-publishing-practice', 'frontend.tehnical_publishing_practice')->name('tehnical_publishing_practice');
+Route::get('/gdpr', [CanvaHomeController::class, 'gdpr'] )->name('gdpr');
+
+Route::get('/editorial-peer-review-process', [CanvaHomeController::class, 'editorial_and_peer_review_proces'])->name('editorial_and_peer_review_proces');
+
+Route::get('/editorial-publishing-practice', [CanvaHomeController::class, 'editorial_publishing_practice'])->name('editorial_publishing_practice');
+Route::get('/editorial-board', [CanvaHomeController::class, 'editorialBoard'])->name('editorial_board');
+Route::get('/ethical-publishing-practice', [CanvaHomeController::class, 'ethicalPublishingPractice'])->name('ethical_publishing_practice');
+Route::get('/contact-us', [CanvaHomeController::class, 'contactUs'])->name('contact_us');
+Route::get('/submission-guidance', [CanvaHomeController::class, 'submissionGuidance'])->name('submission_guidance');
+Route::get('/tehnical-publishing-practice', [CanvaHomeController::class, 'tehnicalPublishingPractice'])->name('tehnical_publishing_practice');
 
 
 
