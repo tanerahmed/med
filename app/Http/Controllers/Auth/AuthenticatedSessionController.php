@@ -50,7 +50,7 @@ class AuthenticatedSessionController extends Controller
        // return redirect()->intended($url)->with($notification);
 
         //redirect to url intended
-        return redirect()->intended(session()->get('url.intended', '/home'));
+        return redirect()->intended(session()->get('url.intended', '/'));
     }
 
     /**
