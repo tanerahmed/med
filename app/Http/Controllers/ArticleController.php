@@ -519,7 +519,7 @@ class ArticleController extends Controller
                     $user = User::find($reviewerId);
 
                     if ($user) {
-                        $subject = 'Reviewer Request';
+                        $subject = 'Reviewer Request for Article #'.$id; 
                         $domain = URL::to('/');
                         $body = [
                             'name' => $user->name,
