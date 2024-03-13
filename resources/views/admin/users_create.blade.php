@@ -106,13 +106,13 @@
                                     <option value="reviewer">Reviewer</option>
                                     <option value="editor">Editor</option>
                                     <option value="admin">Admin</option>
-                                    <option value="user" selected>User</option>
+                                    {{-- <option value="user" selected>User</option> --}}
                                 </select>
                             </div>
 
                             <div class="form-check">
                                 <input type="checkbox" name="isActive" class="form-check-input" id="isActive">
-                                <label class="form-check-label" for="isActive">Active</label>
+                                <label class="form-check-label" for="isActive">Is active</label>
                             </div>
 
                             <!-- Другите полета за въвеждане -->
