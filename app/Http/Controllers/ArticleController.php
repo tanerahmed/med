@@ -63,15 +63,22 @@ class ArticleController extends Controller
             // Извличане на всички ревюта за текущата статия
             $reviews = Review::where('article_id', $article->id)->get();
         
-            // Преброяване на "accepted" рейтингите във всички ревюта
-            $acceptedCount = $reviews->flatMap(function ($review) {
+            // Преброяване на "accepted" и "declined" рейтингите във всички ревюта
+            $ratings = $reviews->flatMap(function ($review) {
                 return [$review->rating_1, $review->rating_2, $review->rating_3];
-            })->filter(function ($rating) {
+            });
+        
+            $acceptedCount = $ratings->filter(function ($rating) {
                 return $rating === 'accepted';
             })->count();
         
-            // Проверка дали има 2 или повече accepted рейтинги
+            $declinedCount = $ratings->filter(function ($rating) {
+                return $rating === 'declined';
+            })->count();
+        
+            // Проверка дали има 2 или повече accepted или declined рейтинги
             $article->isAccepted = ($acceptedCount >= 2);
+            $article->isDeclined = ($declinedCount >= 2);
         }
 
         $preparedReviews = [];

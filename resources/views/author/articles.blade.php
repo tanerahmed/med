@@ -52,6 +52,8 @@
                                                 @endif
                                                 @if (Auth::user()->role === 'author' && $article->isAccepted)
                                                     <a href="{{ route('articles.articleEdit', $article->id) }}" class="btn btn-warning btn-sm disabled" >Full Accept<i class="fas fa-edit"></i></a>
+                                                @elseif  (Auth::user()->role === 'author' && $article->isDeclined)
+                                                    <a href="{{ route('articles.articleEdit', $article->id) }}" class="btn btn-warning btn-sm disabled" >Declined<i class="fas fa-edit"></i></a>
                                                 @else
                                                     <a href="{{ route('articles.articleEdit', $article->id) }}" class="btn btn-warning btn-sm">Edit<i class="fas fa-edit"></i></a>
                                                 @endif
