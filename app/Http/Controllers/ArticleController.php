@@ -299,6 +299,7 @@ class ArticleController extends Controller
 
         // Send Email to Admin 
         $subject = "Created Article from: " . $user->name;
+        // TODO set real admin email
         Mail::to("admin@admin.mail")->send(new AdminGetArticleCreatedEmail($subject, $body));
 
         $notification = array(
@@ -496,6 +497,7 @@ class ArticleController extends Controller
         $subject = "Edit Article : " . $this->articleTitle;
         $body['article_id'] = $this->articleId;
         $body['title'] = $this->articleTitle;
+        // TODO set real admin email
         Mail::to("admin@admin.mail")->send(new ArticleEditEmail($subject, $body));
 
         // Send Email to Reviewers 

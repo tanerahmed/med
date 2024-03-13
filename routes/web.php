@@ -34,18 +34,7 @@ Route::get('/', [CanvaHomeController::class, 'index'])->name('canvaHome.index');
 
 Route::get('/dashboard', [Dashboard::class, 'index'])->middleware(['auth', 'verified'])->name('dashboard');
 
-
-Route::middleware('auth')->group(function () {
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-
-    // !!!!! Logout !!!!!
-    Route::get('/logout', [AdminPanelAuthController::class, 'adminPanelLogout'])->name('admin.logout');
-});
-
 require __DIR__.'/auth.php';
-
 
 // Admin
 Route::middleware(['auth', 'role:admin'])->group(function () {
@@ -54,11 +43,15 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::get('/admin/user/create', [AdminController::class, 'userCreate'])->name('admin.users-create');
     Route::post('/admin/user/store', [AdminController::class, 'userStore'])->name('admin.users-store');
     Route::delete('/admin/user/delete/{user}', [AdminController::class, 'userDestroy'])->name('admin.users-destroy');
-
+    Route::get('/logs', [LogController::class, 'index'])->name('logs.index');
 });
 
 Route::middleware(['auth'])->group(function () {
-    Route::get('/logs', [LogController::class, 'index'])->name('logs.index');
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    // !!!!! Logout !!!!!
+    Route::get('/logout', [AdminPanelAuthController::class, 'adminPanelLogout'])->name('admin.logout');
 
     // article create
     Route::get('/article_/create', [ArticleController::class, 'articleCreate'])->name('article.create');
@@ -74,26 +67,23 @@ Route::middleware(['auth'])->group(function () {
 
     // Author
     Route::get('/author/dashboard', [AuthorController::class, 'AuthorDashboard'])->middleware('auth', 'role:author')->name('author.dashboard');
+
+
+    // Reviewer 
+    Route::get('/reviewer/dashboard',   [ReviewerController::class, 'ReviewerDashboard'])->name('reviewer.dashboard');
+    Route::get('/review/list',          [ReviewerController::class, 'reviewList'])->name('review.list');
+    Route::get('/review/{article}',     [ReviewerController::class, 'review'])->name('review');
+    Route::post('/review/store',        [ReviewerController::class, 'store'])->name('review.store');
+    Route::get('/review-download-files/{article}',     [ReviewerController::class, 'downloadArticleFiles'])->name('review.downolad_files');
+    Route::get('/reviews/request/{user_id}/{review_id}', [ReviewerController::class, 'approveReviewRequest'])->middleware(['auth', 'role:reviewer'])->name('reviews.approveReviewRequest');
+    Route::get('/reviews/request/reject/{user_id}/{review_id}', [ReviewerController::class, 'rejectReviewRequest'])->middleware(['auth', 'role:reviewer'])->name('reviews.rejectReviewRequest');
+    Route::put('/reviews/{id}', [ReviewerController::class, 'update'])->name('reviews.update');
+
 });
 
 
-// Co Author approve Thankyou Page
-Route::get('/co-author-approve/{article_id}/{authrom_email}', [ArticleController::class, 'coAuthorApprove'])->name('articles.coAuthorApprove');
-
-
-
-
-// Reviewer 
-Route::get('/reviewer/dashboard',   [ReviewerController::class, 'ReviewerDashboard'])->name('reviewer.dashboard');
-Route::get('/review/list',          [ReviewerController::class, 'reviewList'])->name('review.list');
-Route::get('/review/{article}',     [ReviewerController::class, 'review'])->name('review');
-Route::post('/review/store',        [ReviewerController::class, 'store'])->name('review.store');
-Route::get('/review-download-files/{article}',     [ReviewerController::class, 'downloadArticleFiles'])->name('review.downolad_files');
-Route::get('/reviews/request/{user_id}/{review_id}', [ReviewerController::class, 'approveReviewRequest'])->middleware(['auth', 'role:reviewer'])->name('reviews.approveReviewRequest');
-Route::get('/reviews/request/reject/{user_id}/{review_id}', [ReviewerController::class, 'rejectReviewRequest'])->middleware(['auth', 'role:reviewer'])->name('reviews.rejectReviewRequest');
-Route::put('/reviews/{id}', [ReviewerController::class, 'update'])->name('reviews.update');
-
-
+// NOT NEEDED Co Author approve Thankyou Page 
+// Route::get('/co-author-approve/{article_id}/{authrom_email}', [ArticleController::class, 'coAuthorApprove'])->name('articles.coAuthorApprove');
 
 // CANVAS TEMPLATE
 Route::get('/current-issue',     [CanvaHomeController::class, 'getCurrentIssue'])->name('current_issue');
@@ -110,19 +100,12 @@ Route::get('/submission-guidance', [CanvaHomeController::class, 'submissionGuida
 Route::get('/tehnical-publishing-practice', [CanvaHomeController::class, 'tehnicalPublishingPractice'])->name('tehnical_publishing_practice');
 
 
-
 // Front End 
 Route::get('/articles',   [CanvaArticlesController::class, 'listArticles'])->name('canva.listArticles');
 Route::get('/article/{article}',   [CanvaArticlesController::class, 'showArticle'])->name('canva.showArticle');
 Route::get('/articles/search', [CanvaArticlesController::class, 'search'])->name('canva.article.search');
 Route::get('/articles/{specialty}',   [CanvaArticlesController::class, 'listArticlesBySpecialty'])->name('canva.listArticlesBySpecialty');
-
 Route::get('/issue/{id}',   [CanvaArticlesController::class, 'listArticlesByIssue'])->name('canva.listArticlesByIssue');
 
-
-
-
-
-// Login with ORCID
-Route::get('/login/orcid', 'Auth\LoginController@redirectToOrcid');
-Route::get('/login/orcid/callback', 'Auth\LoginController@handleOrcidCallback');
+// Route::get('/login/orcid', 'Auth\LoginController@redirectToOrcid');
+// Route::get('/login/orcid/callback', 'Auth\LoginController@handleOrcidCallback');
