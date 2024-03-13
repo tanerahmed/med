@@ -68,11 +68,11 @@
                                                         @if ($preparedReview['article_id'] == $article->id)
                                                             <div class="review">
                                                                 <span>1.{{ $preparedReview['reviewer1_name'] }} -
-                                                                    {{ $preparedReview['rating_1'] ?: '' }}</span><br>
+                                                                    <strong>{{ $preparedReview['rating_1'] ?: '' }}</strong></span><br>
                                                                 <span>2.{{ $preparedReview['reviewer2_name'] }} -
-                                                                    {{ $preparedReview['rating_2'] ?: '' }}</span><br>
+                                                                    <strong>{{ $preparedReview['rating_2'] ?: '' }}</strong></span><br>
                                                                 <span>3.{{ $preparedReview['reviewer3_name'] }} -
-                                                                    {{ $preparedReview['rating_3'] ?: '' }}</span><br>
+                                                                    <strong>{{ $preparedReview['rating_3'] ?: '' }}</strong></span><br>
                                                                 <!-- Добавете подобни редове за останалите ревютори -->
                                                             </div>
                                                         @endif
