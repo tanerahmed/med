@@ -8,7 +8,7 @@
 </head>
 <body>
     <p>Hello,</p>
-    <p> {{ $body['user'] }} reject to be reviewer on Article #ID - {{ $body['article_id'] }}</p>
+    <p> {{ $body['reviewer'] }} reject to be reviewer on Article #ID - {{ $body['article_id'] }}</p>
 
     <p>Sincerely,</p>
     <p>Your Team</p>

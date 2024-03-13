@@ -1,40 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <article>
-  <specialty>УНГ</specialty>
-  <scientific_area>вътрешно ухо</scientific_area>
-  <title>Neuromodulation and palliative 
-    medicine.</title>
-  <abstract>The palliative care population is generally vulnerable to experiencing medication-induced adverse effects and drug-drug interactions. Neuromodulation may offer particular advantages over systemic medications in this population. Spinal cord stimulation and peripheral nerve stimulation have long been utilized in efforts to provide analgesia for various painful conditions. More recently, deep brain stimulation/motor cortex stimulation has anecdotally been utilized for certain intractable pain states. Although brain electrical stimulation has not been adequately trialed or in some cases even tried at all for management of a variety of symptoms, it is conceivable that in the future it may be a potential therapeutic option in efforts to palliate various severe refractory symptoms (eg, intractable pain, nausea, dyspnea, delirium).</abstract>
+  <specialty>Урология</specialty>
+  <scientific_area>мъжка урология</scientific_area>
+  <title>тттт</title>
+  <abstract>ттт</abstract>
   <ObjectList>
     <Object Type="keyword">
-      <Param Name="value">brain</Param>
+      <Param Name="value">eye</Param>
     </Object>
     <Object Type="keyword">
-      <Param Name="value">dyspnea</Param>
+      <Param Name="value"> brain</Param>
     </Object>
     <Object Type="keyword">
-      <Param Name="value">electrical</Param>
+      <Param Name="value"> shoulders</Param>
     </Object>
   </ObjectList>
-  <funding_name>some founding name</funding_name>
-  <grant_id>1234567890987654321</grant_id>
+  <funding_name>асасас</funding_name>
+  <grant_id>123</grant_id>
   <author>
-    <first_name>Ivan</first_name>
-    <middle_name>Petrov</middle_name>
-    <family_name>Ivanov</family_name>
-    <primary_affiliation>Faculty of Health, Social Care and Education,
-         School of Nursing and Midwifery,Anglia Ruskin University,
-         Cambridge, UK.</primary_affiliation>
+    <first_name>Zara</first_name>
+    <middle_name>ьддс</middle_name>
+    <family_name>Computers</family_name>
+    <primary_affiliation>дссд</primary_affiliation>
     <contact>office@zaracomputers.bg</contact>
-    <contributions>gffgfg</contributions>
-  </author>
-  <author>
-    <first_name>Vasil</first_name>
-    <middle_name>Georgiev</middle_name>
-    <family_name>Spasov</family_name>
-    <primary_affiliation>School of Clinical Medicine, University of 
-         Cambridge, Cambridge, UK.</primary_affiliation>
-    <contact>tanerahmed87@gmail.com</contact>
-    <contributions>bcvbcb</contributions>
+    <contributions>дсдссд</contributions>
   </author>
 </article>

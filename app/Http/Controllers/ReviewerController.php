@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\Mail;
 use App\Mail\ReviewArticleEmail;
 use App\Mail\UserApproveReviewRequestEmail;
 use App\Mail\UserRejectReviewRequestEmail;
+use App\Mail\FullAcceptArticleEmail;
 use ZipArchive;
 
 // Activity Log
@@ -159,15 +160,7 @@ class ReviewerController extends Controller
         $body['keywords'] = $request->input('keywords');
         $body['title'] = $request->input('title');
         $body['abstract'] = $request->input('abstract');
-
-
-        $subject = "Review Article #" . $articleId;
-        if (!empty($filePath)) {
-            Mail::to($user->email)->send(new ReviewArticleEmail($subject, $body, $filePath));
-        } else {
-            Mail::to($user->email)->send(new ReviewArticleEmail($subject, $body));
-        }
-
+        $body['rating'] = $request->input('rating');
 
         $review = Review::where('article_id', $articleId)->first();
         $rating = $request->input('rating');
@@ -191,6 +184,14 @@ class ReviewerController extends Controller
             $acceptedCount++;
         }
 
+        $subject = "Review Article #" . $articleId;
+        if (!empty($filePath)) {
+            Mail::to($article->user->email)->send(new ReviewArticleEmail($subject, $body, $filePath));
+        } else {
+            Mail::to($article->user->email)->send(new ReviewArticleEmail($subject, $body));
+        }
+
+
         if ($acceptedCount >= 2) {
             // Ако има поне два "accepted" рейтинга, извикваме метода за създаване на XML файла
             $xmlController = new XMLController();
@@ -199,6 +200,9 @@ class ReviewerController extends Controller
             // Ъпдейтваме и Article table и му даваме да е ACCEPTED!
             $article->status = 'accepted';
             $article->save();
+            // send email full acceot
+            Mail::to($article->user->email)->send(new FullAcceptArticleEmail($subject, $body));
+
 
             // Проверка на резултата и връщане на пренасочване или съобщение за грешка
             if ($response->getStatusCode() === 200) {
@@ -234,6 +238,9 @@ class ReviewerController extends Controller
 
         $review = Review::find($review_id);
 
+        // трябва да вземем автора и да му пратим имейл, че ревювър еди кой си е приел да е ревювър
+        $author_email = $review->article->user->email;
+
         $reviewerIds = [$review->reviewer_id_1, $review->reviewer_id_2, $review->reviewer_id_3];
 
         // Ако ревювъра вече е един от тях, не правим нищо 
@@ -258,11 +265,12 @@ class ReviewerController extends Controller
 
 
         $subject = "Reviwer accept";
-        $body['user'] = $user->name;
+        $body['reviwer'] = $user->name; // Reviwer
         $body['article_id'] = $review->article->id;
 
         // send to author
-        Mail::to($user->email)->send(new UserApproveReviewRequestEmail($subject, $body));
+        $author_email = $review->article->user->email;
+        Mail::to($author_email)->send(new UserApproveReviewRequestEmail($subject, $body));
         // send to  admin
         Mail::to('admin@gmail.com')->send(new UserApproveReviewRequestEmail($subject, $body));
 
@@ -296,11 +304,12 @@ class ReviewerController extends Controller
             ->log('reject review'); // action create, edit, delete
 
         $subject = "Reviwer rejected";
-        $body['user'] = $user->name;
+        $body['reviewer'] = $user->name;
         $body['article_id'] = $review->article->id;
 
         // send to author
-        Mail::to($user->email)->send(new UserRejectReviewRequestEmail($subject, $body));
+        $author_email = $review->article->user->email;
+        Mail::to($author_email)->send(new UserRejectReviewRequestEmail($subject, $body));
         // send to  admin
         Mail::to('admin@gmail.com')->send(new UserRejectReviewRequestEmail($subject, $body));
 

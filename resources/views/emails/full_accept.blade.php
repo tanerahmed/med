@@ -4,11 +4,11 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Review Request Email</title>
+    <title>Article #{{ $body['articleId'] }} full accept</title>
 </head>
 <body>
-    <p>Hello,</p>
-    <p> {{ $body['reviwer'] }} accept to be reviewer on Article #ID - {{ $body['article_id'] }}</p>
+    <p>Hello, </p>
+    <p> Your article #{{ $body['articleId'] }} is full accept!</p>
 
     <p>Sincerely,</p>
     <p>Your Team</p>
