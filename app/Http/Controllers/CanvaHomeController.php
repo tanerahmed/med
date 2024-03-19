@@ -20,9 +20,13 @@ class CanvaHomeController extends Controller
 
     public function getCurrentIssue()
     {
-        $lastArticle = Article::latest()->first();
+        $allArticles = Article::all();
+        $issueIds = $allArticles->pluck('issue_id')->unique()->toArray();
+        $maxIssueId = $allArticles->pluck('issue_id')->filter()->max();
+        $articles = Article::where('issue_id', $maxIssueId)->where('status', 'accepted')->get();
 
-        return view('canva.showArticle', ['article' => $lastArticle]);
+
+        return view('canva.listArticlesByIssueId', ['articles' => $articles, 'issueIds' => $issueIds, 'issueId'=> $maxIssueId]);
         // return view('frontend.current_issue',  ['article' => $lastArticle]);
     }
 
