@@ -59,8 +59,9 @@ class CanvaArticlesController extends Controller
 
     public function showArticle(Article $article)
     {
-
-        return view('canva.showArticle', compact('article'));
+        $allArticles = Article::all();
+        $issueIds = $allArticles->pluck('issue_id')->unique()->toArray();
+        return view('canva.showArticle', compact('article', 'issueIds'));
     }
 
 
