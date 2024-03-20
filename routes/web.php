@@ -78,6 +78,9 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/reviews/request/{user_id}/{review_id}', [ReviewerController::class, 'approveReviewRequest'])->middleware(['auth', 'role:reviewer'])->name('reviews.approveReviewRequest');
     Route::get('/reviews/request/reject/{user_id}/{review_id}', [ReviewerController::class, 'rejectReviewRequest'])->middleware(['auth', 'role:reviewer'])->name('reviews.rejectReviewRequest');
     Route::put('/reviews/{id}', [ReviewerController::class, 'update'])->name('reviews.update');
+    // user role update
+    Route::post('admin/users/{user}/assign-role', [UserController::class, 'assignRole'])->name('admin.assign-role');
+
 
 });
 
