@@ -24,7 +24,7 @@
                 </div>
             @endif
 
-            <form action="{{ route('article.store') }}" method="POST" enctype="multipart/form-data">
+            <form action="{{ route('article.store') }}" method="POST" enctype="multipart/form-data" id="articleForm" >
                 @csrf
                 <div class="row">
 
@@ -274,7 +274,7 @@
                     </div>
 
                     <div class="mb-3 d-flex justify-content-end">
-                        <button type="submit" class="btn btn-success">Create Article</button>
+                        <button type="submit" class="btn btn-success" id="submitBtn">Create Article</button>
                     </div>
                 </div>
             </form>
@@ -294,4 +294,9 @@
         var selectedFilesDiv = document.getElementById(inputId + '_selected_files');
         selectedFilesDiv.innerHTML = fileNames;
     }
+
+    document.getElementById('articleForm').addEventListener('submit', function() {
+        // Деактивиране на бутона за изпращане
+        document.getElementById('submitBtn').disabled = true;
+    });
 </script>
