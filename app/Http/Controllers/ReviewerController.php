@@ -317,9 +317,9 @@ class ReviewerController extends Controller
         $body['reviewer'] = $user->name;
         $body['article_id'] = $review->article->id;
 
-        // send to author
+        // send to author NO NEEDED!
         $author_email = $review->article->user->email;
-        Mail::to($author_email)->send(new UserRejectReviewRequestEmail($subject, $body));
+     //   Mail::to($author_email)->send(new UserRejectReviewRequestEmail($subject, $body));
         // send to  admin
         Mail::to('admin@gmail.com')->send(new UserRejectReviewRequestEmail($subject, $body));
 
