@@ -81,9 +81,6 @@ class ReviewerController extends Controller
 
         if ($zip->open($zipFileName, ZipArchive::CREATE) === TRUE) {
 
-            // TODO Тази директория има липсващи файлове не е АКТУАЛНА 
-            // TODO Откоментирай когато занулиш БД
-
             foreach ($article->titlePage as $value) {
                 $filePath = storage_path('app/public/' . $value->file_path);
                 $filePath = str_replace('\\', '/', $filePath);

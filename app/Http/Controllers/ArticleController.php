@@ -27,6 +27,12 @@ use App\Mail\ArticleEditEmail;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
+// Huy
+use Illuminate\Support\Facades\Storage;
+use PhpOffice\PhpWord\Settings;
+use setasign\Fpdi\Tcpdf\Fpdi;
+use TCPDF;
+
 class ArticleController extends Controller
 {
     public $articleId = '';
@@ -37,7 +43,7 @@ class ArticleController extends Controller
     {
 
         $user = Auth::user();
-       // dd($user->role );
+        // dd($user->role );
 
         if ($user->role !== "admin" && $user->role !== "author") {
             abort(403);
@@ -62,20 +68,20 @@ class ArticleController extends Controller
         foreach ($articles as $article) {
             // Извличане на всички ревюта за текущата статия
             $reviews = Review::where('article_id', $article->id)->get();
-        
+
             // Преброяване на "accepted" и "declined" рейтингите във всички ревюта
             $ratings = $reviews->flatMap(function ($review) {
                 return [$review->rating_1, $review->rating_2, $review->rating_3];
             });
-        
+
             $acceptedCount = $ratings->filter(function ($rating) {
                 return $rating === 'accepted';
             })->count();
-        
+
             $declinedCount = $ratings->filter(function ($rating) {
                 return $rating === 'declined';
             })->count();
-        
+
             // Проверка дали има 2 или повече accepted или declined рейтинги
             $article->isAccepted = ($acceptedCount >= 2);
             $article->isDeclined = ($declinedCount >= 2);
@@ -300,13 +306,13 @@ class ArticleController extends Controller
         $domain = URL::to('/');
 
         foreach ($this->emails as $email) {
-           // $body['link'] = $domain . '/co-author-approve/' . $this->articleId . '/' . $email;
+            // $body['link'] = $domain . '/co-author-approve/' . $this->articleId . '/' . $email;
             Mail::to($email)->send(new CoAuthorRequestEmail($subject, $body));
         }
 
         // Send Email to Admin 
         $subject = "Created Article from: " . $user->name;
-  
+
         Mail::to("superuser.blmprime@gmail.com")->send(new AdminGetArticleCreatedEmail($subject, $body));
 
         $notification = array(
@@ -543,7 +549,7 @@ class ArticleController extends Controller
                     $user = User::find($reviewerId);
 
                     if ($user) {
-                        $subject = 'Reviewer Request for Article #'.$id; 
+                        $subject = 'Reviewer Request for Article #' . $id;
                         $domain = URL::to('/');
                         $body = [
                             'name' => $user->name,
@@ -582,6 +588,288 @@ class ArticleController extends Controller
 
         return view('co_author_accept_thanks_page');
     }
+
+
+    // TODO !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    public function downloadArticlePDFFilesForReviwers(Article $article)
+    {
+
+    }
+    // TODO !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    public function downloadArticlePDFFiles(Article $article)
+    {
+
+        $pdf = new FPDI(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
+        $pdf->SetCreator(PDF_CREATOR);
+        $pdf->SetAuthor('Taner Ahmed');
+        $pdf->SetTitle('Document title');
+        $pdf->SetSubject('Document subject');
+        $pdf->SetKeywords('keyword1, keyword2, keyword3');
+        $pdf->SetHeaderData('https://blmprime.com/storage/images/logo.jpg', PDF_HEADER_LOGO_WIDTH, 'Zara Computers', 'by Taner Ahmed zaracomputers.bg');
+        $pdf->setHeaderFont(array(PDF_FONT_NAME_MAIN, '', PDF_FONT_SIZE_MAIN));
+        $pdf->setFooterFont(array(PDF_FONT_NAME_DATA, '', PDF_FONT_SIZE_DATA));
+        $pdf->SetDefaultMonospacedFont(PDF_FONT_MONOSPACED);
+        $pdf->SetMargins(PDF_MARGIN_LEFT, PDF_MARGIN_TOP, PDF_MARGIN_RIGHT);
+        $pdf->SetAutoPageBreak(TRUE, PDF_MARGIN_BOTTOM);
+        $pdf->SetFont('dejavusans', '', 10);
+        $pdf->AddPage();
+
+        $htmlType = '<div style="text-align: center; background-color: #808080; color: #ffffff;">
+        <h1>' . $article->type . '</h1></div>';
+
+        $pdf->writeHTML($htmlType);
+
+        $pdf->writeHTML('<h1>' . $article->title . '</h1><p></p>');
+
+
+        $htmlAuthors = '';
+        // Проверка дали има съавтори
+        if ($article->authors->isNotEmpty()) {
+            // Генериране на съдържанието за съавторите
+            $coauthors_html = '<p><strong>Co-Authors:</strong><br>';
+            foreach ($article->authors as $author) {
+                $coauthors_html .= $author->first_name . ' '. $author->family_name . '<br>';
+            }
+            $coauthors_html .= '</p>';
+
+            // Добавяне на съдържанието на съавторите към основната HTML
+            $htmlAuthors .= $coauthors_html;
+        }
+
+        // Записване на HTML в PDF документа
+        $pdf->writeHTML($htmlAuthors);
+
+        $pdf->writeHTML("<hr>");
+
+        $abstract_html = '<p><h2>Abstract:</h2><br>'.$article->abstract.'</p><br>';
+        $pdf->writeHTML($abstract_html);
+
+        $pdf->writeHTML("<hr>");
+
+        $coauthors_html = '<p><h2>Keywords:</h2>'.$article->keywords.'</p><br>';
+        $pdf->writeHTML($coauthors_html);
+
+        $rendererName = Settings::PDF_RENDERER_DOMPDF;
+        $rendererLibraryPath = base_path('vendor/dompdf/dompdf');
+        Settings::setPdfRenderer($rendererName, $rendererLibraryPath);
+
+        foreach ([$article->coverLetter, $article->figures, $article->manuscript, $article->supplementaryFiles, $article->tables, $article->titlePage] as $files) {
+            foreach ($files as $file) {
+                $filePath = storage_path('app/public/' . $file->file_path);
+                $filePath = str_replace('\\', '/', $filePath);
+
+                $ext = pathinfo($filePath, PATHINFO_EXTENSION);
+
+                $content = '';
+                switch ($ext) {
+                    case 'doc':
+                        $php_word = \PhpOffice\PhpWord\IOFactory::load($filePath, 'MsDoc');
+                        $html_writer = new \PhpOffice\PhpWord\Writer\HTML($php_word);
+                        $html_file = tempnam(sys_get_temp_dir(), 'phpword');
+                        $html_writer->save($html_file);
+                        $content = file_get_contents($html_file);
+                        unlink($html_file);
+                        $pdf->AddPage();
+                        $pdf->writeHTML($content, true, false, true, false, '');
+                        break;
+                    case 'docx':
+                        $php_word = \PhpOffice\PhpWord\IOFactory::load($filePath);
+                        $html_writer = new \PhpOffice\PhpWord\Writer\HTML($php_word);
+                        $html_file = tempnam(sys_get_temp_dir(), 'phpword');
+                        $html_writer->save($html_file);
+                        $content = file_get_contents($html_file);
+                        unlink($html_file);
+                        $pdf->AddPage();
+                        $pdf->writeHTML($content, true, false, true, false, '');
+                        break;
+                    case 'pdf':
+                        $pdf->AddPage();
+                        $pdf->Write(10, 'This is a PDF file');
+                        $pagecount1 = $pdf->setSourceFile($filePath);
+                        // Import pages from the source PDF file
+                        for ($i = 1; $i <= $pagecount1; $i++) {
+                            $tplIdx = $pdf->importPage($i);
+                            $pdf->useTemplate($tplIdx);
+                            if ($i < $pagecount1) {
+                                $pdf->AddPage();
+                            }
+                        }
+
+                        break;
+                    case 'jpg':
+                        $pdf->AddPage();
+                        $pdf->Image($filePath, 10, 10, '', '', '', '', '', false, 300, '', false, false, 0, false, false, false);
+                        break;
+                    case 'jpeg':
+                        $pdf->AddPage();
+                        $pdf->Image($filePath, 0, 0, '', '', '', '', '', false, 300, '', false, false, 0, false, false, false);
+                        break;
+                    case 'png':
+                        $pdf->AddPage();
+                        $pdf->Image($filePath, 0, 0, '', '', '', '', '', false, 300, '', false, false, 0, false, false, false);
+                        break;
+                    case 'html':
+                        $content = file_get_contents($filePath);
+                        $pdf->AddPage();
+                        $pdf->writeHTML($content, true, false, true, false, '');
+                        break;
+                    default:
+                        break;
+                }
+            }
+        }
+        // reset pointer to the last page
+        $pdf->lastPage();
+        $pdf->Output('article_id_#'.$article->id.'.pdf', 'I');
+
+
+        // $pdf = new TCPDF();
+        // $pdf->SetMargins(10, 10, 10);
+        // $pdf->AddPage();
+
+
+        // $pdf->Output('combined_files.pdf', 'I');
+
+
+        // if ($article->manuscript) {
+        //     foreach ($article->manuscript as $value) {
+        //         $filePath = storage_path('app/public/' . $value->file_path);
+        //         $filePath = str_replace('\\', '/', $filePath);
+        //         $contentManuscript = file_get_contents($filePath);
+        //         $pdf->writeHTML($contentManuscript, true, false, true, false, '');
+
+        //         $ext = pathinfo($filePath, PATHINFO_EXTENSION);
+
+        //         switch ($ext) {
+        //             case 'docx':
+        //                 $word_content = file_get_contents($filePath);
+        //                 $word_to_pdf = new \PhpOffice\PhpWord\Writer\PDF\DomPDF();
+        //                 $word_to_pdf->saveFromString($word_content, 'file.pdf');
+        //                 $pdf->Image('file.pdf', 10, 10, 0, 0, '', '', '', true, 150);
+        //                 break;
+        //             case 'xlsx':
+        //                 $excel_content = file_get_contents($filePath);
+        //                 $excel_to_pdf = new \PhpOffice\PhpSpreadsheet\Writer\Pdf\Dompdf();
+        //                 $excel_to_pdf->saveFromString($excel_content, 'file.pdf');
+        //                 $pdf->Image('file.pdf', 10, 10, 0, 0, '', '', '', true, 150);
+        //                 break;
+        //             case 'png':
+        //                 $pdf->Image($filePath, 10, 10, 100, 100);
+        //             default:
+        //                 //
+        //                 break;
+        //         }
+
+        //     }
+        // }
+        // if ($article->supplementaryFiles) {
+        //     foreach ($article->supplementaryFiles as $value) {
+        //         $filePath = storage_path('app/public/' . $value->file_path);
+        //         $filePath = str_replace('\\', '/', $filePath);
+        //         $contentManuscript = file_get_contents($filePath);
+        //         $pdf->writeHTML($contentManuscript, true, false, true, false, '');
+        //         $ext = pathinfo($filePath, PATHINFO_EXTENSION);
+        //         switch ($ext) {
+        //             case 'docx':
+        //                 $word_content = file_get_contents($filePath);
+        //                 $word_to_pdf = new \PhpOffice\PhpWord\Writer\PDF\DomPDF();
+        //                 $word_to_pdf->saveFromString($word_content, 'file.pdf');
+        //                 $pdf->Image('file.pdf', 10, 10, 0, 0, '', '', '', true, 150);
+        //                 break;
+        //             case 'xlsx':
+        //                 $excel_content = file_get_contents($filePath);
+        //                 $excel_to_pdf = new \PhpOffice\PhpSpreadsheet\Writer\Pdf\Dompdf();
+        //                 $excel_to_pdf->saveFromString($excel_content, 'file.pdf');
+        //                 $pdf->Image('file.pdf', 10, 10, 0, 0, '', '', '', true, 150);
+        //                 break;
+        //             case 'png':
+        //                 $pdf->Image($filePath, 10, 10, 100, 100);
+        //             default:
+        //                 //
+        //                 break;
+        //         }
+        //     }
+        // }
+
+        // $pdf->Output('combined_files.pdf', 'I');
+
+
+
+
+
+
+        // if ($article->titlePage) {
+        //     foreach ($article->titlePage as $value) {
+        //         $filePath = storage_path('app/public/' . $value->file_path);
+        //         $filePath = str_replace('\\', '/', $filePath);
+        //        // $contentTitlePage = file_get_contents($filePath);
+
+        //         $phpWord = IOFactory::load($filePath);
+        //         $htmlContent = $phpWord->saveHTML();
+
+        //         $pdf->writeHTML($htmlContent, true, false, true, false, '');
+        //     }
+        // }
+
+        // if ($article->manuscript) {
+        //     foreach ($article->manuscript as $value) {
+        //         $filePath = storage_path('app/public/' . $value->file_path);
+        //         $filePath = str_replace('\\', '/', $filePath);
+        //         $contentManuscript = file_get_contents($filePath);
+        //         $pdf->writeHTML($contentManuscript, true, false, true, false, '');
+        //     }
+        // }
+
+        // if ($article->supplementaryFiles) {
+        //     foreach ($article->supplementaryFiles as $value) {
+        //         $filePath = storage_path('app/public/' . $value->file_path);
+        //         $filePath = str_replace('\\', '/', $filePath);
+        //         $contentSupplementary = file_get_contents($filePath);
+        //         dd($contentSupplementary);
+        //         $pdf->writeHTML($contentSupplementary, true, false, true, false, '');
+        //     }
+        // }
+
+        // if ($article->tables) {
+        //     foreach ($article->tables as $value) {
+        //         $filePath = storage_path('app/public/' . $value->file_path);
+        //         $filePath = str_replace('\\', '/', $filePath);
+        //         $contentTables = file_get_contents($filePath);
+        //         $pdf->writeHTML($contentTables, true, false, true, false, '');
+        //     }
+        // }
+
+        // if ($article->coverLetter) {
+        //     foreach ($article->coverLetter as $value) {
+        //         $filePath = storage_path('app/public/' . $value->file_path);
+        //         $filePath = str_replace('\\', '/', $filePath);
+        //         $contentCoverLetter = file_get_contents($filePath);
+        //         $pdf->writeHTML($contentCoverLetter, true, false, true, false, '');
+        //     }
+        // }
+
+        // if ($article->figures) {
+        //     foreach ($article->figures as $value) {
+        //         $filePath = storage_path('app/public/' . $value->file_path);
+        //         $filePath = str_replace('\\', '/', $filePath);
+        //         $contentFigures = file_get_contents($filePath);
+        //         $pdf->writeHTML($contentFigures, true, false, true, false, '');
+        //     }
+        // }
+
+
+
+
+        // // foreach ($filePaths as $filePath) {
+        // //     $content = file_get_contents($filePath);
+        // //     $pdf->writeHTML($content, true, false, true, false, '');
+        // // }
+
+        // // Генерирайте PDF файла
+        // $pdf->Output($article->id.'.pdf', 'D');
+
+    }
+
 
 }
 

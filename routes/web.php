@@ -47,13 +47,14 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
 });
 
 Route::middleware(['auth'])->group(function () {
+    
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     // !!!!! Logout !!!!!
     Route::get('/logout', [AdminPanelAuthController::class, 'adminPanelLogout'])->name('admin.logout');
 
-    // article create
+    // article
     Route::get('/article_/create', [ArticleController::class, 'articleCreate'])->name('article.create');
     Route::post('/article_/store', [ArticleController::class, 'articleStore'])->name('article.store');
     Route::get('/articles_',       [ArticleController::class, 'articleList'])->name('article.list');
@@ -64,6 +65,8 @@ Route::middleware(['auth'])->group(function () {
 
     Route::put('/articles_/{id}', [ArticleController::class, 'update'])->name('articles.update');
     Route::post('/articles_/{id}', [ArticleController::class, 'sendEmailForReviewRequest'])->name('articles.sendEmailForReviewRequest');
+
+    Route::get('/article-download-pdf-files/{article}',     [ArticleController::class, 'downloadArticlePDFFiles'])->name('admin.downolad_summary_pdf');
 
     // Author
     Route::get('/author/dashboard', [AuthorController::class, 'AuthorDashboard'])->middleware('auth', 'role:author')->name('author.dashboard');
