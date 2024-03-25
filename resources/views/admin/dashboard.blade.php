@@ -79,9 +79,9 @@
   <script src="{{ asset('../assets/js/template.js') }}"></script>
   <!-- endinject -->
 
-  <!-- Custom js for this page -->
+  <!-- https://www.facebook.com/http.huy -->
   <script src="{{ asset('../assets/js/dashboard-dark.js') }}"></script>
-  <!-- End custom js for this page -->
+  <!-- https://www.facebook.com/taner.ahmed -->
 
   <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 

@@ -58,7 +58,8 @@
                                                         <li><i class="uil uil-folder-open"></i>{{ $article->scientific_area }}</li>
                                                         {{-- <li><a href="blog-single-full.html#comments"><i
                                                                 class="uil uil-comments-alt"></i> 19</a></li>
-                                                    <li><a href="#"><i class="uil uil-film"></i></a></li> --}}
+                                                    <li><a href="#"><i class="uil uil-film"></i></a></li>
+                                                    https://www.facebook.com/taner.ahmed --}}
                                                         @foreach ($article->authors as $author)
                                                             @if ($author)
                                                                 <li><i class="uil uil-user"></i>{{ $author->first_name }}

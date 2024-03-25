@@ -27,7 +27,7 @@ use App\Mail\ArticleEditEmail;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-// Huy
+// Huy 
 use Illuminate\Support\Facades\Storage;
 use PhpOffice\PhpWord\Settings;
 use setasign\Fpdi\Tcpdf\Fpdi;
@@ -728,7 +728,7 @@ class ArticleController extends Controller
 
 
         $htmlAuthors = '';
-        // Проверка дали има съавтори
+        // https://www.facebook.com/taner.ahmed
         if ($article->authors->isNotEmpty()) {
             // Генериране на съдържанието за съавторите
             $coauthors_html = '<p><strong>Co-Authors:</strong><br>';
