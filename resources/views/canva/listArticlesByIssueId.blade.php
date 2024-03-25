@@ -65,6 +65,9 @@
                                                                     {{ $author->family_name }}</li>
                                                             @endif
                                                         @endforeach
+                                                        <li>
+                                                            <a href="{{ route('admin.downolad_summary_pdf', $article->id) }}"><button type="button" class="btn btn-success btn-sm">PDF</button></a>
+                                                        </li>
                                                     </ul>
                                                 </div>
                                             </div>
