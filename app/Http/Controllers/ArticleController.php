@@ -605,7 +605,7 @@ class ArticleController extends Controller
         $pdf->SetTitle('Document title');
         $pdf->SetSubject('Document subject');
         $pdf->SetKeywords('keyword1, keyword2, keyword3');
-        $pdf->SetHeaderData('https://blmprime.com/storage/images/logo.jpg', PDF_HEADER_LOGO_WIDTH, 'Zara Computers', 'by Taner Ahmed zaracomputers.bg');
+        $pdf->SetHeaderData(PDF_HEADER_LOGO , PDF_HEADER_LOGO_WIDTH, 'Zara Computers', 'by Taner Ahmed zaracomputers.bg');
         $pdf->setHeaderFont(array(PDF_FONT_NAME_MAIN, '', PDF_FONT_SIZE_MAIN));
         $pdf->setFooterFont(array(PDF_FONT_NAME_DATA, '', PDF_FONT_SIZE_DATA));
         $pdf->SetDefaultMonospacedFont(PDF_FONT_MONOSPACED);
