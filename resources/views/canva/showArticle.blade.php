@@ -187,7 +187,8 @@
 
                                 <div class="widget">
 
-                                    <h4>Contnts</h4>
+                                    <h4>Contnts</h4> 
+                                    <a href="{{ route('admin.downolad_summary_pdf', $article->id) }}"><button type="button" class="btn btn-success btn-sm">PDF</button></a>
                                     <div class="tagcloud">
                                         <a href="#article-title">Article title</a>
                                         <a href="#abstract">Abstract</a>

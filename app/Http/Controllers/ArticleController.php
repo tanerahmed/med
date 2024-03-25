@@ -590,12 +590,117 @@ class ArticleController extends Controller
     }
 
 
-    // TODO !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-    public function downloadArticlePDFFilesForReviwers(Article $article)
+    public function summaryPdfFile(Article $article)
     {
+        $pdf = new FPDI(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
+        $pdf->SetCreator(PDF_CREATOR);
+        $pdf->SetAuthor('Taner Ahmed');
+        $pdf->SetTitle('Document title');
+        $pdf->SetSubject('Document subject');
+        $pdf->SetKeywords('keyword1, keyword2, keyword3');
+        $pdf->SetHeaderData(PDF_HEADER_LOGO , PDF_HEADER_LOGO_WIDTH, 'Zara Computers', 'by Taner Ahmed zaracomputers.bg');
+        $pdf->setHeaderFont(array(PDF_FONT_NAME_MAIN, '', PDF_FONT_SIZE_MAIN));
+        $pdf->setFooterFont(array(PDF_FONT_NAME_DATA, '', PDF_FONT_SIZE_DATA));
+        $pdf->SetDefaultMonospacedFont(PDF_FONT_MONOSPACED);
+        $pdf->SetMargins(PDF_MARGIN_LEFT, PDF_MARGIN_TOP, PDF_MARGIN_RIGHT);
+        $pdf->SetAutoPageBreak(TRUE, PDF_MARGIN_BOTTOM);
+        $pdf->SetFont('dejavusans', '', 10);
+        $pdf->AddPage();
+
+        $htmlType = '<div style="text-align: center; background-color: #808080; color: #ffffff;">
+        <h1>' . $article->type . '</h1></div>';
+
+        $pdf->writeHTML($htmlType);
+
+        $pdf->writeHTML('<h1>' . $article->title . '</h1><p></p>');
+
+
+
+
+        $pdf->writeHTML("<hr>");
+
+        $abstract_html = '<p><h2>Abstract:</h2><br>'.$article->abstract.'</p><br>';
+        $pdf->writeHTML($abstract_html);
+
+        $pdf->writeHTML("<hr>");
+
+        $coauthors_html = '<p><h2>Keywords:</h2>'.$article->keywords.'</p><br>';
+        $pdf->writeHTML($coauthors_html);
+
+        $rendererName = Settings::PDF_RENDERER_DOMPDF;
+        $rendererLibraryPath = base_path('vendor/dompdf/dompdf');
+        Settings::setPdfRenderer($rendererName, $rendererLibraryPath);
+
+        foreach ([$article->coverLetter, $article->figures, $article->manuscript, $article->supplementaryFiles, $article->tables] as $files) {
+            foreach ($files as $file) {
+                $filePath = storage_path('app/public/' . $file->file_path);
+                $filePath = str_replace('\\', '/', $filePath);
+
+                $ext = pathinfo($filePath, PATHINFO_EXTENSION);
+
+                $content = '';
+                switch ($ext) {
+                    case 'doc':
+                        $php_word = \PhpOffice\PhpWord\IOFactory::load($filePath, 'MsDoc');
+                        $html_writer = new \PhpOffice\PhpWord\Writer\HTML($php_word);
+                        $html_file = tempnam(sys_get_temp_dir(), 'phpword');
+                        $html_writer->save($html_file);
+                        $content = file_get_contents($html_file);
+                        unlink($html_file);
+                        $pdf->AddPage();
+                        $pdf->writeHTML($content, true, false, true, false, '');
+                        break;
+                    case 'docx':
+                        $php_word = \PhpOffice\PhpWord\IOFactory::load($filePath);
+                        $html_writer = new \PhpOffice\PhpWord\Writer\HTML($php_word);
+                        $html_file = tempnam(sys_get_temp_dir(), 'phpword');
+                        $html_writer->save($html_file);
+                        $content = file_get_contents($html_file);
+                        unlink($html_file);
+                        $pdf->AddPage();
+                        $pdf->writeHTML($content, true, false, true, false, '');
+                        break;
+                    case 'pdf':
+                        $pdf->AddPage();
+                        $pdf->Write(10, 'This is a PDF file');
+                        $pagecount1 = $pdf->setSourceFile($filePath);
+                        // Import pages from the source PDF file
+                        for ($i = 1; $i <= $pagecount1; $i++) {
+                            $tplIdx = $pdf->importPage($i);
+                            $pdf->useTemplate($tplIdx);
+                            if ($i < $pagecount1) {
+                                $pdf->AddPage();
+                            }
+                        }
+
+                        break;
+                    case 'jpg':
+                        $pdf->AddPage();
+                        $pdf->Image($filePath, 10, 10, '', '', '', '', '', false, 300, '', false, false, 0, false, false, false);
+                        break;
+                    case 'jpeg':
+                        $pdf->AddPage();
+                        $pdf->Image($filePath, 0, 0, '', '', '', '', '', false, 300, '', false, false, 0, false, false, false);
+                        break;
+                    case 'png':
+                        $pdf->AddPage();
+                        $pdf->Image($filePath, 0, 0, '', '', '', '', '', false, 300, '', false, false, 0, false, false, false);
+                        break;
+                    case 'html':
+                        $content = file_get_contents($filePath);
+                        $pdf->AddPage();
+                        $pdf->writeHTML($content, true, false, true, false, '');
+                        break;
+                    default:
+                        break;
+                }
+            }
+        }
+        // reset pointer to the last page
+        $pdf->lastPage();
+        $pdf->Output('article_id_#'.$article->id.'.pdf', 'I');
 
     }
-    // TODO !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     public function downloadArticlePDFFiles(Article $article)
     {
 

@@ -66,7 +66,8 @@ Route::middleware(['auth'])->group(function () {
     Route::put('/articles_/{id}', [ArticleController::class, 'update'])->name('articles.update');
     Route::post('/articles_/{id}', [ArticleController::class, 'sendEmailForReviewRequest'])->name('articles.sendEmailForReviewRequest');
 
-    Route::get('/article-download-pdf-files/{article}',     [ArticleController::class, 'downloadArticlePDFFiles'])->name('admin.downolad_summary_pdf');
+
+    Route::get('/reviwer-download-pdf-files/{article}',     [ArticleController::class, 'summaryPdfFile'])->name('review.summary_pdf');
 
     // Author
     Route::get('/author/dashboard', [AuthorController::class, 'AuthorDashboard'])->middleware('auth', 'role:author')->name('author.dashboard');
@@ -87,6 +88,7 @@ Route::middleware(['auth'])->group(function () {
 
 });
 
+Route::get('/article-download-pdf-files/{article}',     [ArticleController::class, 'downloadArticlePDFFiles'])->name('admin.downolad_summary_pdf');
 
 // NOT NEEDED Co Author approve Thankyou Page 
 // Route::get('/co-author-approve/{article_id}/{authrom_email}', [ArticleController::class, 'coAuthorApprove'])->name('articles.coAuthorApprove');
