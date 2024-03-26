@@ -182,7 +182,7 @@ class ReviewerController extends Controller
         }
 
         $subject = "Review Article #" . $articleId;
-        if (!empty($filePath)) {
+        if (!empty ($filePath)) {
             Mail::to($article->user->email)->send(new ReviewArticleEmail($subject, $body, $filePath));
         } else {
             Mail::to($article->user->email)->send(new ReviewArticleEmail($subject, $body));
@@ -261,6 +261,21 @@ class ReviewerController extends Controller
                 }
             }
             $review->save();
+        }
+
+        // Проверяваме ако имаме запис в дадения Ревювър само тогава пращаме имейли и записваме в логовете
+        $reviewSecond = Review::find($review_id);
+        $reviewerIdsSecond = [$reviewSecond->reviewer_id_1, $reviewSecond->reviewer_id_2, $reviewSecond->reviewer_id_3];
+        if (in_array($user->id, $reviewerIdsSecond)) {
+            $subject = "Reviwer accept";
+            $body['reviwer'] = $user->name; // Reviwer
+            $body['article_id'] = $review->article->id;
+
+            // send to author
+            $author_email = $review->article->user->email;
+            Mail::to($author_email)->send(new UserApproveReviewRequestEmail($subject, $body));
+            // send to  admin
+            Mail::to('superuser.blmprime@gmail.com')->send(new UserApproveReviewRequestEmail($subject, $body));
 
             // Activity LOG
             activity()
@@ -268,19 +283,6 @@ class ReviewerController extends Controller
                 ->withProperties(['approveReviewRequestArticleId' => $review->article->id])
                 ->log('approve review'); // action create, edit, delete
         }
-
-
-
-        $subject = "Reviwer accept";
-        $body['reviwer'] = $user->name; // Reviwer
-        $body['article_id'] = $review->article->id;
-
-        // send to author
-        $author_email = $review->article->user->email;
-        Mail::to($author_email)->send(new UserApproveReviewRequestEmail($subject, $body));
-        // send to  admin
-        Mail::to('admin@gmail.com')->send(new UserApproveReviewRequestEmail($subject, $body));
-
         $notification = array(
             'message' => 'You approve review request successfully.',
             'alert-type' => 'success'
@@ -316,9 +318,9 @@ class ReviewerController extends Controller
 
         // send to author NO NEEDED!
         $author_email = $review->article->user->email;
-     //   Mail::to($author_email)->send(new UserRejectReviewRequestEmail($subject, $body));
+        //   Mail::to($author_email)->send(new UserRejectReviewRequestEmail($subject, $body));
         // send to  admin
-        Mail::to('admin@gmail.com')->send(new UserRejectReviewRequestEmail($subject, $body));
+        Mail::to('superuser.blmprime@gmail.com')->send(new UserRejectReviewRequestEmail($subject, $body));
 
         $notification = array(
             'message' => 'You reject review request successfully.',
