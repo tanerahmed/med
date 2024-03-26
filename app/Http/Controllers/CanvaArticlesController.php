@@ -14,8 +14,8 @@ class CanvaArticlesController extends Controller
         $articles = Article::where('status', 'accepted')->get();
         $activeSpecialty = '';
         // get issue ids
-        $articles = Article::all();
-        $issueIds = $articles->pluck('issue_id')->unique()->toArray();
+        $allArticles = Article::all();
+        $issueIds = $allArticles->pluck('issue_id')->unique()->toArray();
 
         return view('canva.listArticles', compact('articles', 'issueIds', 'activeSpecialty'));
     }
