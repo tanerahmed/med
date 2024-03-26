@@ -413,9 +413,13 @@ class ArticleController extends Controller
                 if ($request->has('grant_id')) {
                     $article->grant_id = $request->input('grant_id');
                 }
-                if ($request->has('issue_id')) {
-                    $article->issue_id = $request->input('issue_id');
+                // за да можем да зададем issue _Id ние трябва да имаме SATUS == ACCEPTED
+                if( $article->status == 'accepted'){
+                    if ($request->has('issue_id')) {
+                        $article->issue_id = $request->input('issue_id');
+                    }
                 }
+                
                 $article->admin_accept = $request->has('admin_accept') ? 1 : 0;
                 $article->save();
 
