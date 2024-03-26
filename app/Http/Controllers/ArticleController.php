@@ -803,16 +803,18 @@ class ArticleController extends Controller
                         break;
                     case 'jpg':
                         $pdf->AddPage();
-                        $pdf->Image($filePath, 10, 10, '', '', '', '', '', false, 300, '', false, false, 0, false, false, false);
+                        $pdf->SetXY(20, 20);
+                        $pdf->Image($filePath, '', '', 100, 100, '', '', 'T', false, 300, '', false, false, 1, false, false, false);                       
                         break;
                     case 'jpeg':
                         $pdf->AddPage();
-                        $pdf->Image($filePath, 0, 0, '', '', '', '', '', false, 300, '', false, false, 0, false, false, false);
+                        $pdf->SetXY(20, 20);
+                        $pdf->Image($filePath, '', '', 100, 100, '', '', 'T', false, 300, '', false, false, 1, false, false, false);
                         break;
-                    case 'png':
-                        $pdf->AddPage();
-                        $pdf->Image($filePath, 0, 0, '', '', '', '', '', false, 300, '', false, false, 0, false, false, false);
-                        break;
+                    // case 'png':
+                    //     $pdf->AddPage();
+                    //     $pdf->Image($filePath, 0, 0, '', '', '', '', '', false, 300, '', false, false, 0, false, false, false);
+                    //     break;
                     case 'html':
                         $content = file_get_contents($filePath);
                         $pdf->AddPage();
