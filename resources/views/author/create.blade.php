@@ -295,8 +295,13 @@
         selectedFilesDiv.innerHTML = fileNames;
     }
 
-    document.getElementById('articleForm').addEventListener('submit', function() {
-        // Деактивиране на бутона за изпращане
-        document.getElementById('submitBtn').disabled = true;
-    });
+    // document.getElementById('articleForm').addEventListener('submit', function() {
+    //     // Деактивиране на бутона за изпращане
+    //     document.getElementById('submitBtn').disabled = true;
+    // });
+
+
+
+
+
 </script>
