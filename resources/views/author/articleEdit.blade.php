@@ -159,6 +159,13 @@
                             <input type="text" class="form-control" name="grant_id" id="grant_id"
                                 placeholder="Add Grand ID (Optional)" value="{{$article->grant_id}}">
                         </div>
+
+                        <!-- Admin Accept -->
+                        <div class="mb-3 form-check">
+                            <input type="checkbox" class="form-check-input" id="admin_accept" name="admin_accept" {{ $article->admin_accept ? 'checked' : '' }}>
+                            <label class="form-check-label" for="admin_accept">Admin Accept</label>
+                        </div>
+
                     </div>
                     <hr>
                     {{-- <div class="col-md-12">

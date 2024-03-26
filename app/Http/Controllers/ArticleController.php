@@ -416,6 +416,7 @@ class ArticleController extends Controller
                 if ($request->has('issue_id')) {
                     $article->issue_id = $request->input('issue_id');
                 }
+                $article->admin_accept = $request->has('admin_accept') ? 1 : 0;
                 $article->save();
 
                 $this->articleId = $article->id;

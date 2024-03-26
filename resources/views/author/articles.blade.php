@@ -48,7 +48,12 @@
                                             <td>{{ $article->issue_id }}</td>
                                             <td>
                                                 @if (Auth::check() && Auth::user()->role === 'admin')
-                                                    <a href="{{ route('articles.edit', $article->id) }}" class="btn btn-primary btn-sm">Reviews<i class="fas fa-users"></i></a>
+                                                    @if ($article->admin_accept === 0)
+                                                        <a href="{{ route('articles.edit', $article->id) }}" class="btn btn-primary btn-sm disabled">Reviews<i class="fas fa-users"></i></a>
+                                                    @else
+                                                        <a href="{{ route('articles.edit', $article->id) }}" class="btn btn-primary btn-sm" >Reviews<i class="fas fa-users"></i></a>
+                                                    @endif
+                                               
                                                 @endif
                                                 @if (Auth::user()->role === 'author' && $article->isAccepted)
                                                     <a href="{{ route('articles.articleEdit', $article->id) }}" class="btn btn-warning btn-sm disabled" >Full Accept<i class="fas fa-edit"></i></a>
@@ -58,8 +63,7 @@
                                                     <a href="{{ route('articles.articleEdit', $article->id) }}" class="btn btn-warning btn-sm">Edit<i class="fas fa-edit"></i></a>
                                                 @endif
                                                 <a href="{{ route('review.downolad_files', $article->id) }}" class="btn btn-success btn-sm">Download ZIP<i class="fas fa-download"></i></a>
-                                                <i class="fas fa-clock"></i>
-                                                <a href="{{ route('admin.downolad_summary_pdf', $article->id) }}" class="btn btn-success btn-sm">Download summary PDF<i class="fas fa-download"></i></a>
+                                                <a href="{{ route('admin.downolad_summary_pdf', $article->id) }}" class="btn btn-success btn-sm">Summary PDF<i class="fas fa-download"></i></a>
                                             </td>
                                             
                                             <td>
