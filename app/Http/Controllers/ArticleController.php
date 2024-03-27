@@ -594,16 +594,35 @@ class ArticleController extends Controller
         return view('co_author_accept_thanks_page');
     }
 
+    public function destroy($id)
+    {
+        // Намери артикула, който ще изтрием
+        $article = Article::findOrFail($id);
+        
+        $article->coverLetter()->delete();
+        $article->titlePage()->delete();
+        $article->manuscript()->delete();
+        $article->figures()->delete();
+        $article->tables()->delete();
+        $article->supplementaryFiles()->delete();
+        // Изтрий самия артикул от базата данни
+        $article->delete();
+        
+        // Пренасочи към страницата, където се показват всички артикули,
+        // или към друго място в зависимост от изискванията на вашето приложение
+        return redirect()->route('article.list')->with('success', 'Article deleted successfully');
+    }
+
 
     public function summaryPdfFile(Article $article)
     {
         $pdf = new FPDI(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
         $pdf->SetCreator(PDF_CREATOR);
-        $pdf->SetAuthor('Taner Ahmed');
+        $pdf->SetAuthor('Author');
         $pdf->SetTitle('Document title');
         $pdf->SetSubject('Document subject');
         $pdf->SetKeywords('keyword1, keyword2, keyword3');
-        $pdf->SetHeaderData(PDF_HEADER_LOGO , PDF_HEADER_LOGO_WIDTH, 'Zara Computers', 'by Taner Ahmed zaracomputers.bg');
+        $pdf->SetHeaderData(PDF_HEADER_LOGO , PDF_HEADER_LOGO_WIDTH, '', '');
         $pdf->setHeaderFont(array(PDF_FONT_NAME_MAIN, '', PDF_FONT_SIZE_MAIN));
         $pdf->setFooterFont(array(PDF_FONT_NAME_DATA, '', PDF_FONT_SIZE_DATA));
         $pdf->SetDefaultMonospacedFont(PDF_FONT_MONOSPACED);
@@ -721,7 +740,7 @@ class ArticleController extends Controller
         $pdf->SetDefaultMonospacedFont(PDF_FONT_MONOSPACED);
         $pdf->SetMargins(PDF_MARGIN_LEFT, PDF_MARGIN_TOP, PDF_MARGIN_RIGHT);
         $pdf->SetAutoPageBreak(TRUE, PDF_MARGIN_BOTTOM);
-        $pdf->SetFont('dejavusans', '', 10);
+        $pdf->SetFont('freeserif', '', 10);
         $pdf->AddPage();
 
         $htmlType = '<div style="text-align: center; background-color: #808080; color: #ffffff;">

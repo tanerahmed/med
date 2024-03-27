@@ -44,6 +44,9 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::post('/admin/user/store', [AdminController::class, 'userStore'])->name('admin.users-store');
     Route::delete('/admin/user/delete/{user}', [AdminController::class, 'userDestroy'])->name('admin.users-destroy');
     Route::get('/logs', [LogController::class, 'index'])->name('logs.index');
+
+    Route::delete('/articles/{id}', [ArticleController::class, 'destroy'])->name('articles.destroy');
+
 });
 
 Route::middleware(['auth'])->group(function () {
