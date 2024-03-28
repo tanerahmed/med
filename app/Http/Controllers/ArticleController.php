@@ -375,7 +375,7 @@ class ArticleController extends Controller
     }
 
     private function cutAndReturnOnlyFileName($arr){
-
+        $file_names = [];
         foreach($arr as $val){
             $file_names[] = basename($val->file_path); 
         }
