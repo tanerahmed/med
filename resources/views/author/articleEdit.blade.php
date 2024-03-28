@@ -80,7 +80,10 @@
                     <div class="col-md-6">
                         @if (Auth::user()->role === 'author')
                             <!-- Upload Title Page -->
-                            <div class="mb-3">
+                            <div class="mb-3">                                
+                                @foreach ($fileNames['titlePage'] as $fileName)
+                                <p style="color:burlywood">{{ $fileName}} </p>
+                                @endforeach
                                 <label for="title_pages" class="form-label"><strong>Upload Title Page: </strong><i>(doc,
                                         docx,
                                         LaTeX doc)</i></label>
@@ -92,6 +95,9 @@
 
                             <!-- Manuscript -->
                             <div class="mb-3">
+                                @foreach ($fileNames['manuscript'] as $fileName)
+                                <p style="color:burlywood">{{ $fileName}} </p>
+                                @endforeach
                                 <label for="manuscript" class="form-label"><strong>Upload Manuscript: </strong><i>(doc,
                                         docx,
                                         LaTeX doc)</i></label>
@@ -103,6 +109,9 @@
 
                             <!-- Figures -->
                             <div class="mb-3">
+                                @foreach ($fileNames['figures'] as $fileName)
+                                <p style="color:burlywood">{{ $fileName}} </p>
+                                @endforeach
                                 <label for="figures" class="form-label"><strong>Upload Figures: </strong> <i>(jpg,
                                         tiff)</i></label>
                                 <div id="figures_selected_files"></div>
@@ -113,6 +122,9 @@
 
                             <!-- Tables -->
                             <div class="mb-3">
+                                @foreach ($fileNames['tables'] as $fileName)
+                                <p style="color:burlywood">{{ $fileName}} </p>
+                                @endforeach
                                 <label for="tables" class="form-label"><strong>Upload Tables: </strong><i>(doc,
                                         docx)</i></label>
                                 <div id="tables_selected_files"></div>
@@ -123,6 +135,9 @@
 
                             <!-- Supplementary -->
                             <div class="mb-3">
+                                @foreach ($fileNames['supplementaryFiles'] as $fileName)
+                                <p style="color:burlywood">{{ $fileName}} </p>
+                                @endforeach
                                 <label for="supplementary" class="form-label"><strong>Upload Supplementary:
                                     </strong><i>(doc,
                                         docx, xls, xlsx, pdf, jpg, tiff)</i></label>
@@ -135,6 +150,9 @@
 
                             <!-- Cover Later -->
                             <div class="mb-3">
+                                @foreach ($fileNames['coverLetter'] as $fileName)
+                                <p style="color:burlywood">{{ $fileName}} </p>
+                                @endforeach
                                 <label for="cover_letter" class="form-label"><strong>Upload Cover Later:</strong></label>
                                 <div id="cover_letter_selected_files"></div>
                                 <input type="file" name="cover_letter[]" multiple class="form-control"

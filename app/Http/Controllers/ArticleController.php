@@ -185,7 +185,8 @@ class ArticleController extends Controller
                 // TitlePage
                 if ($request->hasFile('title_pages')) {
                     foreach ($request->file('title_pages') as $file) {
-                        $filePath = $file->store('title_pages/' . $this->articleId, 'public'); // Записва файла в папката storage/app/public/title_pages
+                        // $filePath = $file->store('title_pages/' . $this->articleId, 'public'); // Записва файла в папката storage/app/public/title_pages
+                        $filePath = $file->storeAs('title_pages/' . $this->articleId, $file->getClientOriginalName(), 'public');
 
                         $titlePage = new TitlePage();
                         $titlePage->article_id = $article->id;
@@ -332,6 +333,8 @@ class ArticleController extends Controller
         // Получаване на списъка с поканените рецензенти за съответната статия
         $invitedReviewers = InvitedReviewer::where('article_id', $id)->get();
 
+
+
         // Предайте променливата $article към изгледа за редактиране на статията
         return view('author.edit', compact('article', 'reviewers', 'review', 'invitedReviewers'));
     }
@@ -371,10 +374,26 @@ class ArticleController extends Controller
         }
     }
 
+    private function cutAndReturnOnlyFileName($arr){
+
+        foreach($arr as $val){
+            $file_names[] = basename($val->file_path); 
+        }
+
+        return $file_names;
+    }
+
     public function articleEdit($articleId)
     {
         $article = Article::findOrFail($articleId);
-        return view('author.articleEdit', compact('article'));
+        $fileNames['titlePage'] = $this->cutAndReturnOnlyFileName($article->titlePage);
+        $fileNames['manuscript'] = $this->cutAndReturnOnlyFileName($article->manuscript);
+        $fileNames['figures'] = $this->cutAndReturnOnlyFileName($article->figures);
+        $fileNames['tables'] = $this->cutAndReturnOnlyFileName($article->tables);
+        $fileNames['supplementaryFiles'] = $this->cutAndReturnOnlyFileName($article->supplementaryFiles);
+        $fileNames['coverLetter'] = $this->cutAndReturnOnlyFileName($article->coverLetter);
+
+        return view('author.articleEdit', compact('article', 'fileNames'));
     }
 
     public function articleUpdate(Request $request, $articleId)
@@ -740,7 +759,7 @@ class ArticleController extends Controller
         $pdf->SetDefaultMonospacedFont(PDF_FONT_MONOSPACED);
         $pdf->SetMargins(PDF_MARGIN_LEFT, PDF_MARGIN_TOP, PDF_MARGIN_RIGHT);
         $pdf->SetAutoPageBreak(TRUE, PDF_MARGIN_BOTTOM);
-        $pdf->SetFont('freeserif', '', 10);
+       // $pdf->SetFont('freeserif', '', 10);
         $pdf->AddPage();
 
         $htmlType = '<div style="text-align: center; background-color: #808080; color: #ffffff;">
@@ -752,7 +771,7 @@ class ArticleController extends Controller
 
 
         $htmlAuthors = '';
-        // https://www.facebook.com/taner.ahmed
+        // https://www.facebook.com/taner.ahmed -  създаде този сайт Танер Ахмед
         if ($article->authors->isNotEmpty()) {
             // Генериране на съдържанието за съавторите
             $coauthors_html = '<p><strong>Co-Authors:</strong><br>';
