@@ -275,6 +275,7 @@
 
                     <div class="mb-3 d-flex justify-content-end">
                         <button type="submit" class="btn btn-success" id="submitBtn">Create Article</button>
+
                     </div>
                 </div>
             </form>
@@ -295,13 +296,10 @@
         selectedFilesDiv.innerHTML = fileNames;
     }
 
-    // document.getElementById('articleForm').addEventListener('submit', function() {
-    //     // Деактивиране на бутона за изпращане
-    //     document.getElementById('submitBtn').disabled = true;
-    // });
-
-
-
-
+    document.addEventListener('DOMContentLoaded', function () {
+        document.getElementById('articleForm').addEventListener('submit', function () {
+            document.getElementById('submitBtn').disabled = true; // Деактивирайте бутона след изпращане на формата
+        });
+    });
 
 </script>
