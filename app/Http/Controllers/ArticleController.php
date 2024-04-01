@@ -32,6 +32,8 @@ use Illuminate\Support\Facades\Storage;
 use PhpOffice\PhpWord\Settings;
 use setasign\Fpdi\Tcpdf\Fpdi;
 use TCPDF;
+use PhpOffice\PhpSpreadsheet\IOFactory;
+use PhpOffice\PhpSpreadsheet\Writer\Pdf\Dompdf;
 
 class ArticleController extends Controller
 {
@@ -790,7 +792,7 @@ class ArticleController extends Controller
         $rendererName = Settings::PDF_RENDERER_DOMPDF;
         $rendererLibraryPath = base_path('vendor/dompdf/dompdf');
         Settings::setPdfRenderer($rendererName, $rendererLibraryPath);
-
+        
         foreach ([$article->coverLetter, $article->figures, $article->manuscript, $article->supplementaryFiles, $article->tables, $article->titlePage] as $files) {
             foreach ($files as $file) {
                 $filePath = storage_path('app/public/' . $file->file_path);
@@ -822,7 +824,7 @@ class ArticleController extends Controller
                         break;
                     case 'pdf':
                         $pdf->AddPage();
-                        $pdf->Write(10, 'This is a PDF file');
+                        $pdf->Write(10, '');
                         $pagecount1 = $pdf->setSourceFile($filePath);
                         // Import pages from the source PDF file
                         for ($i = 1; $i <= $pagecount1; $i++) {
@@ -848,6 +850,28 @@ class ArticleController extends Controller
                     //     $pdf->AddPage();
                     //     $pdf->Image($filePath, 0, 0, '', '', '', '', '', false, 300, '', false, false, 0, false, false, false);
                     //     break;
+
+                    case 'xlsx':
+                        $spreadsheet = IOFactory::load($filePath);
+                        $pdfWriter = new Dompdf($spreadsheet);                        
+                        $pdfWriter->save('output.pdf');
+
+                        $pdfFilePath = 'output.pdf'; // Пътят към PDF файла
+
+                        $pdf->AddPage();
+                        $pdf->Write(10, '');
+                        $pagecount1 = $pdf->setSourceFile($pdfFilePath);
+                        // Import pages from the source PDF file
+                        for ($i = 1; $i <= $pagecount1; $i++) {
+                            $tplIdx = $pdf->importPage($i);
+                            $pdf->useTemplate($tplIdx);
+                            if ($i < $pagecount1) {
+                                $pdf->AddPage();
+                            }
+                        }
+
+                        break;
+                    
                     case 'html':
                         $content = file_get_contents($filePath);
                         $pdf->AddPage();
@@ -861,153 +885,6 @@ class ArticleController extends Controller
         // reset pointer to the last page
         $pdf->lastPage();
         $pdf->Output('article_id_#'.$article->id.'.pdf', 'I');
-
-
-        // $pdf = new TCPDF();
-        // $pdf->SetMargins(10, 10, 10);
-        // $pdf->AddPage();
-
-
-        // $pdf->Output('combined_files.pdf', 'I');
-
-
-        // if ($article->manuscript) {
-        //     foreach ($article->manuscript as $value) {
-        //         $filePath = storage_path('app/public/' . $value->file_path);
-        //         $filePath = str_replace('\\', '/', $filePath);
-        //         $contentManuscript = file_get_contents($filePath);
-        //         $pdf->writeHTML($contentManuscript, true, false, true, false, '');
-
-        //         $ext = pathinfo($filePath, PATHINFO_EXTENSION);
-
-        //         switch ($ext) {
-        //             case 'docx':
-        //                 $word_content = file_get_contents($filePath);
-        //                 $word_to_pdf = new \PhpOffice\PhpWord\Writer\PDF\DomPDF();
-        //                 $word_to_pdf->saveFromString($word_content, 'file.pdf');
-        //                 $pdf->Image('file.pdf', 10, 10, 0, 0, '', '', '', true, 150);
-        //                 break;
-        //             case 'xlsx':
-        //                 $excel_content = file_get_contents($filePath);
-        //                 $excel_to_pdf = new \PhpOffice\PhpSpreadsheet\Writer\Pdf\Dompdf();
-        //                 $excel_to_pdf->saveFromString($excel_content, 'file.pdf');
-        //                 $pdf->Image('file.pdf', 10, 10, 0, 0, '', '', '', true, 150);
-        //                 break;
-        //             case 'png':
-        //                 $pdf->Image($filePath, 10, 10, 100, 100);
-        //             default:
-        //                 //
-        //                 break;
-        //         }
-
-        //     }
-        // }
-        // if ($article->supplementaryFiles) {
-        //     foreach ($article->supplementaryFiles as $value) {
-        //         $filePath = storage_path('app/public/' . $value->file_path);
-        //         $filePath = str_replace('\\', '/', $filePath);
-        //         $contentManuscript = file_get_contents($filePath);
-        //         $pdf->writeHTML($contentManuscript, true, false, true, false, '');
-        //         $ext = pathinfo($filePath, PATHINFO_EXTENSION);
-        //         switch ($ext) {
-        //             case 'docx':
-        //                 $word_content = file_get_contents($filePath);
-        //                 $word_to_pdf = new \PhpOffice\PhpWord\Writer\PDF\DomPDF();
-        //                 $word_to_pdf->saveFromString($word_content, 'file.pdf');
-        //                 $pdf->Image('file.pdf', 10, 10, 0, 0, '', '', '', true, 150);
-        //                 break;
-        //             case 'xlsx':
-        //                 $excel_content = file_get_contents($filePath);
-        //                 $excel_to_pdf = new \PhpOffice\PhpSpreadsheet\Writer\Pdf\Dompdf();
-        //                 $excel_to_pdf->saveFromString($excel_content, 'file.pdf');
-        //                 $pdf->Image('file.pdf', 10, 10, 0, 0, '', '', '', true, 150);
-        //                 break;
-        //             case 'png':
-        //                 $pdf->Image($filePath, 10, 10, 100, 100);
-        //             default:
-        //                 //
-        //                 break;
-        //         }
-        //     }
-        // }
-
-        // $pdf->Output('combined_files.pdf', 'I');
-
-
-
-
-
-
-        // if ($article->titlePage) {
-        //     foreach ($article->titlePage as $value) {
-        //         $filePath = storage_path('app/public/' . $value->file_path);
-        //         $filePath = str_replace('\\', '/', $filePath);
-        //        // $contentTitlePage = file_get_contents($filePath);
-
-        //         $phpWord = IOFactory::load($filePath);
-        //         $htmlContent = $phpWord->saveHTML();
-
-        //         $pdf->writeHTML($htmlContent, true, false, true, false, '');
-        //     }
-        // }
-
-        // if ($article->manuscript) {
-        //     foreach ($article->manuscript as $value) {
-        //         $filePath = storage_path('app/public/' . $value->file_path);
-        //         $filePath = str_replace('\\', '/', $filePath);
-        //         $contentManuscript = file_get_contents($filePath);
-        //         $pdf->writeHTML($contentManuscript, true, false, true, false, '');
-        //     }
-        // }
-
-        // if ($article->supplementaryFiles) {
-        //     foreach ($article->supplementaryFiles as $value) {
-        //         $filePath = storage_path('app/public/' . $value->file_path);
-        //         $filePath = str_replace('\\', '/', $filePath);
-        //         $contentSupplementary = file_get_contents($filePath);
-        //         dd($contentSupplementary);
-        //         $pdf->writeHTML($contentSupplementary, true, false, true, false, '');
-        //     }
-        // }
-
-        // if ($article->tables) {
-        //     foreach ($article->tables as $value) {
-        //         $filePath = storage_path('app/public/' . $value->file_path);
-        //         $filePath = str_replace('\\', '/', $filePath);
-        //         $contentTables = file_get_contents($filePath);
-        //         $pdf->writeHTML($contentTables, true, false, true, false, '');
-        //     }
-        // }
-
-        // if ($article->coverLetter) {
-        //     foreach ($article->coverLetter as $value) {
-        //         $filePath = storage_path('app/public/' . $value->file_path);
-        //         $filePath = str_replace('\\', '/', $filePath);
-        //         $contentCoverLetter = file_get_contents($filePath);
-        //         $pdf->writeHTML($contentCoverLetter, true, false, true, false, '');
-        //     }
-        // }
-
-        // if ($article->figures) {
-        //     foreach ($article->figures as $value) {
-        //         $filePath = storage_path('app/public/' . $value->file_path);
-        //         $filePath = str_replace('\\', '/', $filePath);
-        //         $contentFigures = file_get_contents($filePath);
-        //         $pdf->writeHTML($contentFigures, true, false, true, false, '');
-        //     }
-        // }
-
-
-
-
-        // // foreach ($filePaths as $filePath) {
-        // //     $content = file_get_contents($filePath);
-        // //     $pdf->writeHTML($content, true, false, true, false, '');
-        // // }
-
-        // // Генерирайте PDF файла
-        // $pdf->Output($article->id.'.pdf', 'D');
-
     }
 
 
