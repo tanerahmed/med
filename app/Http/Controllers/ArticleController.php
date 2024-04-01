@@ -198,8 +198,7 @@ class ArticleController extends Controller
                 // Manuscript
                 if ($request->hasFile('manuscript')) {
                     foreach ($request->file('manuscript') as $file) {
-                        $filePath = $file->store('manuscripts/' . $this->articleId, 'public');
-
+                        $filePath = $file->storeAs('manuscripts/' . $this->articleId, $file->getClientOriginalName(), 'public');
                         $manuscript = new Manuscript();
                         $manuscript->article_id = $article->id;
                         $manuscript->file_path = $filePath;
@@ -210,8 +209,7 @@ class ArticleController extends Controller
                 // Figures
                 if ($request->hasFile('figures')) {
                     foreach ($request->file('figures') as $file) {
-                        $filePath = $file->store('figures/' . $this->articleId, 'public');
-
+                        $filePath = $file->storeAs('figures/' . $this->articleId, $file->getClientOriginalName(), 'public');
                         $figure = new Figure();
                         $figure->article_id = $article->id;
                         $figure->file_path = $filePath;
@@ -222,8 +220,7 @@ class ArticleController extends Controller
                 // Tables
                 if ($request->hasFile('tables')) {
                     foreach ($request->file('tables') as $file) {
-                        $filePath = $file->store('tables/' . $this->articleId, 'public');
-
+                        $filePath = $file->storeAs('tables/' . $this->articleId, $file->getClientOriginalName(), 'public');
                         $table = new Table();
                         $table->article_id = $article->id;
                         $table->file_path = $filePath;
@@ -234,8 +231,7 @@ class ArticleController extends Controller
                 // Supplementary Files
                 if ($request->hasFile('supplementary')) {
                     foreach ($request->file('supplementary') as $file) {
-                        $filePath = $file->store('supplementary_files/' . $this->articleId, 'public');
-
+                        $filePath = $file->storeAs('supplementary_files/' . $this->articleId, $file->getClientOriginalName(), 'public');
                         $supplementaryFile = new SupplementaryFile();
                         $supplementaryFile->article_id = $article->id;
                         $supplementaryFile->file_path = $filePath;
@@ -246,8 +242,7 @@ class ArticleController extends Controller
                 // Cover Letter
                 if ($request->hasFile('cover_letter')) {
                     foreach ($request->file('cover_letter') as $file) {
-                        $filePath = $file->store('cover_letters/' . $this->articleId, 'public');
-
+                        $filePath = $file->storeAs('cover_letters/' . $this->articleId, $file->getClientOriginalName(), 'public');
                         $coverLetter = new CoverLetter();
                         $coverLetter->article_id = $article->id;
                         $coverLetter->file_path = $filePath;
@@ -449,7 +444,7 @@ class ArticleController extends Controller
                 if ($request->hasFile('title_pages')) {
                     TitlePage::where('article_id', $articleId)->delete();
                     foreach ($request->file('title_pages') as $file) {
-                        $filePath = $file->store('title_pages/' . $this->articleId, 'public');
+                        $filePath = $file->storeAs('title_pages/' . $this->articleId, $file->getClientOriginalName(), 'public');                        
                         $titlePage = new TitlePage();
                         $titlePage->article_id = $article->id;
                         $titlePage->file_path = $filePath;
@@ -460,8 +455,7 @@ class ArticleController extends Controller
                 if ($request->hasFile('title_pages')) {
                     Manuscript::where('article_id', $articleId)->delete();
                     foreach ($request->file('manuscript') as $file) {
-                        $filePath = $file->store('manuscripts/' . $this->articleId, 'public');
-
+                        $filePath = $file->storeAs('manuscripts/' . $this->articleId, $file->getClientOriginalName(), 'public');
                         $manuscript = new Manuscript();
                         $manuscript->article_id = $article->id;
                         $manuscript->file_path = $filePath;
@@ -473,8 +467,7 @@ class ArticleController extends Controller
                 if ($request->hasFile('figures')) {
                     Figure::where('article_id', $articleId)->delete();
                     foreach ($request->file('figures') as $file) {
-                        $filePath = $file->store('figures/' . $this->articleId, 'public');
-
+                        $filePath = $file->storeAs('figures/' . $this->articleId, $file->getClientOriginalName(), 'public');
                         $figure = new Figure();
                         $figure->article_id = $article->id;
                         $figure->file_path = $filePath;
@@ -486,8 +479,7 @@ class ArticleController extends Controller
                 if ($request->hasFile('tables')) {
                     Table::where('article_id', $articleId)->delete();
                     foreach ($request->file('tables') as $file) {
-                        $filePath = $file->store('tables/' . $this->articleId, 'public');
-
+                        $filePath = $file->storeAs('tables/' . $this->articleId, $file->getClientOriginalName(), 'public');
                         $table = new Table();
                         $table->article_id = $article->id;
                         $table->file_path = $filePath;
@@ -499,8 +491,7 @@ class ArticleController extends Controller
                 if ($request->hasFile('supplementary')) {
                     SupplementaryFile::where('article_id', $articleId)->delete();
                     foreach ($request->file('supplementary') as $file) {
-                        $filePath = $file->store('supplementary_files/' . $this->articleId, 'public');
-
+                        $filePath = $file->storeAs('supplementary_files/' . $this->articleId, $file->getClientOriginalName(), 'public');
                         $supplementaryFile = new SupplementaryFile();
                         $supplementaryFile->article_id = $article->id;
                         $supplementaryFile->file_path = $filePath;
@@ -512,8 +503,7 @@ class ArticleController extends Controller
                 if ($request->hasFile('cover_letter')) {
                     CoverLetter::where('article_id', $articleId)->delete();
                     foreach ($request->file('cover_letter') as $file) {
-                        $filePath = $file->store('cover_letters/' . $this->articleId, 'public');
-
+                        $filePath = $file->storeAs('cover_letter/' . $this->articleId, $file->getClientOriginalName(), 'public');
                         $coverLetter = new CoverLetter();
                         $coverLetter->article_id = $article->id;
                         $coverLetter->file_path = $filePath;
