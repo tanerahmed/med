@@ -23,6 +23,7 @@ use App\Mail\CoAuthorRequestEmail;
 use App\Mail\ReviewRequestEmail;
 use App\Mail\AdminGetArticleCreatedEmail;
 use App\Mail\ArticleEditEmail;
+use App\Mail\ForceReviewerEmail;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -338,6 +339,7 @@ class ArticleController extends Controller
 
     public function update(Request $request, $id)
     {
+
         // Валидация на данните от формата за редактиране на статия
         $request->validate([
             // Добавете валидацията според вашите изисквания
@@ -360,10 +362,36 @@ class ArticleController extends Controller
                 'reviewer_id_2' => $request->input('reviewer_id_2'),
                 'reviewer_id_3' => $request->input('reviewer_id_3'),
             ]);
+
+            $subject = 'Force added Reviewer for Article #' . $id;
+
+            $reviewerIds = [
+                $request->input('reviewer_id_1'),
+                $request->input('reviewer_id_2'),
+                $request->input('reviewer_id_3'),
+            ];
+
+            foreach ($reviewerIds as $reviewerId) {
+                if ($reviewerId) {
+                    $reviewer = User::findOrFail($reviewerId);
+                    $body = [
+                        'name' => $reviewer->name,
+                        'article' => $id,
+                    ];
+                    Mail::to($reviewer->email)->send(new ForceReviewerEmail($subject, $body));
+                    // Activity LOG
+                    activity()
+                        ->performedOn($review)
+                        ->withProperties(['force_reviewer_msg' => "Admin added $reviewer->name to be reviewer on article #$id"])
+                        ->log('force reviewer');
+                }
+            }
+
             $notification = array(
                 'message' => 'Review updated successfully.',
                 'alert-type' => 'success'
             );
+
 
             return redirect()->route('article.list')->with($notification);
         } else {
@@ -371,10 +399,11 @@ class ArticleController extends Controller
         }
     }
 
-    private function cutAndReturnOnlyFileName($arr){
+    private function cutAndReturnOnlyFileName($arr)
+    {
         $file_names = [];
-        foreach($arr as $val){
-            $file_names[] = basename($val->file_path); 
+        foreach ($arr as $val) {
+            $file_names[] = basename($val->file_path);
         }
 
         return $file_names;
@@ -430,12 +459,12 @@ class ArticleController extends Controller
                     $article->grant_id = $request->input('grant_id');
                 }
                 // за да можем да зададем issue _Id ние трябва да имаме SATUS == ACCEPTED
-                if( $article->status == 'accepted'){
+                if ($article->status == 'accepted') {
                     if ($request->has('issue_id')) {
                         $article->issue_id = $request->input('issue_id');
                     }
                 }
-                
+
                 $article->admin_accept = $request->has('admin_accept') ? 1 : 0;
                 $article->save();
 
@@ -446,7 +475,7 @@ class ArticleController extends Controller
                 if ($request->hasFile('title_pages')) {
                     TitlePage::where('article_id', $articleId)->delete();
                     foreach ($request->file('title_pages') as $file) {
-                        $filePath = $file->storeAs('title_pages/' . $this->articleId, $file->getClientOriginalName(), 'public');                        
+                        $filePath = $file->storeAs('title_pages/' . $this->articleId, $file->getClientOriginalName(), 'public');
                         $titlePage = new TitlePage();
                         $titlePage->article_id = $article->id;
                         $titlePage->file_path = $filePath;
@@ -609,7 +638,7 @@ class ArticleController extends Controller
     {
         // Намери артикула, който ще изтрием
         $article = Article::findOrFail($id);
-        
+
         $article->coverLetter()->delete();
         $article->titlePage()->delete();
         $article->manuscript()->delete();
@@ -618,7 +647,7 @@ class ArticleController extends Controller
         $article->supplementaryFiles()->delete();
         // Изтрий самия артикул от базата данни
         $article->delete();
-        
+
         // Пренасочи към страницата, където се показват всички артикули,
         // или към друго място в зависимост от изискванията на вашето приложение
         return redirect()->route('article.list')->with('success', 'Article deleted successfully');
@@ -633,7 +662,7 @@ class ArticleController extends Controller
         $pdf->SetTitle('Document title');
         $pdf->SetSubject('Document subject');
         $pdf->SetKeywords('keyword1, keyword2, keyword3');
-        $pdf->SetHeaderData(PDF_HEADER_LOGO , PDF_HEADER_LOGO_WIDTH, '', '');
+        $pdf->SetHeaderData(PDF_HEADER_LOGO, PDF_HEADER_LOGO_WIDTH, '', '');
         $pdf->setHeaderFont(array(PDF_FONT_NAME_MAIN, '', PDF_FONT_SIZE_MAIN));
         $pdf->setFooterFont(array(PDF_FONT_NAME_DATA, '', PDF_FONT_SIZE_DATA));
         $pdf->SetDefaultMonospacedFont(PDF_FONT_MONOSPACED);
@@ -654,12 +683,12 @@ class ArticleController extends Controller
 
         $pdf->writeHTML("<hr>");
 
-        $abstract_html = '<p><h2>Abstract:</h2><br>'.$article->abstract.'</p><br>';
+        $abstract_html = '<p><h2>Abstract:</h2><br>' . $article->abstract . '</p><br>';
         $pdf->writeHTML($abstract_html);
 
         $pdf->writeHTML("<hr>");
 
-        $coauthors_html = '<p><h2>Keywords:</h2>'.$article->keywords.'</p><br>';
+        $coauthors_html = '<p><h2>Keywords:</h2>' . $article->keywords . '</p><br>';
         $pdf->writeHTML($coauthors_html);
 
         $rendererName = Settings::PDF_RENDERER_DOMPDF;
@@ -733,7 +762,7 @@ class ArticleController extends Controller
         }
         // reset pointer to the last page
         $pdf->lastPage();
-        $pdf->Output('article_id_#'.$article->id.'.pdf', 'I');
+        $pdf->Output('article_id_#' . $article->id . '.pdf', 'I');
 
     }
     public function downloadArticlePDFFiles(Article $article)
@@ -745,13 +774,13 @@ class ArticleController extends Controller
         $pdf->SetTitle('Document title');
         $pdf->SetSubject('Document subject');
         $pdf->SetKeywords('keyword1, keyword2, keyword3');
-        $pdf->SetHeaderData(PDF_HEADER_LOGO , PDF_HEADER_LOGO_WIDTH, 'Zara Computers', 'by Taner Ahmed zaracomputers.bg');
+        $pdf->SetHeaderData(PDF_HEADER_LOGO, PDF_HEADER_LOGO_WIDTH, 'Zara Computers', 'by Taner Ahmed zaracomputers.bg');
         $pdf->setHeaderFont(array(PDF_FONT_NAME_MAIN, '', PDF_FONT_SIZE_MAIN));
         $pdf->setFooterFont(array(PDF_FONT_NAME_DATA, '', PDF_FONT_SIZE_DATA));
         $pdf->SetDefaultMonospacedFont(PDF_FONT_MONOSPACED);
         $pdf->SetMargins(PDF_MARGIN_LEFT, PDF_MARGIN_TOP, PDF_MARGIN_RIGHT);
         $pdf->SetAutoPageBreak(TRUE, PDF_MARGIN_BOTTOM);
-       // $pdf->SetFont('freeserif', '', 10);
+        // $pdf->SetFont('freeserif', '', 10);
         $pdf->AddPage();
 
         $htmlType = '<div style="text-align: center; background-color: #808080; color: #ffffff;">
@@ -768,7 +797,7 @@ class ArticleController extends Controller
             // Генериране на съдържанието за съавторите
             $coauthors_html = '<p><strong>Co-Authors:</strong><br>';
             foreach ($article->authors as $author) {
-                $coauthors_html .= $author->first_name . ' '. $author->family_name . '<br>';
+                $coauthors_html .= $author->first_name . ' ' . $author->family_name . '<br>';
             }
             $coauthors_html .= '</p>';
 
@@ -781,18 +810,18 @@ class ArticleController extends Controller
 
         $pdf->writeHTML("<hr>");
 
-        $abstract_html = '<p><h2>Abstract:</h2><br>'.$article->abstract.'</p><br>';
+        $abstract_html = '<p><h2>Abstract:</h2><br>' . $article->abstract . '</p><br>';
         $pdf->writeHTML($abstract_html);
 
         $pdf->writeHTML("<hr>");
 
-        $coauthors_html = '<p><h2>Keywords:</h2>'.$article->keywords.'</p><br>';
+        $coauthors_html = '<p><h2>Keywords:</h2>' . $article->keywords . '</p><br>';
         $pdf->writeHTML($coauthors_html);
 
         $rendererName = Settings::PDF_RENDERER_DOMPDF;
         $rendererLibraryPath = base_path('vendor/dompdf/dompdf');
         Settings::setPdfRenderer($rendererName, $rendererLibraryPath);
-        
+
         foreach ([$article->coverLetter, $article->figures, $article->manuscript, $article->supplementaryFiles, $article->tables, $article->titlePage] as $files) {
             foreach ($files as $file) {
                 $filePath = storage_path('app/public/' . $file->file_path);
@@ -839,7 +868,7 @@ class ArticleController extends Controller
                     case 'jpg':
                         $pdf->AddPage();
                         $pdf->SetXY(20, 20);
-                        $pdf->Image($filePath, '', '', 100, 100, '', '', 'T', false, 300, '', false, false, 1, false, false, false);                       
+                        $pdf->Image($filePath, '', '', 100, 100, '', '', 'T', false, 300, '', false, false, 1, false, false, false);
                         break;
                     case 'jpeg':
                         $pdf->AddPage();
@@ -853,7 +882,7 @@ class ArticleController extends Controller
 
                     case 'xlsx':
                         $spreadsheet = IOFactory::load($filePath);
-                        $pdfWriter = new Dompdf($spreadsheet);                        
+                        $pdfWriter = new Dompdf($spreadsheet);
                         $pdfWriter->save('output.pdf');
 
                         $pdfFilePath = 'output.pdf'; // Пътят към PDF файла
@@ -871,7 +900,7 @@ class ArticleController extends Controller
                         }
 
                         break;
-                    
+
                     case 'html':
                         $content = file_get_contents($filePath);
                         $pdf->AddPage();
@@ -884,7 +913,7 @@ class ArticleController extends Controller
         }
         // reset pointer to the last page
         $pdf->lastPage();
-        $pdf->Output('article_id_#'.$article->id.'.pdf', 'I');
+        $pdf->Output('article_id_#' . $article->id . '.pdf', 'I');
     }
 
 

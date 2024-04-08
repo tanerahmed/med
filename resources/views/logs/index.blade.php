@@ -19,7 +19,7 @@
                                         <th>ID</th>
                                         <th>Date</th>
                                         <th>Causer</th>
-                                        <th>Subject</th>
+                                        {{-- <th>Subject</th> --}}
                                         <th>Description</th>
                                         <th>Properties</th>
 
@@ -31,7 +31,7 @@
                                             <td>{{ $log->id }}</td>
                                             <td>{{ $log->created_at }}</td>
                                             <td>{{ optional($log->causer)->name }}</td>
-                                            <td>{{ $log->subject_type }}</td>
+                                            {{-- <td>{{ $log->subject_type }}</td> --}}
                                             <td>{{ $log->description }}</td>
                                             <td>
                                                 {{-- User --}}
@@ -70,6 +70,9 @@
                                                     <b>There is a problem with create XML file for Article ID {{ $log->properties['xmlFIleError'] }}</b>
                                                 @endif
 
+                                                @if (isset($log->properties['force_reviewer_msg']))
+                                                    {{ $log->properties['force_reviewer_msg'] }}
+                                                @endif
 
 
                                                 @if (isset($log->properties['old']))
