@@ -61,10 +61,10 @@
                                                     <b>{{ $log->properties['rating'] }} </b>
                                                 @endif
                                                 @if (isset($log->properties['approveReviewRequestArticleId']))
-                                                    <b>Article ID {{ $log->properties['approveReviewRequestArticleId'] }}</b> -
+                                                    {{ $log->properties['approveReviewRequestArticleId'] }} 
                                                 @endif
                                                 @if (isset($log->properties['rejectReviewRequest']))
-                                                    <b>Article ID {{ $log->properties['rejectReviewRequest'] }}</b> -
+                                                    {{ $log->properties['rejectReviewRequest'] }}
                                                 @endif
                                                 @if (isset($log->properties['xmlFIleError']))
                                                     <b>There is a problem with create XML file for Article ID {{ $log->properties['xmlFIleError'] }}</b>

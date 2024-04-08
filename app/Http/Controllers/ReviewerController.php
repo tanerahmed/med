@@ -182,7 +182,7 @@ class ReviewerController extends Controller
         }
 
         $subject = "Review Article #" . $articleId;
-        if (!empty ($filePath)) {
+        if (!empty($filePath)) {
             Mail::to($article->user->email)->send(new ReviewArticleEmail($subject, $body, $filePath));
         } else {
             Mail::to($article->user->email)->send(new ReviewArticleEmail($subject, $body));
@@ -261,6 +261,12 @@ class ReviewerController extends Controller
                 }
             }
             $review->save();
+
+            // Activity LOG
+            activity()
+                ->performedOn($review)
+                ->withProperties(['approveReviewRequestArticleId' => "$user->email accepet to be reviwer on article id # ".$review->article->id])
+                ->log('approve review'); 
         }
 
         // Проверяваме ако имаме запис в дадения Ревювър само тогава пращаме имейли и записваме в логовете
@@ -277,11 +283,6 @@ class ReviewerController extends Controller
             // send to  admin
             Mail::to('superuser.blmprime@gmail.com')->send(new UserApproveReviewRequestEmail($subject, $body));
 
-            // Activity LOG
-            activity()
-                ->performedOn($review)
-                ->withProperties(['approveReviewRequestArticleId' => $review->article->id])
-                ->log('approve review'); // action create, edit, delete
         }
         $notification = array(
             'message' => 'You approve review request successfully.',
@@ -309,8 +310,8 @@ class ReviewerController extends Controller
         // Activity LOG
         activity()
             ->performedOn($review)
-            ->withProperties(['rejectReviewRequest' => $review->article->id])
-            ->log('reject review'); // action create, edit, delete
+            ->withProperties(['rejectReviewRequest' => "$user->email rejected to be reviwer on article id # ".$review->article->id])
+            ->log('reject review'); 
 
         $subject = "Reviwer rejected";
         $body['reviewer'] = $user->name;
