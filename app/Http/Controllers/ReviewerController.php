@@ -170,6 +170,12 @@ class ReviewerController extends Controller
         }
         $review->save();
 
+        // Activity LOG
+        activity()
+            ->withProperties(['review' => "$user->email raited article #$articleId with $rating"])
+            ->log('reviwe article');
+
+
         $acceptedCount = 0;
         if ($review->rating_1 === 'accepted') {
             $acceptedCount++;
@@ -200,6 +206,11 @@ class ReviewerController extends Controller
             // send email full acceot
             Mail::to($article->user->email)->send(new FullAcceptArticleEmail($subject, $body));
 
+            // Activity LOG
+            activity()
+                ->withProperties(['fullAccept' => "Article #$articleId is FULL ACCEPT!"])
+                ->log('article full accept');
+
 
             // Проверка на резултата и връщане на пренасочване или съобщение за грешка
             if ($response->getStatusCode() === 200) {
@@ -207,13 +218,6 @@ class ReviewerController extends Controller
             }
         }
 
-
-
-        // Activity LOG
-        activity()
-            ->performedOn($review)
-            ->withProperties(['rating' => $rating, 'article_id' => $article->id])
-            ->log('raited');
 
         $notification = array(
             'message' => 'You reviewd article successfully.',
@@ -265,8 +269,8 @@ class ReviewerController extends Controller
             // Activity LOG
             activity()
                 ->performedOn($review)
-                ->withProperties(['approveReviewRequestArticleId' => "$user->email accepet to be reviwer on article id # ".$review->article->id])
-                ->log('approve review'); 
+                ->withProperties(['approveReviewRequestArticleId' => "$user->email accepet to be reviwer on article id # " . $review->article->id])
+                ->log('approve review');
         }
 
         // Проверяваме ако имаме запис в дадения Ревювър само тогава пращаме имейли и записваме в логовете
@@ -310,8 +314,8 @@ class ReviewerController extends Controller
         // Activity LOG
         activity()
             ->performedOn($review)
-            ->withProperties(['rejectReviewRequest' => "$user->email rejected to be reviwer on article id # ".$review->article->id])
-            ->log('reject review'); 
+            ->withProperties(['rejectReviewRequest' => "$user->email rejected to be reviwer on article id #" . $review->article->id])
+            ->log('reject review');
 
         $subject = "Reviwer rejected";
         $body['reviewer'] = $user->name;

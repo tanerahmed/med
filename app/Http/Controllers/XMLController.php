@@ -116,14 +116,16 @@ class XMLController extends Controller
             $xmlFile->article_id = $article->id;
             $xmlFile->save();
 
-
-            // Activity LOG -  пише директно в модела
+            // Activity LOG
+            activity()
+                ->withProperties(['xmlFIleCreate' => "XML file for article #$article->id was created successfully"])
+                ->log('XML file create');
+            
             return response()->json(['status' => 'success', 'message' => 'XML file created successfully']);
         } catch (\Exception $e) {
             // Activity LOG
             activity()
-                ->performedOn(new XMLFile()) // model name
-                ->withProperties(['xmlFIleError' => $article->id])
+                ->withProperties(['xmlFIleError' => "There is a problem with creating XML file for Article # $article->id"])
                 ->log('XML file error');
             
             // При хвърлени изключения хващаме грешката и връщаме грешка със статус 500

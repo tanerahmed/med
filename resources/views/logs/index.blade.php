@@ -44,30 +44,51 @@
                                                 @if (isset($log->properties['attributes']['role']))
                                                     Role: <b>{{ $log->properties['attributes']['role'] }} </b>
                                                 @endif
+
                                                 {{-- Article --}}
-                                                @if (isset($log->properties['attributes']['id']))
-                                                    Article ID: <b>{{ $log->properties['attributes']['id'] }} </b>
+                                                @if (isset($log->properties['createArticle']))
+                                                    {{ $log->properties['createArticle'] }}
                                                 @endif
-                                                @if (isset($log->properties['attributes']['user_id']))
-                                                    Author ID: <b>{{ $log->properties['attributes']['user_id'] }} </b>
+                                                @if (isset($log->properties['updateArticle']))
+                                                    {{ $log->properties['updateArticle'] }}
                                                 @endif
+                                                @if (isset($log->properties['deleteArticle']))
+                                                    {{ $log->properties['deleteArticle'] }}
+                                                @endif
+
+                                                {{-- sendEmailForReviewRequest --}}
+                                                @if (isset($log->properties['sendEmailForReviewRequest']))
+                                                    {{ $log->properties['sendEmailForReviewRequest'] }}
+                                                @endif
+                                                {{-- coAuthorApprove --}}
+                                                {{-- @if (isset($log->properties['coAuthorApprove']))
+                                                    {{ $log->properties['coAuthorApprove'] }} 
+                                                @endif --}}
+
                                                 {{-- Co Author --}}
                                                 @if (isset($log->properties['attributes']['contact_email']))
                                                     Email: <b>{{ $log->properties['attributes']['contact_email'] }}
                                                     </b>
                                                 @endif
-                                                @if (isset($log->properties['rating']))
-                                                    <b>Article ID {{ $log->properties['article_id'] }}</b> -
-                                                    <b>{{ $log->properties['rating'] }} </b>
+
+                                                {{-- review --}}
+                                                @if (isset($log->properties['review']))
+                                                    {{ $log->properties['review'] }}
+                                                @endif
+                                                @if (isset($log->properties['fullAccept']))
+                                                    {{ $log->properties['fullAccept'] }}
                                                 @endif
                                                 @if (isset($log->properties['approveReviewRequestArticleId']))
-                                                    {{ $log->properties['approveReviewRequestArticleId'] }} 
+                                                    {{ $log->properties['approveReviewRequestArticleId'] }}
                                                 @endif
                                                 @if (isset($log->properties['rejectReviewRequest']))
                                                     {{ $log->properties['rejectReviewRequest'] }}
                                                 @endif
+                                                @if (isset($log->properties['xmlFIleCreate']))
+                                                        {{ $log->properties['xmlFIleCreate'] }}
+                                                @endif
                                                 @if (isset($log->properties['xmlFIleError']))
-                                                    <b>There is a problem with create XML file for Article ID {{ $log->properties['xmlFIleError'] }}</b>
+                                                        {{ $log->properties['xmlFIleError'] }}
                                                 @endif
 
                                                 @if (isset($log->properties['force_reviewer_msg']))

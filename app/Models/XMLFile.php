@@ -11,7 +11,8 @@ use Spatie\Activitylog\LogOptions;
 
 class XMLFile extends Model
 {
-    use HasFactory, LogsActivity;
+    use HasFactory; 
+    // LogsActivity;
 
     protected $table = 'xml_files';
     protected $fillable = [
@@ -20,11 +21,11 @@ class XMLFile extends Model
         'article_id',
     ];
 
-    public function getActivitylogOptions(): LogOptions
-    {
-        return LogOptions::defaults()
-        ->logOnly(['id', 'article_id', 'filename']);
-    }
+    // public function getActivitylogOptions(): LogOptions
+    // {
+    //     return LogOptions::defaults()
+    //     ->logOnly(['id', 'article_id', 'filename']);
+    // }
 
     public function article()
     {

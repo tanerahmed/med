@@ -2,17 +2,17 @@
 <article>
   <specialty>Урология</specialty>
   <scientific_area>дамска урология</scientific_area>
-  <title>This is the title111112222333555</title>
+  <title>This is the 000</title>
   <abstract>This is the title11111222244442222222222222222222222</abstract>
   <ObjectList>
     <Object Type="keyword">
-      <Param Name="value">1111</Param>
+      <Param Name="value">eye</Param>
     </Object>
     <Object Type="keyword">
-      <Param Name="value"> 2222</Param>
+      <Param Name="value"> brain</Param>
     </Object>
     <Object Type="keyword">
-      <Param Name="value"> 333333</Param>
+      <Param Name="value"> shoulders</Param>
     </Object>
   </ObjectList>
   <funding_name>rrrrrr</funding_name>

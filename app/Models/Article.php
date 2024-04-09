@@ -11,7 +11,8 @@ use Spatie\Activitylog\LogOptions;
 
 class Article extends Model
 {
-    use HasFactory, LogsActivity;
+    use HasFactory ;
+    // use LogsActivity;
 
     protected $fillable = [
         'type',
@@ -24,11 +25,11 @@ class Article extends Model
         'grant_id',
     ];
 
-    public function getActivitylogOptions(): LogOptions
-    {
-        return LogOptions::defaults()
-        ->logOnly(['id', 'user_id', 'title']);
-    }
+    // public function getActivitylogOptions(): LogOptions
+    // {
+    //     return LogOptions::defaults()
+    //     ->logOnly(['id', 'user_id', 'title']);
+    // }
     public function user()
     {
         return $this->belongsTo(User::class);

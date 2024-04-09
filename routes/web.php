@@ -45,8 +45,6 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::delete('/admin/user/delete/{user}', [AdminController::class, 'userDestroy'])->name('admin.users-destroy');
     Route::get('/logs', [LogController::class, 'index'])->name('logs.index');
 
-    Route::delete('/articles/{id}', [ArticleController::class, 'destroy'])->name('articles.destroy');
-
 });
 
 Route::middleware(['auth'])->group(function () {
@@ -74,7 +72,7 @@ Route::middleware(['auth'])->group(function () {
 
     // Author
     Route::get('/author/dashboard', [AuthorController::class, 'AuthorDashboard'])->middleware('auth', 'role:author')->name('author.dashboard');
-
+    Route::delete('/articles/{id}', [ArticleController::class, 'destroy'])->name('articles.destroy');
 
     // Reviewer 
     Route::get('/reviewer/dashboard',   [ReviewerController::class, 'ReviewerDashboard'])->name('reviewer.dashboard');

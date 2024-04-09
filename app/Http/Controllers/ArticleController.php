@@ -286,6 +286,7 @@ class ArticleController extends Controller
                     'alert-type' => 'success'
                 );
 
+
             }); // transaction
         } catch (Exception $e) {
 
@@ -296,6 +297,11 @@ class ArticleController extends Controller
 
             return back()->with($notification);
         }
+
+        // Activity LOG
+        activity()
+            ->withProperties(['createArticle' => "Author $user->email create article with id #$this->articleId"])
+            ->log('create article');
 
 
         // Send Email Co Authors
@@ -336,7 +342,8 @@ class ArticleController extends Controller
         // Предайте променливата $article към изгледа за редактиране на статията
         return view('author.edit', compact('article', 'reviewers', 'review', 'invitedReviewers'));
     }
-
+    
+    // Update - FORCE ADDED REVIWER
     public function update(Request $request, $id)
     {
 
@@ -550,6 +557,11 @@ class ArticleController extends Controller
             ];
             return back()->with($notification);
         }
+        // Activity LOG
+        activity()
+            ->withProperties(['updateArticle' => "Author $user->email update article with id #$this->articleId"])
+            ->log('update article');
+
 
         // Send Email to Admin 
         $subject = "Edit Article : " . $this->articleTitle;
@@ -607,6 +619,11 @@ class ArticleController extends Controller
 
                         // Запазваме информация за поканения рецензент в таблицата
                         InvitedReviewer::saveInvitedReviewer($id, $user->id);
+
+                        // Activity LOG
+                        activity()
+                            ->withProperties(['sendEmailForReviewRequest' => "$user->email got email for review request on article id #$id"])
+                            ->log('sent email review request');
                     }
                 }
             }
@@ -631,6 +648,11 @@ class ArticleController extends Controller
         $author->approved = true;
         $author->save();
 
+        // // Activity LOG
+        // activity()
+        //     ->withProperties(['coAuthorApprove' => "$coAuthorEmail approve to be Co Author on article #$articleId"])
+        //     ->log('Co Author approve');
+
         return view('co_author_accept_thanks_page');
     }
 
@@ -647,6 +669,13 @@ class ArticleController extends Controller
         $article->supplementaryFiles()->delete();
         // Изтрий самия артикул от базата данни
         $article->delete();
+
+        $user = Auth::user();
+
+        // Activity LOG
+        activity()
+            ->withProperties(['deleteArticle' => "$user->email deleted article id #$id"])
+            ->log('delete article');
 
         // Пренасочи към страницата, където се показват всички артикули,
         // или към друго място в зависимост от изискванията на вашето приложение
