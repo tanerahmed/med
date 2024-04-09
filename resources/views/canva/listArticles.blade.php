@@ -1,7 +1,7 @@
 @extends('canva.home')
 @section('content')
     <!-- Page Title
-              ============================================= -->
+                  ============================================= -->
     <section class="page-title bg-transparent">
         <div class="container">
             <div class="page-title-row">
@@ -22,18 +22,18 @@
     </section><!-- .page-title end -->
 
     <!-- Content
-              ============================================= -->
+                  ============================================= -->
     <section id="content">
         <div class="content-wrap">
             <div class="container">
 
                 <div class="row gx-5 col-mb-80">
                     <!-- Post Content
-                  ============================================= -->
+                      ============================================= -->
                     <main class="postcontent col-lg-9 order-lg-last">
 
                         <!-- Posts
-                   ============================================= -->
+                       ============================================= -->
                         <div id="posts" class="row gutter-40">
                             @if ($articles->count())
                                 @foreach ($articles as $article)
@@ -42,11 +42,13 @@
                                             <div class="col-md-4">
                                                 <div class="entry-image">
                                                     <a href={{ route('canva.showArticle', $article->id) }}>
-                                                        @if($article->figures->count() > 0)
-                                                        <img src="{{ asset('storage/' . $article->figures[0]->file_path) }}" alt="" style="width: 200px !important;">
-                                                    @else
-                                                        <img src="{{ asset('storage/no-img.jpg') }}" alt="Default Image" style="width: 200px !important;">
-                                                    @endif
+                                                        @if ($article->figures->count() > 0)
+                                                            <img src="{{ asset('storage/' . $article->figures[0]->file_path) }}"
+                                                                alt="" style="width: 200px !important;">
+                                                        @else
+                                                            <img src="{{ asset('storage/no-img.jpg') }}" alt="Default Image"
+                                                                style="width: 200px !important;">
+                                                        @endif
                                                     </a>
                                                 </div>
                                             </div>
@@ -78,7 +80,10 @@
                                                             @endif
                                                         @endforeach
                                                         <li>
-                                                            <a href="{{ route('admin.downolad_summary_pdf', $article->id) }}"><button type="button" class="btn btn-success btn-sm">PDF</button></a>
+                                                            <a
+                                                                href="{{ route('admin.downolad_summary_pdf', $article->id) }}"><button
+                                                                    type="button"
+                                                                    class="btn btn-success btn-sm">PDF</button></a>
                                                         </li>
                                                     </ul>
                                                 </div>
@@ -100,28 +105,24 @@
                         </div><!-- #posts end -->
 
                     </main><!-- .postcontent end -->
-
-                    <!-- Sidebar
-                  ============================================= -->
-                    <aside class="sidebar col-lg-3">
-                        <div class="sidebar-widgets-wrap">
-
-                            <div class="widget">
-
-                                <h4>Specialty Filtre</h4>
-                                <div class="tagcloud">
-                                    <a href="{{ route('canva.listArticlesBySpecialty', 'УНГ') }}"
-                                        class="{{ $activeSpecialty === 'УНГ' ? 'active' : '' }}">УНГ</a>
-                                    <a href="{{ route('canva.listArticlesBySpecialty', 'Урология') }}"
-                                        class="{{ $activeSpecialty === 'Урология' ? 'active' : '' }}">Урология</a>
+                    @if ($articles->count())
+                        <!-- Sidebar
+                      ============================================= -->
+                        <aside class="sidebar col-lg-3">
+                            <div class="sidebar-widgets-wrap">
+                                <div class="widget">
+                                    <h4>Specialty Filtre</h4>
+                                    <div class="tagcloud">
+                                        <a href="{{ route('canva.listArticlesBySpecialty', 'УНГ') }}"
+                                            class="{{ $activeSpecialty === 'УНГ' ? 'active' : '' }}">УНГ</a>
+                                        <a href="{{ route('canva.listArticlesBySpecialty', 'Урология') }}"
+                                            class="{{ $activeSpecialty === 'Урология' ? 'active' : '' }}">Урология</a>
+                                    </div>
                                 </div>
-
                             </div>
-
-                        </div>
-                    </aside><!-- .sidebar end -->
+                        </aside><!-- .sidebar end -->
+                    @endif
                 </div>
-
             </div>
         </div>
     </section><!-- #content end -->
