@@ -13,7 +13,9 @@
                 <div class="card">
                     <div class="card-body">
                         <div class="table-responsive">
-                            <table class="table table-hover mb-0">
+                            {{-- <table class="table table-hover mb-0"> --}}
+                                <table id="dataTable" class="table table-hover mb-0">
+                                
                                 <thead>
                                     <tr>
                                         @if (Auth::check() && Auth::user()->role === 'admin')
@@ -105,4 +107,12 @@
 
 
     </div>
+    <script>
+        $(document).ready(function() {
+            $('#dataTable').DataTable();
+        });
+    </script>
 @endsection
+
+
+

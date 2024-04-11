@@ -1,3 +1,8 @@
+
+
+
+
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -41,6 +46,9 @@
   {{-- jQuery --}}
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
+  <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/dataTables.bootstrap5.min.css">
+  <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+  <script src="https://cdn.datatables.net/1.11.5/js/dataTables.bootstrap5.min.js"></script>
 </head>
 
 <body>
@@ -90,7 +98,10 @@
   <script src="{{ asset('../assets/js/dynamicAddAuthors.js') }}"></script>
   
 
-
+  <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/dataTables.bootstrap5.min.css">
+  <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+  <script src="https://cdn.datatables.net/1.11.5/js/dataTables.bootstrap5.min.js"></script>
+  
 
 <script>
  @if(Session::has('message'))
@@ -113,6 +124,12 @@
     break; 
  }
  @endif 
+
+  // Вашият jQuery код
+  $(document).ready(function() {
+    // Инициализация на DataTables
+    $('.table').DataTable();
+  });
 </script>
 
 </body>
