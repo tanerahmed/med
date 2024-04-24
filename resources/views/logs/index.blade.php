@@ -18,6 +18,7 @@
                                     <tr>
                                         <th>ID</th>
                                         <th>Date</th>
+                                        <th>Article Name</th>
                                         <th>Causer</th>
                                         {{-- <th>Subject</th> --}}
                                         <th>Description</th>
@@ -29,6 +30,10 @@
                                     @foreach ($logs as $log)
                                         <tr>
                                             <td>{{ $log->id }}</td>
+                                            <td>{{ $log->created_at }}</td>
+                                            <td>@if (isset($log->properties['articleName']))
+                                                {{ $log->properties['articleName'] }}
+                                            @endif</td>
                                             <td>{{ $log->created_at }}</td>
                                             <td>{{ optional($log->causer)->name }}</td>
                                             {{-- <td>{{ $log->subject_type }}</td> --}}
@@ -85,10 +90,10 @@
                                                     {{ $log->properties['rejectReviewRequest'] }}
                                                 @endif
                                                 @if (isset($log->properties['xmlFIleCreate']))
-                                                        {{ $log->properties['xmlFIleCreate'] }}
+                                                    {{ $log->properties['xmlFIleCreate'] }}
                                                 @endif
                                                 @if (isset($log->properties['xmlFIleError']))
-                                                        {{ $log->properties['xmlFIleError'] }}
+                                                    {{ $log->properties['xmlFIleError'] }}
                                                 @endif
 
                                                 @if (isset($log->properties['force_reviewer_msg']))

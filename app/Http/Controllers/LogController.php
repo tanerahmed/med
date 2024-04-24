@@ -22,6 +22,13 @@ class LogController extends Controller
 
         $logs = Activity::all();
 
+        foreach($logs as $log){
+            $properties = json_decode($log->properties, true); // Декодираме JSON свойствата в асоциативен масив        
+            if (isset($properties['articleName'])) {
+                $log['articleName'] = $properties['articleName'];
+            }
+        }
+
         return view('logs.index', compact('logs'));
     }
 }

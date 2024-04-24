@@ -300,7 +300,7 @@ class ArticleController extends Controller
 
         // Activity LOG
         activity()
-            ->withProperties(['createArticle' => "Author $user->email create article with id #$this->articleId"])
+            ->withProperties(['createArticle' => "Author $user->email create article with id #$this->articleId", 'articleName' => $this->articleTitle])
             ->log('create article');
 
 
@@ -353,7 +353,7 @@ class ArticleController extends Controller
         ]);
 
         // Намиране на статията за редактиране по предоставения идентификатор
-        // $article = Article::findOrFail($id);
+        $article = Article::findOrFail($id);
 
         // Обновяване на данните на статията с информацията от формата
         // $article->update([
@@ -389,7 +389,7 @@ class ArticleController extends Controller
                     // Activity LOG
                     activity()
                         ->performedOn($review)
-                        ->withProperties(['force_reviewer_msg' => "Admin added $reviewer->name to be reviewer on article #$id"])
+                        ->withProperties(['force_reviewer_msg' => "Admin added $reviewer->name to be reviewer on article #$id", 'articleName' => $article->title])
                         ->log('force reviewer');
                 }
             }
@@ -559,7 +559,7 @@ class ArticleController extends Controller
         }
         // Activity LOG
         activity()
-            ->withProperties(['updateArticle' => "Author $user->email update article with id #$this->articleId"])
+            ->withProperties(['updateArticle' => "Author $user->email update article with id #$this->articleId", 'articleName' => $this->articleTitle])
             ->log('update article');
 
 
@@ -620,9 +620,10 @@ class ArticleController extends Controller
                         // Запазваме информация за поканения рецензент в таблицата
                         InvitedReviewer::saveInvitedReviewer($id, $user->id);
 
+                        $article = Article::findOrFail($id);
                         // Activity LOG
                         activity()
-                            ->withProperties(['sendEmailForReviewRequest' => "$user->email got email for review request on article id #$id"])
+                            ->withProperties(['sendEmailForReviewRequest' => "$user->email got email for review request on article id #$id", 'articleName' => $article->title])
                             ->log('sent email review request');
                     }
                 }
@@ -661,6 +662,8 @@ class ArticleController extends Controller
         // Намери артикула, който ще изтрием
         $article = Article::findOrFail($id);
 
+        $deleted_article_title = $article->title;
+
         $article->coverLetter()->delete();
         $article->titlePage()->delete();
         $article->manuscript()->delete();
@@ -674,7 +677,7 @@ class ArticleController extends Controller
 
         // Activity LOG
         activity()
-            ->withProperties(['deleteArticle' => "$user->email deleted article id #$id"])
+            ->withProperties(['deleteArticle' => "$user->email deleted article id #$id", 'articleName' => $deleted_article_title])
             ->log('delete article');
 
         // Пренасочи към страницата, където се показват всички артикули,
