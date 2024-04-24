@@ -346,6 +346,7 @@ class ArticleController extends Controller
     // Update - FORCE ADDED REVIWER
     public function update(Request $request, $id)
     {
+        $user = Auth::user();
 
         // Валидация на данните от формата за редактиране на статия
         $request->validate([
@@ -355,13 +356,29 @@ class ArticleController extends Controller
         // Намиране на статията за редактиране по предоставения идентификатор
         $article = Article::findOrFail($id);
 
-        // Обновяване на данните на статията с информацията от формата
-        // $article->update([
-        //     // Обновете съответно с полята, които трябва да се обновят
-        // ]);
-
-
         $review = Review::where('article_id', $id)->first();
+        
+        $reviewerIds = [$review->reviewer_id_1, $review->reviewer_id_2, $review->reviewer_id_3];
+        
+        $requestReviewerIds = [
+            $request->input('reviewer_id_1'),
+            $request->input('reviewer_id_2'),
+            $request->input('reviewer_id_3'),
+        ];
+        
+        // Проверяваме за съвпадения между двата масива
+        $matchingIds = array_intersect($requestReviewerIds, $reviewerIds);
+        
+        // Ако има съвпадения, извеждаме съобщение и прекратяваме изпълнението на кода
+        if (!empty($matchingIds)) {
+            $notification = [
+                'message' => 'Reviewer already selected.',
+                'alert-type' => 'error'
+            ];
+            return redirect()->route('article.list')->with($notification);
+        }
+
+
         if ($review) {
             // Обновете прегледа с информацията от формата
             $review->update([
