@@ -358,18 +358,13 @@ class ArticleController extends Controller
 
         $review = Review::where('article_id', $id)->first();
         
-        // $reviewerIds = [$review->reviewer_id_1, $review->reviewer_id_2, $review->reviewer_id_3];
-        $reviewerIds = array_filter([$review->reviewer_id_1, $review->reviewer_id_2, $review->reviewer_id_3], function($value) {
-            return $value !== null;
-        });
+        $reviewerIds = [$review->reviewer_id_1, $review->reviewer_id_2, $review->reviewer_id_3];
         
-        $requestReviewerIds = array_filter([
+        $requestReviewerIds = [
             $request->input('reviewer_id_1'),
             $request->input('reviewer_id_2'),
             $request->input('reviewer_id_3'),
-        ], function($value) {
-            return $value !== null;
-        });
+        ];
         
         // Проверяваме за съвпадения между двата масива
         $matchingIds = array_intersect($requestReviewerIds, $reviewerIds);

@@ -273,6 +273,17 @@ class ReviewerController extends Controller
                 ->log('approve review');
         }
 
+
+        // Ако ревювър1 и ревювър2 са заети, върни съобщение, че всички места за ревювър са заети.
+        if ($review->reviewer_id_1 != null && $review->reviewer_id_2 != null) {
+            $notification = array(
+                'message' => 'All reviewers found.',
+                'alert-type' => 'error'
+            );
+
+            return redirect()->route('review.list')->with($notification);
+        }
+
         // Проверяваме ако имаме запис в дадения Ревювър само тогава пращаме имейли и записваме в логовете
         $reviewSecond = Review::find($review_id);
         $reviewerIdsSecond = [$reviewSecond->reviewer_id_1, $reviewSecond->reviewer_id_2, $reviewSecond->reviewer_id_3];
