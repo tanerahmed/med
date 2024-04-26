@@ -101,9 +101,9 @@
                                             <h3 id="table">Tables</h3>
                                             <div class="row justify-content-center">
                                                 {{-- Дали не трябва да е DOWNLOADable file? --}}
-                                                @foreach ($article->tables as $tables)
+                                                @foreach ($article->tables as $file)
                                                     <iframe style="width: 100%; height: 1000px"
-                                                        src="https://view.officeapps.live.com/op/embed.aspx?src=https://blmprime.com/storage/{{ $tables->file_path }}"
+                                                        src="https://view.officeapps.live.com/op/embed.aspx?src=https://blmprime.com/storage/{{ $file->file_path }}"
                                                         frameborder="0"></iframe>
                                                     {{-- <iframe style="width: 100%; height: 1000px" src="https://view.officeapps.live.com/op/embed.aspx?src=https://calibre-ebook.com/downloads/demos/demo.docx" frameborder="0"></iframe> --}}
                                                 @endforeach
@@ -122,6 +122,12 @@
                                                         it: <a href="{{ asset('storage/' . $file->file_path) }}">Download
                                                             PDF</a>
                                                     </iframe>
+
+                                                @elseif (str_ends_with($file->file_path, '.jpg'))
+                                                <iframe style="width: 100%; height: 1000px"
+                                                        src="https://view.officeapps.live.com/op/embed.aspx?src=https://blmprime.com/storage/{{ $file->file_path }}"
+                                                        frameborder="0"></iframe>
+                                                        
                                                 @elseif (str_ends_with($file->file_path, '.jpg'))
                                                     <img src="{{ 'https://blmprime.com/storage/' . $file->file_path }}"
                                                         alt="" />
