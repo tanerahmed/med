@@ -117,7 +117,7 @@
                                         @endif
 
                                         {{-- Manuscripts --}}
-                                        @if (isset($article->manuscripts))
+                                        @if (isset($article->manuscript))
                                             <p id='table' style="margin-bottom: 90px;"></p>
                                             <h3 id="table">Manuscripts</h3>
                                             <div class="row justify-content-center">
@@ -130,7 +130,7 @@
                                             </div>
                                         @endif
 
-                                        
+
 
                                     </div>
                                 </div><!-- .entry end -->
