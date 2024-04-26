@@ -121,9 +121,9 @@
                                             <p id='table' style="margin-bottom: 90px;"></p>
                                             <h3 id="table">Manuscripts</h3>
                                             <div class="row justify-content-center">
-                                                @foreach ($article->manuscript as $manuscript)
+                                                @foreach ($article->manuscript as $file)
                                                     <iframe style="width: 100%; height: 1000px"
-                                                        src="https://view.officeapps.live.com/op/embed.aspx?src=https://blmprime.com/storage/{{ $tables->manuscript }}"
+                                                        src="https://view.officeapps.live.com/op/embed.aspx?src=https://blmprime.com/storage/{{ $file->file_path }}"
                                                         frameborder="0"></iframe>
                                                     {{-- <iframe style="width: 100%; height: 1000px" src="https://view.officeapps.live.com/op/embed.aspx?src=https://calibre-ebook.com/downloads/demos/demo.docx" frameborder="0"></iframe> --}}
                                                 @endforeach
