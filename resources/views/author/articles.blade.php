@@ -57,12 +57,16 @@
                                                     @endif
                                                
                                                 @endif
-                                                @if (Auth::user()->role === 'author' && $article->isAccepted)
+                                                @if (Auth::user()->role === 'author' && $article->status === "accepted")
                                                     <a href="{{ route('articles.articleEdit', $article->id) }}" class="btn btn-warning btn-sm disabled" >Full Accept<i class="fas fa-edit"></i></a>
                                                 @elseif  (Auth::user()->role === 'author' && $article->isDeclined)
                                                     <a href="{{ route('articles.articleEdit', $article->id) }}" class="btn btn-warning btn-sm disabled" >Declined<i class="fas fa-edit"></i></a>
                                                 @elseif  (Auth::user()->role === 'author' || Auth::user()->role === 'admin')
-                                                    <a href="{{ route('articles.articleEdit', $article->id) }}" class="btn btn-warning btn-sm">Edit<i class="fas fa-edit"></i></a>
+                                                    <a href="{{ route('articles.articleEdit', $article->id) }}" class="btn btn-warning btn-sm">Editor Accept<i class="fas fa-edit"></i></a>
+                                                @endif
+
+                                                @if  (Auth::user()->role === 'admin' && $article->status === "accepted")
+                                                    <a href="{{ route('articles.addIssueIdBlade', $article->id) }}" class="btn btn-warning btn-sm">Publish<i class="fas fa-edit"></i></a>
                                                 @endif
                                                 
                                                 <form action="{{ route('articles.destroy', $article->id) }}" method="POST">

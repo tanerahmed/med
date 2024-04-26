@@ -62,11 +62,6 @@
                             </div>
                         @elseif (Auth::user()->role === 'admin' && $article->status === 'accepted')
                         
-                            <div class="mb-3">
-                                <label for="issue_id" class="form-label"><strong>Issue ID: </strong></label>
-                                <input type="text" class="form-control" name="issue_id" id="issue_id" placeholder=""
-                                    value="{{ $article->issue_id }}">
-                            </div>
                         @endif
                         {{-- <div class="mb-3">
                             <label class="form-check-label" for="declarations">

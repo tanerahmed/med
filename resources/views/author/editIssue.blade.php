@@ -1,0 +1,72 @@
+@extends('admin.dashboard')
+@section('admin')
+    <div class="page-content">
+
+        <div class="d-flex justify-content-between align-items-center flex-wrap grid-margin">
+            <div>
+                <h4 class="mb-3 mb-md-0">Edit Issue ID</h4>
+            </div>
+        </div>
+
+        <div class="container">
+            {{-- @if (session('error'))
+                <div class="alert alert-danger" role="alert">
+                    {{ session('error') }}
+                </div>
+            @endif --}}
+            @if (session('errors'))
+                <div class="alert alert-danger">
+                    <ul>
+                        @foreach (session('errors') as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
+
+            <form action="{{ route('articles.addIssueId', $article->id) }}" method="POST" enctype="multipart/form-data">
+                @csrf
+                @method('PUT')
+
+                <div class="row">
+                    <!-- !!!!!!!!!!!! Първа колона !!!!!!!!!!!! -->
+                    <div class="col-md-6">
+                    </div>
+                    <div class="col-md-6">
+                        @if (Auth::user()->role === 'author')
+                        @elseif (Auth::user()->role === 'admin' && $article->status === 'accepted')
+                        
+                            <div class="mb-3">
+                                <label for="issue_id" class="form-label"><strong>Issue ID: </strong></label>
+                                <input type="text" class="form-control" name="issue_id" id="issue_id" placeholder=""
+                                    value="{{ $article->issue_id }}">
+                            </div>
+                        @endif
+                        {{-- <div class="mb-3">
+                            <label class="form-check-label" for="declarations">
+                                <input class="form-check-input" type="checkbox" id="declarations" required>
+                                I hereby declare that...
+                            </label>
+                        </div> --}}
+                    </div>
+
+
+                    <hr>
+                    {{-- <div class="col-md-12">
+                        <!-- Контейнер за полетата на авторите -->
+                        <div id="authorsContainer" class="row g-3"></div>
+                    </div>
+                    <div class="mb-3">
+                        <button type="button" class="btn btn-primary" id="addAuthorButton">Add Author</button>
+                    </div> --}}
+
+                    <div class="mb-3 d-flex justify-content-end">
+                        <button type="submit" class="btn btn-warning">Update Issue ID</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+@endsection
+
+

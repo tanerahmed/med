@@ -60,6 +60,9 @@
                                                 @if (isset($log->properties['deleteArticle']))
                                                     {{ $log->properties['deleteArticle'] }}
                                                 @endif
+                                                @if (isset($log->properties['publishArticle']))
+                                                    {{ $log->properties['publishArticle'] }}
+                                                @endif
 
                                                 {{-- sendEmailForReviewRequest --}}
                                                 @if (isset($log->properties['sendEmailForReviewRequest']))

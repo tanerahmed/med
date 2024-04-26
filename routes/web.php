@@ -64,6 +64,18 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/articles_/{id}/article-edit', [ArticleController::class, 'articleEdit'])->name('articles.articleEdit');
     Route::put('/articles_/article-edit/{id}', [ArticleController::class, 'articleUpdate'])->name('articles.articleUpdate');
 
+
+
+
+
+    Route::get('/articles_/{id}/article-issue', [ArticleController::class, 'addIssueIdBlade'])->name('articles.addIssueIdBlade');
+    Route::put('/articles_/article-issue-edit/{id}', [ArticleController::class, 'addIssueId'])->name('articles.addIssueId');
+
+
+
+
+
+    
     Route::put('/articles_/{id}', [ArticleController::class, 'update'])->name('articles.update');
     Route::post('/articles_/{id}', [ArticleController::class, 'sendEmailForReviewRequest'])->name('articles.sendEmailForReviewRequest');
 

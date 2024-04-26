@@ -24,6 +24,7 @@ use App\Mail\ReviewRequestEmail;
 use App\Mail\AdminGetArticleCreatedEmail;
 use App\Mail\ArticleEditEmail;
 use App\Mail\ForceReviewerEmail;
+use App\Mail\ArticlePublishedEmail;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -342,7 +343,7 @@ class ArticleController extends Controller
         // Предайте променливата $article към изгледа за редактиране на статията
         return view('author.edit', compact('article', 'reviewers', 'review', 'invitedReviewers'));
     }
-    
+
     // Update - FORCE ADDED REVIWER
     public function update(Request $request, $id)
     {
@@ -357,23 +358,23 @@ class ArticleController extends Controller
         $article = Article::findOrFail($id);
 
         $review = Review::where('article_id', $id)->first();
-        
+
         // $reviewerIds = [$review->reviewer_id_1, $review->reviewer_id_2, $review->reviewer_id_3];
-        $reviewerIds = array_filter([$review->reviewer_id_1, $review->reviewer_id_2, $review->reviewer_id_3], function($value) {
+        $reviewerIds = array_filter([$review->reviewer_id_1, $review->reviewer_id_2, $review->reviewer_id_3], function ($value) {
             return $value !== null;
         });
-        
+
         $requestReviewerIds = array_filter([
             $request->input('reviewer_id_1'),
             $request->input('reviewer_id_2'),
             $request->input('reviewer_id_3'),
-        ], function($value) {
+        ], function ($value) {
             return $value !== null;
         });
-        
+
         // Проверяваме за съвпадения между двата масива
         $matchingIds = array_intersect($requestReviewerIds, $reviewerIds);
-        
+
         // Ако има съвпадения, извеждаме съобщение и прекратяваме изпълнението на кода
         if (!empty($matchingIds)) {
             $notification = [
@@ -450,6 +451,51 @@ class ArticleController extends Controller
 
         return view('author.articleEdit', compact('article', 'fileNames'));
     }
+
+
+    public function addIssueIdBlade($articleId)
+    {
+        $article = Article::findOrFail($articleId);
+        return view('author.editIssue', compact('article'));
+    }
+
+    public function addIssueId(Request $request, $articleId)
+    {
+        $issueId = $request->input('issue_id');
+        $article = Article::findOrFail($articleId);
+        if ($article->status == 'accepted') {
+            if ($request->has('issue_id')) {
+                $article->issue_id = $issueId;
+            }
+        }
+        $article->save();
+
+        // Activity LOG
+        activity()
+            ->withProperties(['publishArticle' => "Admin publish article '$article->title' with issue #$issueId.", 'articleName' => $article->title])
+            ->log('publish article');
+
+        //EMAIL че е PUBLISH
+        $authorEmail = $article->user->email;
+        $subject = 'Admin published your Article '.$article->title.' with #' . $article->id;
+        $body = [
+            'article_id' => $article->id,
+            'article_title' => $article->title,
+        ];
+        Mail::to($authorEmail)->send(new ArticlePublishedEmail($subject, $body));
+
+        $notification = [
+            'message' => 'Article was published successfully.',
+            'alert-type' => 'success'
+        ];
+        return redirect()->route('article.list')->with($notification);
+
+    }
+
+
+
+
+
 
     public function articleUpdate(Request $request, $articleId)
     {
