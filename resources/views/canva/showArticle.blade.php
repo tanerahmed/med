@@ -1,7 +1,7 @@
 @extends('canva.home')
 @section('content')
     <!-- Document Wrapper
-                            ============================================= -->
+                                ============================================= -->
     <div id="wrapper">
         {{-- <section id="content">
 			<div class="content-wrap">
@@ -28,30 +28,30 @@
 		</section><!-- .page-title end --> --}}
 
         <!-- Content
-                      ============================================= -->
+                          ============================================= -->
         <section id="content">
             <div class="content-wrap">
                 <div class="container">
 
                     <div class="row gx-5 col-mb-80">
                         <!-- Post Content
-                          ============================================= -->
+                              ============================================= -->
                         <main class="postcontent col-lg-9">
 
                             <div class="single-post mb-0">
 
                                 <!-- Single Post
-                            ============================================= -->
+                                ============================================= -->
                                 <div class="entry article-scroll">
                                     <p id='article-title' style="margin-bottom: 70px;"></p>
                                     <!-- Entry Title
-                             ============================================= -->
+                                 ============================================= -->
                                     <div class="entry-title">
                                         <h2>{{ $article->title }}</h2>
                                     </div><!-- .entry-title end -->
 
                                     <!-- Entry Meta
-                             ============================================= -->
+                                 ============================================= -->
                                     <div class="entry-meta">
                                         <ul>
                                             <li><i class="uil uil-schedule"></i>{{ $article->updated_at->format('Y-m-d') }}
@@ -63,13 +63,13 @@
                                     </div><!-- .entry-meta end -->
 
                                     <!-- Entry Image
-                             ============================================= -->
+                                 ============================================= -->
                                     {{-- <div class="entry-image">
 										<a href="#"><img src="images/blog/full/1.jpg" alt="Blog Single"></a>
 									</div><!-- .entry-image end --> --}}
 
                                     <!-- Entry Content
-                             ============================================= -->
+                                 ============================================= -->
                                     <div class="entry-content mt-0">
 
 
@@ -81,6 +81,8 @@
                                         <h3 id="keywords">Keywords</h3>
                                         <p>{{ $article->keywords }}</p>
 
+
+                                        {{-- Tables --}}
                                         @if (isset($article->tables))
                                             <p id='table' style="margin-bottom: 90px;"></p>
                                             <h3 id="table">Tables</h3>
@@ -94,6 +96,8 @@
                                                 @endforeach
                                             </div>
                                         @endif
+
+                                        {{-- Supplementary Files --}}
                                         @if (isset($article->supplementaryFiles))
                                             <p id='supplementaryFiles' style="margin-bottom: 90px;"></p>
                                             <h3 id="supplementaryFiles">Supllementary Files</h3>
@@ -112,11 +116,27 @@
                                             @endforeach
                                         @endif
 
+                                        {{-- Manuscripts --}}
+                                        @if (isset($article->manuscripts))
+                                            <p id='table' style="margin-bottom: 90px;"></p>
+                                            <h3 id="table">Manuscripts</h3>
+                                            <div class="row justify-content-center">
+                                                @foreach ($article->tables as $tables)
+                                                    <iframe style="width: 100%; height: 1000px"
+                                                        src="https://view.officeapps.live.com/op/embed.aspx?src=https://blmprime.com/storage/{{ $tables->file_path }}"
+                                                        frameborder="0"></iframe>
+                                                    {{-- <iframe style="width: 100%; height: 1000px" src="https://view.officeapps.live.com/op/embed.aspx?src=https://calibre-ebook.com/downloads/demos/demo.docx" frameborder="0"></iframe> --}}
+                                                @endforeach
+                                            </div>
+                                        @endif
+
+                                        
+
                                     </div>
                                 </div><!-- .entry end -->
 
                                 <!-- Post Single - Share
-                              ============================================= -->
+                                  ============================================= -->
 
                                 {{-- <h4 class="fs-4 fw-medium">Recommended for you - Тука можем да сложим </h4>
 
@@ -181,14 +201,15 @@
                         </main><!-- .postcontent end -->
 
                         <!-- Sidebar
-                          ============================================= -->
+                              ============================================= -->
                         <aside class="sidebar col-lg-3">
                             <div class="sidebar-widgets-wrap">
 
                                 <div class="widget">
 
-                                    <h4>Contnts</h4> 
-                                    <a href="{{ route('admin.downolad_summary_pdf', $article->id) }}"><button type="button" class="btn btn-success btn-sm">PDF</button></a>
+                                    <h4>Contnts</h4>
+                                    <a href="{{ route('admin.downolad_summary_pdf', $article->id) }}"><button
+                                            type="button" class="btn btn-success btn-sm">PDF</button></a>
                                     <div class="tagcloud">
                                         <a href="#article-title">Article title</a>
                                         <a href="#abstract">Abstract</a>
