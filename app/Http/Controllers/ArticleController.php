@@ -25,6 +25,7 @@ use App\Mail\AdminGetArticleCreatedEmail;
 use App\Mail\ArticleEditEmail;
 use App\Mail\ForceReviewerEmail;
 use App\Mail\ArticlePublishedEmail;
+use App\Mail\ArticleDeleteddEmail;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -452,7 +453,6 @@ class ArticleController extends Controller
         return view('author.articleEdit', compact('article', 'fileNames'));
     }
 
-
     public function addIssueIdBlade($articleId)
     {
         $maxIssueId = Article::max('issue_id');
@@ -479,7 +479,7 @@ class ArticleController extends Controller
 
         //EMAIL че е PUBLISH
         $authorEmail = $article->user->email;
-        $subject = 'Admin published your Article '.$article->title.' with #' . $article->id;
+        $subject = 'Admin published your Article ' . $article->title . ' with #' . $article->id;
         $body = [
             'article_id' => $article->id,
             'article_title' => $article->title,
@@ -493,12 +493,6 @@ class ArticleController extends Controller
         return redirect()->route('article.list')->with($notification);
 
     }
-
-
-
-
-
-
     public function articleUpdate(Request $request, $articleId)
     {
         $user = Auth::user();
@@ -744,6 +738,16 @@ class ArticleController extends Controller
         $article->delete();
 
         $user = Auth::user();
+
+        //EMAIL че е PUBLISH
+        $authorEmail = $article->user->email;
+        $subject = 'Admin published your Article ' . $article->title . ' with #' . $article->id;
+        $body = [
+            'article_id' => $article->id,
+            'article_title' => $article->title,
+            'author' => $user->name
+        ];
+        Mail::to("superuser.blmprime@gmail.com")->send(new ArticleDeleteddEmail($subject, $body));
 
         // Activity LOG
         activity()
