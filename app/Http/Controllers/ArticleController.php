@@ -455,8 +455,10 @@ class ArticleController extends Controller
 
     public function addIssueIdBlade($articleId)
     {
+        $maxIssueId = Article::max('issue_id');
+
         $article = Article::findOrFail($articleId);
-        return view('author.editIssue', compact('article'));
+        return view('author.editIssue', compact('article', 'maxIssueId'));
     }
 
     public function addIssueId(Request $request, $articleId)

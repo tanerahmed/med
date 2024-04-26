@@ -38,8 +38,9 @@
                         
                             <div class="mb-3">
                                 <label for="issue_id" class="form-label"><strong>Issue ID: </strong></label>
-                                <input type="text" class="form-control" name="issue_id" id="issue_id" placeholder=""
-                                    value="{{ $article->issue_id }}">
+                                <input type="number" class="form-control" name="issue_id" id="issue_id" placeholder=""
+                                value="{{ $article->issue_id }}" min="1">
+                                <span style="color: red">Max issue id is {{$maxIssueId}}<span>
                             </div>
                         @endif
                         {{-- <div class="mb-3">
