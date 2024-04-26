@@ -111,9 +111,12 @@
 
 
     </div>
+
     <script>
         $(document).ready(function() {
-            $('#dataTable').DataTable();
+            $('#dataTable').DataTable({
+                "order": [[ 1, "asc" ]] // Сортиране по втората колона (индекс 1) във възходящ ред
+            });
         });
     </script>
 @endsection
