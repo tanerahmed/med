@@ -1,7 +1,7 @@
 @extends('canva.home')
 @section('content')
     <!-- Document Wrapper
-                                            ============================================= -->
+                                                ============================================= -->
     <div id="wrapper">
         {{-- <section id="content">
 			<div class="content-wrap">
@@ -28,30 +28,30 @@
 		</section><!-- .page-title end --> --}}
 
         <!-- Content
-                                      ============================================= -->
+                                          ============================================= -->
         <section id="content">
             <div class="content-wrap">
                 <div class="container">
 
                     <div class="row gx-5 col-mb-80">
                         <!-- Post Content
-                                          ============================================= -->
+                                              ============================================= -->
                         <main class="postcontent col-lg-9">
 
                             <div class="single-post mb-0">
 
                                 <!-- Single Post
-                                            ============================================= -->
+                                                ============================================= -->
                                 <div class="entry article-scroll">
                                     <p id='article-title' style="margin-bottom: 70px;"></p>
                                     <!-- Entry Title
-                                             ============================================= -->
+                                                 ============================================= -->
                                     <div class="entry-title">
                                         <h2>{{ $article->title }}</h2>
                                     </div><!-- .entry-title end -->
 
                                     <!-- Entry Meta
-                                             ============================================= -->
+                                                 ============================================= -->
                                     <div class="entry-meta">
                                         <ul>
                                             <li><i class="uil uil-schedule"></i>{{ $article->updated_at->format('Y-m-d') }}
@@ -63,13 +63,13 @@
                                     </div><!-- .entry-meta end -->
 
                                     <!-- Entry Image
-                                             ============================================= -->
+                                                 ============================================= -->
                                     {{-- <div class="entry-image">
 										<a href="#"><img src="images/blog/full/1.jpg" alt="Blog Single"></a>
 									</div><!-- .entry-image end --> --}}
 
                                     <!-- Entry Content
-                                             ============================================= -->
+                                                 ============================================= -->
                                     <div class="entry-content mt-0">
 
 
@@ -130,8 +130,12 @@
                                                     <iframe style="width: 100%; height: 1000px"
                                                         src="https://view.officeapps.live.com/op/embed.aspx?src=https://blmprime.com/storage/{{ $file->file_path }}"
                                                         frameborder="0"></iframe>
-                                                {{-- xlxs --}}
+                                                    {{-- xlxs --}}
                                                 @elseif (str_ends_with($file->file_path, '.xlsx'))
+                                                    <iframe style="width: 100%; height: 1000px"
+                                                        src="https://view.officeapps.live.com/op/embed.aspx?src=https://blmprime.com/storage/{{ $file->file_path }}"
+                                                        frameborder="0"></iframe>
+                                                @elseif (str_ends_with($file->file_path, '.xls'))
                                                     <iframe style="width: 100%; height: 1000px"
                                                         src="https://view.officeapps.live.com/op/embed.aspx?src=https://blmprime.com/storage/{{ $file->file_path }}"
                                                         frameborder="0"></iframe>
@@ -187,7 +191,7 @@
                                 </div><!-- .entry end -->
 
                                 <!-- Post Single - Share
-                                              ============================================= -->
+                                                  ============================================= -->
 
                                 {{-- <h4 class="fs-4 fw-medium">Recommended for you - Тука можем да сложим </h4>
 
@@ -252,7 +256,7 @@
                         </main><!-- .postcontent end -->
 
                         <!-- Sidebar
-                                          ============================================= -->
+                                              ============================================= -->
                         <aside class="sidebar col-lg-3">
                             <div class="sidebar-widgets-wrap">
 
