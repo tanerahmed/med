@@ -131,7 +131,7 @@
                                                         src="https://view.officeapps.live.com/op/embed.aspx?src=https://blmprime.com/storage/{{ $file->file_path }}"
                                                         frameborder="0"></iframe>
                                                 {{-- xlxs --}}
-                                                @elseif (str_ends_with($file->file_path, '.html'))
+                                                @elseif (str_ends_with($file->file_path, '.xlsx'))
                                                     <iframe style="width: 100%; height: 1000px"
                                                         src="https://view.officeapps.live.com/op/embed.aspx?src=https://blmprime.com/storage/{{ $file->file_path }}"
                                                         frameborder="0"></iframe>
