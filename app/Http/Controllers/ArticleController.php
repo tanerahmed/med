@@ -871,156 +871,240 @@ class ArticleController extends Controller
         $pdf->Output('article_id_#' . $article->id . '.pdf', 'I');
 
     }
+
+    private function mergePdf($apiKey, $uploadedFiles)
+    {
+        // Създаване на URL
+        $url = "https://api.pdf.co/v1/pdf/merge";
+
+        // Подготовка на параметрите за заявката
+        $parameters = array();
+        $parameters["name"] = "result.pdf";
+        $parameters["url"] = join(",", $uploadedFiles);
+
+        // Създаване на JSON payload
+        $data = json_encode($parameters);
+
+        // Създаване на заявка
+        $curl = curl_init();
+        curl_setopt($curl, CURLOPT_HTTPHEADER, array("x-api-key: " . $apiKey, "Content-type: application/json"));
+        curl_setopt($curl, CURLOPT_URL, $url);
+        curl_setopt($curl, CURLOPT_POST, true);
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($curl, CURLOPT_POSTFIELDS, $data);
+
+        // Изпълнение на заявката
+        $result = curl_exec($curl);
+
+        if (curl_errno($curl) == 0) {
+            $status_code = curl_getinfo($curl, CURLINFO_HTTP_CODE);
+
+            if ($status_code == 200) {
+                $json = json_decode($result, true);
+
+                if (!isset($json["error"]) || $json["error"] == false) {
+                    $resultFileUrl = $json["url"];
+
+                    // Показване на линк към резултатния документ
+                    echo "<div><h2>Conversion Result:</h2><a href='" . $resultFileUrl . "' target='_blank'>" . $resultFileUrl . "</a></div>";
+                } else {
+                    // Показване на грешката, която върна услугата
+                    echo "<p>Error: " . $json["message"] . "</p>";
+                }
+            } else {
+                // Показване на грешка при заявка
+                echo "<p>Status code: " . $status_code . "</p>";
+                echo "<p>" . $result . "</p>";
+            }
+        } else {
+            // Показване на грешка при изпълнение на CURL заявката
+            echo "Error: " . curl_error($curl);
+        }
+
+        // Почистване
+        curl_close($curl);
+    }
+
+
     public function downloadArticlePDFFiles(Article $article)
     {
 
-        $pdf = new FPDI(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
-        $pdf->SetCreator(PDF_CREATOR);
-        $pdf->SetAuthor('Taner Ahmed');
-        $pdf->SetTitle('Document title');
-        $pdf->SetSubject('Document subject');
-        $pdf->SetKeywords('keyword1, keyword2, keyword3');
-        $pdf->SetHeaderData(PDF_HEADER_LOGO, PDF_HEADER_LOGO_WIDTH, 'Zara Computers', 'by Taner Ahmed zaracomputers.bg');
-        $pdf->setHeaderFont(array(PDF_FONT_NAME_MAIN, '', PDF_FONT_SIZE_MAIN));
-        $pdf->setFooterFont(array(PDF_FONT_NAME_DATA, '', PDF_FONT_SIZE_DATA));
-        $pdf->SetDefaultMonospacedFont(PDF_FONT_MONOSPACED);
-        $pdf->SetMargins(PDF_MARGIN_LEFT, PDF_MARGIN_TOP, PDF_MARGIN_RIGHT);
-        $pdf->SetAutoPageBreak(TRUE, PDF_MARGIN_BOTTOM);
-        // $pdf->SetFont('freeserif', '', 10);
-        $pdf->AddPage();
-
-        $htmlType = '<div style="text-align: center; background-color: #808080; color: #ffffff;">
-        <h1>' . $article->type . '</h1></div>';
-
-        $pdf->writeHTML($htmlType);
-
-        $pdf->writeHTML('<h1>' . $article->title . '</h1><p></p>');
+        $apiKey = "tanerahmed87@gmail.com_0MODe75ov9bco2OuOWwYHB9x308U3C0T0d1HxWDDwf26wwLl6t1vj0Qsf836nam8";
 
 
-        $htmlAuthors = '';
-        // https://www.facebook.com/taner.ahmed -  създаде този сайт Танер Ахмед
-        if ($article->authors->isNotEmpty()) {
-            // Генериране на съдържанието за съавторите
-            $coauthors_html = '<p><strong>Co-Authors:</strong><br>';
-            foreach ($article->authors as $author) {
-                $coauthors_html .= $author->first_name . ' ' . $author->family_name . '<br>';
-            }
-            $coauthors_html .= '</p>';
-
-            // Добавяне на съдържанието на съавторите към основната HTML
-            $htmlAuthors .= $coauthors_html;
-        }
-
-        // Записване на HTML в PDF документа
-        $pdf->writeHTML($htmlAuthors);
-
-        $pdf->writeHTML("<hr>");
-
-        $abstract_html = '<p><h2>Abstract:</h2><br>' . $article->abstract . '</p><br>';
-        $pdf->writeHTML($abstract_html);
-
-        $pdf->writeHTML("<hr>");
-
-        $coauthors_html = '<p><h2>Keywords:</h2>' . $article->keywords . '</p><br>';
-        $pdf->writeHTML($coauthors_html);
-
-        $rendererName = Settings::PDF_RENDERER_DOMPDF;
-        $rendererLibraryPath = base_path('vendor/dompdf/dompdf');
-        Settings::setPdfRenderer($rendererName, $rendererLibraryPath);
+        $uploadedFiles = [];
 
         foreach ([$article->coverLetter, $article->figures, $article->manuscript, $article->supplementaryFiles, $article->tables, $article->titlePage] as $files) {
             foreach ($files as $file) {
                 $filePath = storage_path('app/public/' . $file->file_path);
                 $filePath = str_replace('\\', '/', $filePath);
-
-                $ext = pathinfo($filePath, PATHINFO_EXTENSION);
-
-                $content = '';
-                switch ($ext) {
-                    case 'doc':
-                        $php_word = \PhpOffice\PhpWord\IOFactory::load($filePath, 'MsDoc');
-                        $html_writer = new \PhpOffice\PhpWord\Writer\HTML($php_word);
-                        $html_file = tempnam(sys_get_temp_dir(), 'phpword');
-                        $html_writer->save($html_file);
-                        $content = file_get_contents($html_file);
-                        unlink($html_file);
-                        $pdf->AddPage();
-                        $pdf->writeHTML($content, true, false, true, false, '');
-                        break;
-                    case 'docx':
-                        $php_word = \PhpOffice\PhpWord\IOFactory::load($filePath);
-                        $html_writer = new \PhpOffice\PhpWord\Writer\HTML($php_word);
-                        $html_file = tempnam(sys_get_temp_dir(), 'phpword');
-                        $html_writer->save($html_file);
-                        $content = file_get_contents($html_file);
-                        unlink($html_file);
-                        $pdf->AddPage();
-                        $pdf->writeHTML($content, true, false, true, false, '');
-                        break;
-                    case 'pdf':
-                        $pdf->AddPage();
-                        $pdf->Write(10, '');
-                        $pagecount1 = $pdf->setSourceFile($filePath);
-                        // Import pages from the source PDF file
-                        for ($i = 1; $i <= $pagecount1; $i++) {
-                            $tplIdx = $pdf->importPage($i);
-                            $pdf->useTemplate($tplIdx);
-                            if ($i < $pagecount1) {
-                                $pdf->AddPage();
-                            }
-                        }
-
-                        break;
-                    case 'jpg':
-                        $pdf->AddPage();
-                        $pdf->SetXY(20, 20);
-                        $pdf->Image($filePath, '', '', 100, 100, '', '', 'T', false, 300, '', false, false, 1, false, false, false);
-                        break;
-                    case 'jpeg':
-                        $pdf->AddPage();
-                        $pdf->SetXY(20, 20);
-                        $pdf->Image($filePath, '', '', 100, 100, '', '', 'T', false, 300, '', false, false, 1, false, false, false);
-                        break;
-                    // case 'png':
-                    //     $pdf->AddPage();
-                    //     $pdf->Image($filePath, 0, 0, '', '', '', '', '', false, 300, '', false, false, 0, false, false, false);
-                    //     break;
-
-                    case 'xlsx':
-                        $spreadsheet = IOFactory::load($filePath);
-                        $pdfWriter = new Dompdf($spreadsheet);
-                        $pdfWriter->save('output.pdf');
-
-                        $pdfFilePath = 'output.pdf'; // Пътят към PDF файла
-
-                        $pdf->AddPage();
-                        $pdf->Write(10, '');
-                        $pagecount1 = $pdf->setSourceFile($pdfFilePath);
-                        // Import pages from the source PDF file
-                        for ($i = 1; $i <= $pagecount1; $i++) {
-                            $tplIdx = $pdf->importPage($i);
-                            $pdf->useTemplate($tplIdx);
-                            if ($i < $pagecount1) {
-                                $pdf->AddPage();
-                            }
-                        }
-
-                        break;
-
-                    case 'html':
-                        $content = file_get_contents($filePath);
-                        $pdf->AddPage();
-                        $pdf->writeHTML($content, true, false, true, false, '');
-                        break;
-                    default:
-                        break;
-                }
+                $uploadedFiles[] = $filePath; // Добавяне на пътя до файла в масива с качени файлове
             }
         }
-        // reset pointer to the last page
-        $pdf->lastPage();
-        $pdf->Output('article_id_#' . $article->id . '.pdf', 'I');
+
+        // dd($uploadedFiles);
+        /*
+          array:1 [▼ // app\Http\Controllers\ArticleController.php:954
+          0 => "C:/xampp/htdocs/med/storage/app/public/manuscripts/65/file-sample_100kB.doc"
+                ]
+         */
+
+
+        $this->mergePdf($apiKey, $uploadedFiles);
     }
+
+
+    // public function downloadArticlePDFFiles(Article $article)
+    // {
+
+    //     $pdf = new FPDI(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
+    //     $pdf->SetCreator(PDF_CREATOR);
+    //     $pdf->SetAuthor('Taner Ahmed');
+    //     $pdf->SetTitle('Document title');
+    //     $pdf->SetSubject('Document subject');
+    //     $pdf->SetKeywords('keyword1, keyword2, keyword3');
+    //     $pdf->SetHeaderData(PDF_HEADER_LOGO, PDF_HEADER_LOGO_WIDTH, 'Zara Computers', 'by Taner Ahmed zaracomputers.bg');
+    //     $pdf->setHeaderFont(array(PDF_FONT_NAME_MAIN, '', PDF_FONT_SIZE_MAIN));
+    //     $pdf->setFooterFont(array(PDF_FONT_NAME_DATA, '', PDF_FONT_SIZE_DATA));
+    //     $pdf->SetDefaultMonospacedFont(PDF_FONT_MONOSPACED);
+    //     $pdf->SetMargins(PDF_MARGIN_LEFT, PDF_MARGIN_TOP, PDF_MARGIN_RIGHT);
+    //     $pdf->SetAutoPageBreak(TRUE, PDF_MARGIN_BOTTOM);
+    //     // $pdf->SetFont('freeserif', '', 10);
+    //     $pdf->AddPage();
+
+    //     $htmlType = '<div style="text-align: center; background-color: #808080; color: #ffffff;">
+    //     <h1>' . $article->type . '</h1></div>';
+
+    //     $pdf->writeHTML($htmlType);
+
+    //     $pdf->writeHTML('<h1>' . $article->title . '</h1><p></p>');
+
+
+    //     $htmlAuthors = '';
+    //     // https://www.facebook.com/taner.ahmed -  създаде този сайт Танер Ахмед
+    //     if ($article->authors->isNotEmpty()) {
+    //         // Генериране на съдържанието за съавторите
+    //         $coauthors_html = '<p><strong>Co-Authors:</strong><br>';
+    //         foreach ($article->authors as $author) {
+    //             $coauthors_html .= $author->first_name . ' ' . $author->family_name . '<br>';
+    //         }
+    //         $coauthors_html .= '</p>';
+
+    //         // Добавяне на съдържанието на съавторите към основната HTML
+    //         $htmlAuthors .= $coauthors_html;
+    //     }
+
+    //     // Записване на HTML в PDF документа
+    //     $pdf->writeHTML($htmlAuthors);
+
+    //     $pdf->writeHTML("<hr>");
+
+    //     $abstract_html = '<p><h2>Abstract:</h2><br>' . $article->abstract . '</p><br>';
+    //     $pdf->writeHTML($abstract_html);
+
+    //     $pdf->writeHTML("<hr>");
+
+    //     $coauthors_html = '<p><h2>Keywords:</h2>' . $article->keywords . '</p><br>';
+    //     $pdf->writeHTML($coauthors_html);
+
+    //     $rendererName = Settings::PDF_RENDERER_DOMPDF;
+    //     $rendererLibraryPath = base_path('vendor/dompdf/dompdf');
+    //     Settings::setPdfRenderer($rendererName, $rendererLibraryPath);
+
+    //     foreach ([$article->coverLetter, $article->figures, $article->manuscript, $article->supplementaryFiles, $article->tables, $article->titlePage] as $files) {
+    //         foreach ($files as $file) {
+    //             $filePath = storage_path('app/public/' . $file->file_path);
+    //             $filePath = str_replace('\\', '/', $filePath);
+
+    //             $ext = pathinfo($filePath, PATHINFO_EXTENSION);
+
+    //             $content = '';
+    //             switch ($ext) {
+    //                 case 'doc':
+    //                     $php_word = \PhpOffice\PhpWord\IOFactory::load($filePath, 'MsDoc');
+    //                     $html_writer = new \PhpOffice\PhpWord\Writer\HTML($php_word);
+    //                     $html_file = tempnam(sys_get_temp_dir(), 'phpword');
+    //                     $html_writer->save($html_file);
+    //                     $content = file_get_contents($html_file);
+    //                     unlink($html_file);
+    //                     $pdf->AddPage();
+    //                     $pdf->writeHTML($content, true, false, true, false, '');
+    //                     break;
+    //                 case 'docx':
+    //                     $php_word = \PhpOffice\PhpWord\IOFactory::load($filePath);
+    //                     $html_writer = new \PhpOffice\PhpWord\Writer\HTML($php_word);
+    //                     $html_file = tempnam(sys_get_temp_dir(), 'phpword');
+    //                     $html_writer->save($html_file);
+    //                     $content = file_get_contents($html_file);
+    //                     unlink($html_file);
+    //                     $pdf->AddPage();
+    //                     $pdf->writeHTML($content, true, false, true, false, '');
+    //                     break;
+    //                 case 'pdf':
+    //                     $pdf->AddPage();
+    //                     $pdf->Write(10, '');
+    //                     $pagecount1 = $pdf->setSourceFile($filePath);
+    //                     // Import pages from the source PDF file
+    //                     for ($i = 1; $i <= $pagecount1; $i++) {
+    //                         $tplIdx = $pdf->importPage($i);
+    //                         $pdf->useTemplate($tplIdx);
+    //                         if ($i < $pagecount1) {
+    //                             $pdf->AddPage();
+    //                         }
+    //                     }
+
+    //                     break;
+    //                 case 'jpg':
+    //                     $pdf->AddPage();
+    //                     $pdf->SetXY(20, 20);
+    //                     $pdf->Image($filePath, '', '', 100, 100, '', '', 'T', false, 300, '', false, false, 1, false, false, false);
+    //                     break;
+    //                 case 'jpeg':
+    //                     $pdf->AddPage();
+    //                     $pdf->SetXY(20, 20);
+    //                     $pdf->Image($filePath, '', '', 100, 100, '', '', 'T', false, 300, '', false, false, 1, false, false, false);
+    //                     break;
+    //                 // case 'png':
+    //                 //     $pdf->AddPage();
+    //                 //     $pdf->Image($filePath, 0, 0, '', '', '', '', '', false, 300, '', false, false, 0, false, false, false);
+    //                 //     break;
+
+    //                 case 'xlsx':
+    //                     $spreadsheet = IOFactory::load($filePath);
+    //                     $pdfWriter = new Dompdf($spreadsheet);
+    //                     $pdfWriter->save('output.pdf');
+
+    //                     $pdfFilePath = 'output.pdf'; // Пътят към PDF файла
+
+    //                     $pdf->AddPage();
+    //                     $pdf->Write(10, '');
+    //                     $pagecount1 = $pdf->setSourceFile($pdfFilePath);
+    //                     // Import pages from the source PDF file
+    //                     for ($i = 1; $i <= $pagecount1; $i++) {
+    //                         $tplIdx = $pdf->importPage($i);
+    //                         $pdf->useTemplate($tplIdx);
+    //                         if ($i < $pagecount1) {
+    //                             $pdf->AddPage();
+    //                         }
+    //                     }
+
+    //                     break;
+
+    //                 case 'html':
+    //                     $content = file_get_contents($filePath);
+    //                     $pdf->AddPage();
+    //                     $pdf->writeHTML($content, true, false, true, false, '');
+    //                     break;
+    //                 default:
+    //                     break;
+    //             }
+    //         }
+    //     }
+    //     // reset pointer to the last page
+    //     $pdf->lastPage();
+    //     $pdf->Output('article_id_#' . $article->id . '.pdf', 'I');
+    // }
+
 
 
 }
