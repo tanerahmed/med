@@ -64,7 +64,11 @@
                                                 @elseif  (Auth::user()->role === 'author')
                                                     <a href="{{ route('articles.articleEdit', $article->id) }}" class="btn btn-warning btn-sm">Edit<i class="fas fa-edit"></i></a>
                                                 @elseif  (Auth::user()->role === 'admin')
-                                                    <a href="{{ route('articles.adminAcceptArticleBlade', $article->id) }}" class="btn btn-warning btn-sm">Editor Accept<i class="fas fa-edit"></i></a>
+                                                	@if ($article->admin_accept === 0)
+                                                        <a href="{{ route('articles.adminAcceptArticleBlade', $article->id) }}" class="btn btn-warning btn-sm">Editor Accept<i class="fas fa-edit"></i></a>
+                                                    @elseif ($article->admin_accept === 1)
+                                                        <a href="{{ route('articles.adminAcceptArticleBlade', $article->id) }}" class="btn btn-warning btn-sm disabled">Editor Accept<i class="fas fa-edit"></i></a>
+                                                    @endif                                                
                                                 @endif
 
                                                 @if  (Auth::user()->role === 'admin' && $article->status === "accepted")
