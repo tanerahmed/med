@@ -631,8 +631,9 @@ class ArticleController extends Controller
         $subject = "Edit Article : " . $this->articleTitle;
         $body['article_id'] = $this->articleId;
         $body['title'] = $this->articleTitle;
-
-        Mail::to("superuser.blmprime@gmail.com")->send(new ArticleEditEmail($subject, $body));
+        
+        // Send Email to Admin !!!!!!  NO NEEDED !!!!!!
+        // Mail::to("superuser.blmprime@gmail.com")->send(new ArticleEditEmail($subject, $body));
 
         // Send Email to Reviewers 
         $review = Review::where('article_id', $articleId)->first();
