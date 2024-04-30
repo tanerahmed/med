@@ -65,7 +65,8 @@ Route::middleware(['auth'])->group(function () {
     Route::put('/articles_/article-edit/{id}', [ArticleController::class, 'articleUpdate'])->name('articles.articleUpdate');
 
 
-
+    Route::get('/articles_/{id}/admin-accept', [ArticleController::class, 'adminAcceptArticleBlade'])->name('articles.adminAcceptArticleBlade');
+    Route::put('/articles_/admin-accept/{id}', [ArticleController::class, 'adminAcceptArticle'])->name('articles.adminAcceptArticle');
 
 
     Route::get('/articles_/{id}/article-issue', [ArticleController::class, 'addIssueIdBlade'])->name('articles.addIssueIdBlade');

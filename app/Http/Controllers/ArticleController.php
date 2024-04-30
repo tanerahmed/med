@@ -26,6 +26,7 @@ use App\Mail\ArticleEditEmail;
 use App\Mail\ForceReviewerEmail;
 use App\Mail\ArticlePublishedEmail;
 use App\Mail\ArticleDeleteddEmail;
+use App\Mail\AdminAcceptArticleEmail;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -493,6 +494,41 @@ class ArticleController extends Controller
         return redirect()->route('article.list')->with($notification);
 
     }
+
+
+    public function adminAcceptArticle(Request $request, $articleId)
+    {
+        $article = Article::findOrFail($articleId);
+        $article->admin_accept = $request->has('admin_accept') ? 1 : 0;
+        $article->save();
+
+        // Activity LOG
+        activity()
+            ->withProperties(['acceptArticle' => "Editor accept article #$article->id  - $article->title", 'articleName' => $article->title])
+            ->log('editor accept article');
+
+        $subject = "Editor accept your article : " . $article->title;
+        $body['article_id'] = $article->id;
+        $body['article_title'] = $article->title;
+        $body['author_name'] = $article->user->name;
+
+        // Send Email Author
+        Mail::to($article->user->email)->send(new AdminAcceptArticleEmail($subject, $body));   
+        
+        $notification = [
+            'message' => 'Article was accepted successfully.',
+            'alert-type' => 'success'
+        ];
+        return redirect()->route('article.list')->with($notification); 
+
+
+    }
+    public function adminAcceptArticleBlade($articleId)
+    {
+        $article = Article::findOrFail($articleId);
+        return view('author.adminAcceptArticle', compact('article'));
+    }
+
     public function articleUpdate(Request $request, $articleId)
     {
         $user = Auth::user();
@@ -536,7 +572,9 @@ class ArticleController extends Controller
                     }
                 }
 
-                $article->admin_accept = $request->has('admin_accept') ? 1 : 0;
+                // This action doing at  public function adminAcceptArticle
+                // $article->admin_accept = $request->has('admin_accept') ? 1 : 0;
+
                 $article->save();
 
                 $this->articleId = $article->id;
@@ -627,11 +665,13 @@ class ArticleController extends Controller
             ->log('update article');
 
 
+
+
         // Send Email to Admin 
         $subject = "Edit Article : " . $this->articleTitle;
         $body['article_id'] = $this->articleId;
         $body['title'] = $this->articleTitle;
-        
+
         // Send Email to Admin !!!!!!  NO NEEDED !!!!!!
         // Mail::to("superuser.blmprime@gmail.com")->send(new ArticleEditEmail($subject, $body));
 

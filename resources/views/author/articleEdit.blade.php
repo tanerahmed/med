@@ -197,11 +197,7 @@
                     </div> --}}
 
                     <div class="mb-3 d-flex justify-content-end">
-                        @if (Auth::user()->role === 'author')
                             <button type="submit" class="btn btn-warning">Edit Article</button>
-                        @elseif  (Auth::user()->role === 'admin')
-                            <button type="submit" class="btn btn-warning">Accept Article</button>
-                        @endif
                     </div>
                 </div>
             </form>
