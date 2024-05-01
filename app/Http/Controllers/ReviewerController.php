@@ -16,6 +16,7 @@ use App\Mail\ReviewArticleEmail;
 use App\Mail\UserApproveReviewRequestEmail;
 use App\Mail\UserRejectReviewRequestEmail;
 use App\Mail\FullAcceptArticleEmail;
+use App\Mail\ReviewArticleForAdminEmail;
 use ZipArchive;
 
 // Activity Log
@@ -141,7 +142,7 @@ class ReviewerController extends Controller
             $filePath = storage_path('app/public/' . $zipFilePath);
             $filePath = str_replace('\\', '/', $filePath);
         }
-
+        $body['article_title'] = $article->title;
         $body['articleId'] = $articleId;
         $body['reviwer_name'] = $user->name;
         $body['question1'] = $request->input('question1');
@@ -193,6 +194,11 @@ class ReviewerController extends Controller
         } else {
             Mail::to($article->user->email)->send(new ReviewArticleEmail($subject, $body));
         }
+
+
+        $subject = "Article '$article->title' was reviwed." ;
+        Mail::to("superuser.blmprime@gmail.com")->send(new ReviewArticleForAdminEmail($subject, $body));
+    
 
 
         if ($acceptedCount >= 2) {
