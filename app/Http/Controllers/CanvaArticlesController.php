@@ -11,7 +11,8 @@ class CanvaArticlesController extends Controller
 {
     public function listArticles()
     {
-        $articles = Article::where('status', 'accepted')->get();
+        $articles = Article::whereNotNull('issue_id')->get();
+
         $activeSpecialty = '';
         // get issue ids
         $allArticles = Article::all();
@@ -22,7 +23,7 @@ class CanvaArticlesController extends Controller
 
     public function listArticlesBySpecialty($specialty)
     {
-        $articles = Article::where('status', 'accepted')->where('specialty', $specialty)->get();
+        $articles = Article::whereNotNull('issue_id')->where('specialty', $specialty)->get();
         $activeSpecialty = $specialty;
         // get issue ids
         $allArticles = Article::all();
@@ -50,7 +51,7 @@ class CanvaArticlesController extends Controller
                 ->orWhere('funding_name', 'like', "%{$keyword}%")
                 ->orWhere('grant_id', 'like', "%{$keyword}%");
         })
-        ->where('status', 'accepted')
+        ->whereNotNull('issue_id')
         ->get();
 
 
@@ -69,7 +70,7 @@ class CanvaArticlesController extends Controller
     public function listArticlesByIssue($issueId)
     {
         // Тук може би ще държим в отделна таблица Issue Articles ?!?
-        $articles = Article::where('issue_id', $issueId)->where('status', 'accepted')->get();
+        $articles = Article::where('issue_id', $issueId)->whereNotNull('issue_id')->get();
         $activeSpecialty = '';
         // get issue ids
         $allArticles = Article::all();
