@@ -68,7 +68,12 @@
                                                         <a href="{{ route('articles.adminAcceptArticleBlade', $article->id) }}" class="btn btn-warning btn-sm">Editor Accept<i class="fas fa-edit"></i></a>
                                                     @elseif ($article->admin_accept === 1)
                                                         <a href="{{ route('articles.adminAcceptArticleBlade', $article->id) }}" class="btn btn-warning btn-sm disabled">Editor Accept<i class="fas fa-edit"></i></a>
-                                                    @endif                                                
+                                                    @endif   
+                                                    <form action="{{ route('articles.destroy', $article->id) }}" method="POST">
+                                                        @csrf
+                                                        @method('DELETE')
+                                                        <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this article?')">Delete</button>
+                                                    </form>                                                    
                                                 @endif
 
                                                 @if  (Auth::user()->role === 'admin' && $article->status === "accepted")
