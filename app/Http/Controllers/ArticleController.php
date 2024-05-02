@@ -303,7 +303,7 @@ class ArticleController extends Controller
 
         // Activity LOG
         activity()
-            ->withProperties(['createArticle' => "Author $user->email create article with id #$this->articleId", 'articleName' => $this->articleTitle])
+            ->withProperties(['createArticle' => "Author $user->email create article with id #$this->articleId", 'articleName' => $this->articleTitle, 'articleId' => $this->articleId])
             ->log('create article');
 
 
@@ -414,7 +414,7 @@ class ArticleController extends Controller
                     // Activity LOG
                     activity()
                         ->performedOn($review)
-                        ->withProperties(['force_reviewer_msg' => "Admin added $reviewer->name to be reviewer on article #$id", 'articleName' => $article->title])
+                        ->withProperties(['force_reviewer_msg' => "Admin added $reviewer->name to be reviewer on article #$id", 'articleName' => $article->title, 'articleId' => $article->id])
                         ->log('force reviewer');
                 }
             }
@@ -475,7 +475,7 @@ class ArticleController extends Controller
 
         // Activity LOG
         activity()
-            ->withProperties(['publishArticle' => "Admin publish article '$article->title' with issue #$issueId.", 'articleName' => $article->title])
+            ->withProperties(['publishArticle' => "Admin publish article '$article->title' with issue #$issueId.", 'articleName' => $article->title, 'articleId' => $article->id])
             ->log('publish article');
 
         //EMAIL че е PUBLISH
@@ -504,7 +504,7 @@ class ArticleController extends Controller
 
         // Activity LOG
         activity()
-            ->withProperties(['acceptArticle' => "Editor accept article #$article->id  - $article->title", 'articleName' => $article->title])
+            ->withProperties(['acceptArticle' => "Editor accept article #$article->id  - $article->title", 'articleName' => $article->title, 'articleId' => $article->id])
             ->log('editor accept article');
 
         $subject = "Editor accept your article : " . $article->title;
@@ -661,7 +661,7 @@ class ArticleController extends Controller
         }
         // Activity LOG
         activity()
-            ->withProperties(['updateArticle' => "Author $user->email update article with id #$this->articleId", 'articleName' => $this->articleTitle])
+            ->withProperties(['updateArticle' => "Author $user->email update article with id #$this->articleId", 'articleName' => $this->articleTitle, 'articleId' => $this->articleId])
             ->log('update article');
 
 
@@ -728,7 +728,7 @@ class ArticleController extends Controller
                         $article = Article::findOrFail($id);
                         // Activity LOG
                         activity()
-                            ->withProperties(['sendEmailForReviewRequest' => "$user->email got email for review request on article id #$id", 'articleName' => $article->title])
+                            ->withProperties(['sendEmailForReviewRequest' => "$user->email got email for review request on article id #$id", 'articleName' => $article->title, 'articleId' => $article->id])
                             ->log('sent email review request');
                     }
                 }
@@ -768,6 +768,7 @@ class ArticleController extends Controller
         $article = Article::findOrFail($id);
 
         $deleted_article_title = $article->title;
+        $deleted_article_id = $article->id;
 
         $article->coverLetter()->delete();
         $article->titlePage()->delete();
@@ -792,7 +793,7 @@ class ArticleController extends Controller
 
         // Activity LOG
         activity()
-            ->withProperties(['deleteArticle' => "$user->email deleted article id #$id", 'articleName' => $deleted_article_title])
+            ->withProperties(['deleteArticle' => "$user->email deleted article id #$id", 'articleName' => $deleted_article_title, 'articleId' => $deleted_article_id])
             ->log('delete article');
 
         // Пренасочи към страницата, където се показват всички артикули,

@@ -4,40 +4,45 @@
 
         <div class="d-flex justify-content-between align-items-center flex-wrap grid-margin">
             <div>
-                <h4 class="mb-3 mb-md-0">Logs</h4>
+                <h4 class="mb-3 mb-md-0">Articles</h4>
             </div>
         </div>
 
-        <div class="container-fluid">
-            <div class="row justify-content-center">
-                <div class="col-md-12">
-                    <div class="card">
-                        <div class="card-body">
-                            <table class="table">
+        <div class="row">
+            <div class="col-lg-12 col-xl-12 stretch-card">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table id="dataTable" class="table table-hover mb-0">
                                 <thead>
                                     <tr>
-                                        <th>ID</th>
-                                        <th>Date</th>
-                                        <th>Article Name</th>
-                                        <th>Causer</th>
-                                        {{-- <th>Subject</th> --}}
-                                        <th>Description</th>
-                                        <th>Properties</th>
-
+                                        <th class="pt-0">ID</th>
+                                        <th class="pt-0">Article ID</th>
+                                        <th class="pt-0">Date</th>
+                                        <th class="pt-0">Article Name</th>
+                                        <th class="pt-0">Causer</th>
+                                        {{-- <th class="pt-0">Subject</th> --}}
+                                        <th class="pt-0">Description</th>
+                                        <th class="pt-0">Properties</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     @foreach ($logs as $log)
                                         <tr>
-                                            <td>{{ $log->id }}</td>
-                                            <td>{{ $log->created_at }}</td>
-                                            <td>@if (isset($log->properties['articleName']))
-                                                {{ $log->properties['articleName'] }}
-                                            @endif</td>
-                                            <td>{{ $log->created_at }}</td>
-                                            <td>{{ optional($log->causer)->name }}</td>
-                                            {{-- <td>{{ $log->subject_type }}</td> --}}
-                                            <td>{{ $log->description }}</td>
+                                            <td>{{ $log->id }}</td> {{-- ID --}}
+                                            <td>
+                                                @if (isset($log->properties['articleId']))
+                                                    {{ $log->properties['articleId'] }}
+                                                @endif
+                                            </td> {{-- Article ID --}}
+                                            <td>{{ $log->created_at }}</td> {{-- Date --}}
+                                            <td>
+                                                @if (isset($log->properties['articleName']))
+                                                    {{ $log->properties['articleName'] }}
+                                                @endif
+                                            </td> {{-- Article NAME --}}
+                                            <td>{{ optional($log->causer)->name }}</td> {{-- Caauser --}}
+                                            <td>{{ $log->description }}</td> {{-- Description --}}
                                             <td>
                                                 {{-- User --}}
                                                 @if (isset($log->properties['attributes']['name']))
@@ -71,10 +76,6 @@
                                                 @if (isset($log->properties['sendEmailForReviewRequest']))
                                                     {{ $log->properties['sendEmailForReviewRequest'] }}
                                                 @endif
-                                                {{-- coAuthorApprove --}}
-                                                {{-- @if (isset($log->properties['coAuthorApprove']))
-                                                    {{ $log->properties['coAuthorApprove'] }} 
-                                                @endif --}}
 
                                                 {{-- Co Author --}}
                                                 @if (isset($log->properties['attributes']['contact_email']))
@@ -120,7 +121,7 @@
                                                     @endif
                                                     {{-- Article --}}
                                                 @endif
-                                            </td>
+                                            </td> {{-- Proparties --}}
 
                                         </tr>
                                     @endforeach
@@ -134,4 +135,15 @@
 
 
     </div>
+
+    <script>
+        $(document).ready(function() {
+            $('#dataTable').DataTable({
+                "pageLength": 100, // Set the default number of records per page to 100
+                "order": [
+                    [1, "asc"]
+                ] // Сортиране по втората колона (индекс 1) във възходящ ред
+            });
+        });
+    </script>
 @endsection
