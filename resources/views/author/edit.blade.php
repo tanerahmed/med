@@ -27,7 +27,7 @@
                             <option value="">Select Reviewer</option>
                             @foreach ($reviewers as $reviewer)
                                 <option value="{{ $reviewer->id }}" @if ($review && $review->reviewer_id_1 == $reviewer->id) selected @endif>
-                                    {{ $reviewer->name }}</option>
+                                    {{ $reviewer->name }} - {{ $reviewer->email }}</option>
                             @endforeach
                         </select>
                     </div>
@@ -38,7 +38,7 @@
                             <option value="">Select Reviewer</option>
                             @foreach ($reviewers as $reviewer)
                                 <option value="{{ $reviewer->id }}" @if ($review && $review->reviewer_id_2 == $reviewer->id) selected @endif>
-                                    {{ $reviewer->name }}</option>
+                                    {{ $reviewer->name }} - {{ $reviewer->email }}</option>
                             @endforeach
                         </select>
                     </div>
@@ -49,7 +49,7 @@
                             <option value="">Select Reviewer</option>
                             @foreach ($reviewers as $reviewer)
                                 <option value="{{ $reviewer->id }}" @if ($review && $review->reviewer_id_3 == $reviewer->id) selected @endif>
-                                    {{ $reviewer->name }}</option>
+                                    {{ $reviewer->name }} - {{ $reviewer->email }}</option>
                             @endforeach
                         </select>
                     </div>
@@ -77,7 +77,7 @@
                             <option value="">Select Reviewer</option>
                             @foreach ($reviewers as $reviewer)
                                 <option value="{{ $reviewer->id }}" @if ($review && $review->reviewer_id_1 == $reviewer->id) selected @endif>
-                                    {{ $reviewer->name }}</option>
+                                    {{ $reviewer->name }} - {{ $reviewer->email }}</option>
                             @endforeach
                         </select>
                     </div>
@@ -88,7 +88,7 @@
                             <option value="">Select Reviewer</option>
                             @foreach ($reviewers as $reviewer)
                                 <option value="{{ $reviewer->id }}" @if ($review && $review->reviewer_id_2 == $reviewer->id) selected @endif>
-                                    {{ $reviewer->name }}</option>
+                                    {{ $reviewer->name }} - {{ $reviewer->email }}</option>
                             @endforeach
                         </select>
                     </div>
@@ -99,7 +99,7 @@
                             <option value="">Select Reviewer</option>
                             @foreach ($reviewers as $reviewer)
                                 <option value="{{ $reviewer->id }}" @if ($review && $review->reviewer_id_3 == $reviewer->id) selected @endif>
-                                    {{ $reviewer->name }}</option>
+                                    {{ $reviewer->name }} - {{ $reviewer->email }}</option>
                             @endforeach
                         </select>
                     </div>
