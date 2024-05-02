@@ -24,7 +24,7 @@
                 </div>
             @endif
 
-            <form action="{{ route('article.store') }}" method="POST" enctype="multipart/form-data" id="articleForm" >
+            <form action="{{ route('article.store') }}" method="POST" enctype="multipart/form-data" id="articleForm">
                 @csrf
                 <div class="row">
 
@@ -190,11 +190,11 @@
 
                         <!-- Figures -->
                         <div class="mb-3">
-                            <label for="figures" class="form-label"><strong>Upload Figures: </strong> <i>(jpg)</i> <a
-                                    href="https://www.iloveimg.com/convert-to-jpg/tiff-to-jpg" target="_blank"><span
+                            <label for="figures" class="form-label"><strong>Upload Figures: </strong> <i>(jpg)</i>
+                                {{-- <a href="https://www.iloveimg.com/convert-to-jpg/tiff-to-jpg" target="_blank"><span
                                         style="color: red;" data-bs-toggle="tooltip" data-bs-placement="right"
                                         title="Please click and visit online convertet to convert Tiff file to JPG">tiff
-                                        ?</span></a>
+                                        ?</span></a> --}}
                             </label>
                             <div id="figures_selected_files"></div>
                             <input type="file" name="figures[]" multiple class="form-control" id="figures"
@@ -217,11 +217,12 @@
                         <!-- Supplementary -->
                         <div class="mb-3">
                             <label for="supplementary" class="form-label"><strong>Upload Supplementary: </strong><i>(doc,
-                                    docx, xls, xlsx, pdf, png, jpg) </i><a
+                                    docx, xls, xlsx, pdf, png, jpg) </i>
+                                    {{-- <a
                                     href="https://www.iloveimg.com/convert-to-jpg/tiff-to-jpg" target="_blank"><span
                                         style="color: red;" data-bs-toggle="tooltip" data-bs-placement="right"
                                         title="Please click and visit online convertet to convert Tiff file to JPG">tiff
-                                        ?</span></a>
+                                        ?</span></a> --}}
                             </label>
                             <div id="supplementary_selected_files"></div>
                             <input type="file" name="supplementary[]" multiple class="form-control"
@@ -233,8 +234,9 @@
 
                         <!-- Cover Later -->
                         <div class="mb-3">
-                            <label for="cover_letter" class="form-label"><strong>Upload Cover Later:</strong><i>(doc, docx,
-                                LaTeX doc)</i></label>
+                            <label for="cover_letter" class="form-label"><strong>Upload Cover Later:</strong><i>(doc,
+                                    docx,
+                                    LaTeX doc)</i></label>
                             <div id="cover_letter_selected_files"></div>
                             <input type="file" name="cover_letter[]" multiple class="form-control" id="cover_letter"
                                 onchange="validateCoverLaterFileType(); displaySelectedFiles('cover_letter')">
@@ -296,10 +298,10 @@
         selectedFilesDiv.innerHTML = fileNames;
     }
 
-    document.addEventListener('DOMContentLoaded', function () {
-        document.getElementById('articleForm').addEventListener('submit', function () {
-            document.getElementById('submitBtn').disabled = true; // Деактивирайте бутона след изпращане на формата
+    document.addEventListener('DOMContentLoaded', function() {
+        document.getElementById('articleForm').addEventListener('submit', function() {
+            document.getElementById('submitBtn').disabled =
+            true; // Деактивирайте бутона след изпращане на формата
         });
     });
-
 </script>
