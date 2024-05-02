@@ -196,9 +196,9 @@ class ReviewerController extends Controller
         }
 
 
-        $subject = "Article '$article->title' was reviwed." ;
+        $subject = "Article '$article->title' was reviwed.";
         Mail::to("superuser.blmprime@gmail.com")->send(new ReviewArticleForAdminEmail($subject, $body));
-    
+
 
 
         if ($acceptedCount >= 2) {
@@ -269,6 +269,13 @@ class ReviewerController extends Controller
                 if (($isRating1Accepted && $isRating2Declined) || ($isRating1Declined && $isRating2Accepted)) {
                     $review->reviewer_id_3 = $user->id;
                 }
+            }// Тува вече квотата е пълна от Ревювъри и казваме, че към момента няма как да стане ревювър
+            else {
+                $notification = array(
+                    'message' => 'All reviewers found.',
+                    'alert-type' => 'error'
+                );
+                return redirect()->route('review.list')->with($notification);
             }
             $review->save();
 
@@ -277,17 +284,6 @@ class ReviewerController extends Controller
                 ->performedOn($review)
                 ->withProperties(['approveReviewRequestArticleId' => "$user->email accepet to be reviwer on article id # " . $review->article->id])
                 ->log('approve review');
-        }
-
-
-        // Ако ревювър1 и ревювър2 са заети, върни съобщение, че всички места за ревювър са заети.
-        if ($review->reviewer_id_1 != null && $review->reviewer_id_2 != null) {
-            $notification = array(
-                'message' => 'All reviewers found.',
-                'alert-type' => 'error'
-            );
-
-            return redirect()->route('review.list')->with($notification);
         }
 
         // Проверяваме ако имаме запис в дадения Ревювър само тогава пращаме имейли и записваме в логовете
