@@ -995,6 +995,19 @@ class ArticleController extends Controller
         $this->mergePdf($apiKey, $uploadedFiles);
     }
 
+    public function updateAuthorCanEdit($id, Request $request)
+    {
+        $article = Article::findOrFail($id);
+        $article->author_can_edit = $request->input('author_can_edit', 0);
+        $article->save();
+
+        $notification = array(
+            'message' => 'Send Edit to article'.$article->title.' successfully.',
+            'alert-type' => 'success'
+        );
+        return redirect()->route('article.list')->with($notification);
+    }
+
 
     // public function downloadArticlePDFFiles(Article $article)
     // {

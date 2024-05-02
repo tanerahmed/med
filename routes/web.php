@@ -45,6 +45,9 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::delete('/admin/user/delete/{user}', [AdminController::class, 'userDestroy'])->name('admin.users-destroy');
     Route::get('/logs', [LogController::class, 'index'])->name('logs.index');
 
+    Route::put('/articles/{id}/updateAuthorCanEdit', [ArticleController::class, 'updateAuthorCanEdit'])
+    ->name('article.updateAuthorCanEdit');
+
 });
 
 Route::middleware(['auth'])->group(function () {
