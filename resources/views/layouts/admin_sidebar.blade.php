@@ -65,7 +65,7 @@
 
 
             {{-- Admin and Editor can see that button --}}
-            @if (Auth::check() && (Auth::user()->role === 'author' || Auth::user()->role === 'admin'))
+            {{-- @if (Auth::check() && (Auth::user()->role === 'author' || Auth::user()->role === 'admin')) --}}
                 <li class="nav-item nav-category">Articles</li>
                 <li class="nav-item">
                     <a class="nav-link" data-bs-toggle="collapse" href="#articles" role="button" aria-expanded="false"
@@ -85,7 +85,7 @@
                         </ul>
                     </div>
                 </li>
-            @endif
+            {{-- @endif --}}
 
 
             {{-- Admin can see that button --}}

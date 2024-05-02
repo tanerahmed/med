@@ -334,7 +334,12 @@ class ArticleController extends Controller
     public function edit($id)
     {
         $article = Article::findOrFail($id);
-        $reviewers = User::where('role', 'reviewer')->get();
+
+
+        // Неможе автора да бъде ревювър на себе си
+        $excludedId = $article->user->id;
+
+        $reviewers = User::where('role', 'reviewer')->whereNot('id', $excludedId)->get();
         $review = Review::where('article_id', $id)->first();
 
         // Получаване на списъка с поканените рецензенти за съответната статия
