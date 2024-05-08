@@ -161,7 +161,7 @@ class ReviewerController extends Controller
         // $body['titlePages'] = $request->input('title_pages');
         // $body['manuscript'] = $request->input('manuscript');
         // $body['figures'] = $request->input('figures');
-        // $body['tables'] = $request->input('tables');
+        // $body['tables'] = $request->input('tables');s
         // $body['supplementary'] = $request->input('supplementary');
         // $body['coverLetter'] = $request->input('cover_letter');
         // $body['keywords'] = $request->input('keywords');
@@ -185,6 +185,7 @@ class ReviewerController extends Controller
         // Review Comments
         $reviewComment = new ReviewComment();
         $reviewComment->article_id = $article->id;
+        $reviewComment->user_id = $user->id;
         $reviewComment->rating = $request->input('rating');
         $reviewComment->review_questions = $review_questions;
         $reviewComment->review_comments = $request->input('review_comments') ;
@@ -256,6 +257,10 @@ class ReviewerController extends Controller
         return redirect()->route('review.list')->with($notification);
     }
 
+    public function showReviewComments( $review_id, $user_id)
+    {
+        
+    }
 
     public function approveReviewRequest($user_id, $review_id)
     {

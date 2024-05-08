@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('reviews_coment', function (Blueprint $table) {
             $table->id();
             $table->foreignId('article_id')->constrained();
+			$table->foreignId('user_id')->constrained();
             $table->string('rating');
             $table->text('review_questions');
             $table->longText('review_comments');

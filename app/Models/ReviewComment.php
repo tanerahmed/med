@@ -12,6 +12,7 @@ class ReviewComment extends Model
 
     protected $fillable = [
         'article_id',
+        'user_id',
         'rating',
         'review_questions',
         'review_comments',
@@ -22,4 +23,10 @@ class ReviewComment extends Model
     {
         return $this->belongsTo(Article::class, 'article_id');
     }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id');
+    }
+
 }
