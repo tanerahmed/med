@@ -6,7 +6,7 @@
 </head>
 <body>
     <p>Hello,</p>
-    <p><strong>{{ $body['reviwer_name'] }}</strong>  did your Article #<strong>{{ $body['articleId'] }}</strong> review</p>
+    <p><strong>{{ $body['reviwer_name'] }}</strong>  reviewed Article # <strong>{{ $body['articleId'] }}</strong> - <strong>{{ $body['article_title'] }}</strong></p>
     <br>
     <p>With rating: <strong>{{ $body['rating'] }}</strong></p>
     <br>

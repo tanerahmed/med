@@ -187,17 +187,20 @@ class ReviewerController extends Controller
         if ($review->rating_3 === 'accepted') {
             $acceptedCount++;
         }
-
-        $subject = "Review Article #" . $articleId;
+        // SEND ONLY TO ADMIN !!!!
+        //$subject = "Review Article #" . $articleId;
+        $subject = "Article '$article->title' was reviwed.";
         if (!empty($filePath)) {
-            Mail::to($article->user->email)->send(new ReviewArticleEmail($subject, $body, $filePath));
+            // Mail::to($article->user->email)->send(new ReviewArticleEmail($subject, $body, $filePath));
+            Mail::to("office@zaracomputers.bg")->send(new ReviewArticleEmail($subject, $body, $filePath));
         } else {
-            Mail::to($article->user->email)->send(new ReviewArticleEmail($subject, $body));
+            // Mail::to($article->user->email)->send(new ReviewArticleEmail($subject, $body));
+            Mail::to("office@zaracomputers.bg")->send(new ReviewArticleEmail($subject, $body));
         }
 
 
-        $subject = "Article '$article->title' was reviwed.";
-        Mail::to("superuser.blmprime@gmail.com")->send(new ReviewArticleForAdminEmail($subject, $body));
+
+
 
 
 
