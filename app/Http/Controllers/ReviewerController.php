@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use App\Models\Review;
 use App\Models\Article;
-use App\Models\User;
+use App\Models\ReviewComment;
 use App\Models\InvitedReviewer;
 
 use Illuminate\Support\Facades\Mail;
@@ -126,6 +126,15 @@ class ReviewerController extends Controller
         return response()->download($zipFileName)->deleteFileAfterSend(true);
     }
 
+    private function prepareQuestions($answer1, $answer2, $answer3)
+    {
+        $result = "Question 1 : $answer1 <br>
+                    Qestion 2 : $answer2 <br>
+                    Question 3 : $answer3";
+        return $result;
+
+    }
+
     public function store(Request $request)
     {
         $zipFile = '';
@@ -145,19 +154,20 @@ class ReviewerController extends Controller
         $body['article_title'] = $article->title;
         $body['articleId'] = $articleId;
         $body['reviwer_name'] = $user->name;
-        $body['question1'] = $request->input('question1');
-        $body['question2'] = $request->input('question2');
-        $body['question3'] = $request->input('question3');
-        $body['zipFile'] = $zipFile;
-        $body['titlePages'] = $request->input('title_pages');
-        $body['manuscript'] = $request->input('manuscript');
-        $body['figures'] = $request->input('figures');
-        $body['tables'] = $request->input('tables');
-        $body['supplementary'] = $request->input('supplementary');
-        $body['coverLetter'] = $request->input('cover_letter');
-        $body['keywords'] = $request->input('keywords');
-        $body['title'] = $request->input('title');
-        $body['abstract'] = $request->input('abstract');
+        // $body['question1'] = $request->input('question1');
+        // $body['question2'] = $request->input('question2');
+        // $body['question3'] = $request->input('question3');
+        // $body['zipFile'] = $zipFile;
+        // $body['titlePages'] = $request->input('title_pages');
+        // $body['manuscript'] = $request->input('manuscript');
+        // $body['figures'] = $request->input('figures');
+        // $body['tables'] = $request->input('tables');
+        // $body['supplementary'] = $request->input('supplementary');
+        // $body['coverLetter'] = $request->input('cover_letter');
+        // $body['keywords'] = $request->input('keywords');
+        // $body['title'] = $request->input('title');
+        // $body['abstract'] = $request->input('abstract');
+        $body['review_comments'] = $request->input('review_comments');
         $body['rating'] = $request->input('rating');
 
         $review = Review::where('article_id', $articleId)->first();
@@ -170,6 +180,16 @@ class ReviewerController extends Controller
             $review->rating_3 = $rating;
         }
         $review->save();
+
+        $review_questions =  $this->prepareQuestions($request->input('answer1'), $request->input('answer2'), $request->input('answer3'));
+        // Review Comments
+        $reviewComment = new ReviewComment();
+        $reviewComment->article_id = $article->id;
+        $reviewComment->rating = $request->input('rating');
+        $reviewComment->review_questions = $review_questions;
+        $reviewComment->review_comments = $request->input('review_comments') ;
+        $reviewComment->file_path = '';
+        $reviewComment->save();
 
         // Activity LOG
         activity()

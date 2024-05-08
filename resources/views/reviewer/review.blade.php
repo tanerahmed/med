@@ -87,12 +87,14 @@
                                 onchange="validateZIPFileType()">
                             <div class="text-danger" id="zip_file_error"></div>
                         </div> --}}
-                        <div class="mb-3">
+
+                        {{-- <div class="mb-3">
                             <label for="zip_file" class="form-label"><strong>Upload ZIP File: </strong><i>(zip)</i></label>
                             <input type="file" name="zip_file[]" class="form-control" id="zip_file"
                                 onchange="validateZIPFileType()">
                             <div class="text-danger" id="zip_file_error"></div>
-                        </div>
+                        </div> --}}
+
                         <div class="mb-3">
                             <label for="field1" class="form-label"><strong>Select Rating:</strong></label>
                             <select class="form-select" name="rating" aria-label="Default select example">
@@ -110,11 +112,11 @@
                     <div class="col-md-6">
 
                         <div class="mb-3">
-                            <label for="title_pages" class="form-label"><strong>Comment Title Page:</strong></label>
-                            <textarea class="form-control" id="title_pages" name="title_pages" rows="3"></textarea>
+                            <label for="title_pages" class="form-label"><strong>Comments:</strong></label>
+                            <textarea class="form-control" id="review_comments" name="review_comments" rows="15"></textarea>
                         </div>
 
-                        <div class="mb-3">
+                        {{-- <div class="mb-3">
                             <label for="manuscript" class="form-label"><strong>Comment Manuscript:</strong></label>
                             <textarea class="form-control" id="manuscript" name="manuscript" rows="3"></textarea>
                         </div>
@@ -152,7 +154,7 @@
                         <div class="mb-3">
                             <label for="abstract" class="form-label"><strong>Comment Abstract:</strong></label>
                             <textarea class="form-control" id="abstract" name="abstract" rows="3"></textarea>
-                        </div>
+                        </div> --}}
                         {{-- Втора колона КРАЙ --}}
                         <button type="submit" class="btn btn-primary">Submit</button>
                     </div>

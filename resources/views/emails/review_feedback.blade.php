@@ -10,15 +10,15 @@
     <br>
     <p>With rating: <strong>{{ $body['rating'] }}</strong></p>
     <br>
-    <p>title tage: {{ $body['titlePages']}}</p>
-    <p>manuscript: {{ $body['manuscript']}}</p>
+    <p>Comments: {{ $body['review_comments']}}</p>
+    {{-- <p>manuscript: {{ $body['manuscript']}}</p>
     <p>figures: {{ $body['figures']}}</p>
     <p>tables: {{ $body['tables']}}</p>
     <p>supplementary: {{ $body['supplementary']}}</p>
     <p>coverLetter: {{ $body['coverLetter']}}</p>
     <p>keywords: {{ $body['keywords']}}</p>
     <p>title: {{ $body['title']}}</p>
-    <p>abstract: {{ $body['abstract']}}</p>
+    <p>abstract: {{ $body['abstract']}}</p> --}}
     <br>
     <p>Sincerely,</p>
     <p>Your Team</p>
