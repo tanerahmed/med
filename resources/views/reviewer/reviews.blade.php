@@ -44,7 +44,7 @@
                                         <td>{{ $review->article->updated_at }}</td>
                                         <td>
                                             <a href="{{ route('review.downolad_files', $review->article->id) }}"><button type="button" class="btn btn-warning btn-sm">Dowload files</button></a>
-                                            <a href="{{ route('review.summary_pdf', $review->article->id) }}"><button type="button" class="btn btn-success btn-sm">Summary PDF files</button></a>
+                                            {{-- <a href="{{ route('review.summary_pdf', $review->article->id) }}"><button type="button" class="btn btn-success btn-sm">Summary PDF files</button></a> --}}
                                             <a href="{{ route('review', $review->article->id) }}"><button type="button" class="btn btn-primary btn-sm">Review</button></a>
                                         </td>
                                     </tr>

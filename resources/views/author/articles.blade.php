@@ -99,7 +99,7 @@
                                                 @endif
                                                 
                                                 <a href="{{ route('review.downolad_files', $article->id) }}" class="btn btn-success btn-sm">Download ZIP<i class="fas fa-download"></i></a>
-                                                <a href="{{ route('admin.downolad_summary_pdf', $article->id) }}" class="btn btn-success btn-sm">Summary PDF<i class="fas fa-download"></i></a>
+                                                {{-- <a href="{{ route('admin.downolad_summary_pdf', $article->id) }}" class="btn btn-success btn-sm">Summary PDF<i class="fas fa-download"></i></a> --}}
                                             </td>
                                             
                                             <td>
