@@ -107,18 +107,23 @@ class ArticleController extends Controller
                 // Обработваме първия ревютор
                 if ($review['reviewer_id_1']) {
                     $preparedReview['reviewer1_name'] = User::find($review['reviewer_id_1'])->name;
+                    $preparedReview['reviewer1_id'] = User::find($review['reviewer_id_1'])->id;
                 } else {
                     $preparedReview['reviewer1_name'] = '';
                 }
 
                 if ($review['reviewer_id_2']) {
                     $preparedReview['reviewer2_name'] = User::find($review['reviewer_id_2'])->name;
+                    $preparedReview['reviewer2_id'] = User::find($review['reviewer_id_2'])->id;
+
                 } else {
                     $preparedReview['reviewer2_name'] = '';
                 }
 
                 if ($review['reviewer_id_3']) {
                     $preparedReview['reviewer3_name'] = User::find($review['reviewer_id_3'])->name;
+                    $preparedReview['reviewer3_id'] = User::find($review['reviewer_id_3'])->id;
+
                 } else {
                     $preparedReview['reviewer3_name'] = '';
                 }

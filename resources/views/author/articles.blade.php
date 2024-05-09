@@ -110,13 +110,41 @@
                                                     @else
                                                         @if ($preparedReview['article_id'] == $article->id)
                                                             <div class="review">
-                                                                <span>1.{{ $preparedReview['reviewer1_name'] }} -
-                                                                    <strong>{{ $preparedReview['rating_1'] ?: '' }}</strong></span><br>
-                                                                <span>2.{{ $preparedReview['reviewer2_name'] }} -
-                                                                    <strong>{{ $preparedReview['rating_2'] ?: '' }}</strong></span><br>
-                                                                <span>3.{{ $preparedReview['reviewer3_name'] }} -
-                                                                    <strong>{{ $preparedReview['rating_3'] ?: '' }}</strong></span><br>
-                                                                <!-- Добавете подобни редове за останалите ревютори -->
+                                                                <span>1. {{ $preparedReview['reviewer1_name'] }} -
+                                                                    @if (!empty($preparedReview['reviewer1_id']))
+                                                                        <strong>
+                                                                            <a href="{{ route('reviews.showReviewComments', ['article_id' => $article->id, 'user_id' => $preparedReview['reviewer1_id']]) }}">
+                                                                                {{ $preparedReview['rating_1'] ?: '' }}
+                                                                            </a>
+                                                                        </strong>
+                                                                    @else
+                                                                        <strong>{{ $preparedReview['rating_1'] ?: '' }}</strong>
+                                                                    @endif
+                                                                </span>
+                                                                <br>
+                                                                <span>2. {{ $preparedReview['reviewer2_name'] }} -
+                                                                    @if (!empty($preparedReview['reviewer2_id']))
+                                                                        <strong>
+                                                                            <a href="{{ route('reviews.showReviewComments', ['article_id' => $article->id, 'user_id' => $preparedReview['reviewer2_id']]) }}">
+                                                                                {{ $preparedReview['rating_2'] ?: '' }}
+                                                                            </a>
+                                                                        </strong>
+                                                                    @else
+                                                                        <strong>{{ $preparedReview['rating_2'] ?: '' }}</strong>
+                                                                    @endif
+                                                                </span>
+                                                                <br>
+                                                                <span>3. {{ $preparedReview['reviewer3_name'] }} -
+                                                                    @if (!empty($preparedReview['reviewer3_id']))
+                                                                        <strong>
+                                                                            <a href="{{ route('reviews.showReviewComments', ['article_id' => $article->id, 'user_id' => $preparedReview['reviewer3_id']]) }}">
+                                                                                {{ $preparedReview['rating_3'] ?: '' }}
+                                                                            </a>
+                                                                        </strong>
+                                                                    @else
+                                                                        <strong>{{ $preparedReview['rating_3'] ?: '' }}</strong>
+                                                                    @endif
+                                                                </span>
                                                             </div>
                                                         @endif
                                                     @endif

@@ -257,9 +257,15 @@ class ReviewerController extends Controller
         return redirect()->route('review.list')->with($notification);
     }
 
-    public function showReviewComments( $review_id, $user_id)
+    public function showReviewComments( $article_id, $user_id)
     {
-        
+
+        $review = ReviewComment::where('article_id', $article_id)
+        ->where('user_id', $user_id)
+        ->get();
+
+        return view('reviewer.show_review_comments', ['review' => $review[0]]);
+
     }
 
     public function approveReviewRequest($user_id, $review_id)

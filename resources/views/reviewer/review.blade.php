@@ -35,12 +35,12 @@
                                 service?</label>
                             <div>
                                 <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" id="question1Yes" name="question1"
+                                    <input class="form-check-input" type="radio" id="question1Yes" name="answer1"
                                         value="yes">
                                     <label class="form-check-label" for="question1Yes">Yes</label>
                                 </div>
                                 <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" id="question1No" name="question1"
+                                    <input class="form-check-input" type="radio" id="question1No" name="answer1"
                                         value="no">
                                     <label class="form-check-label" for="question1No">No</label>
                                 </div>
@@ -52,12 +52,12 @@
                                 user-friendly?</label>
                             <div>
                                 <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" id="question2Yes" name="question2"
+                                    <input class="form-check-input" type="radio" id="question2Yes" name="answer2"
                                         value="yes">
                                     <label class="form-check-label" for="question2Yes">Yes</label>
                                 </div>
                                 <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" id="question2No" name="question2"
+                                    <input class="form-check-input" type="radio" id="question2No" name="answer2"
                                         value="no">
                                     <label class="form-check-label" for="question2No">No</label>
                                 </div>
@@ -69,12 +69,12 @@
                                 friends?</label>
                             <div>
                                 <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" id="question3Yes" name="question3"
+                                    <input class="form-check-input" type="radio" id="question3Yes" name="answer3"
                                         value="yes">
                                     <label class="form-check-label" for="question3Yes">Yes</label>
                                 </div>
                                 <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" id="question3No" name="question3"
+                                    <input class="form-check-input" type="radio" id="question3No" name="answer3"
                                         value="no">
                                     <label class="form-check-label" for="question3No">No</label>
                                 </div>

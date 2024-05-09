@@ -99,7 +99,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/reviews/request/{user_id}/{review_id}', [ReviewerController::class, 'approveReviewRequest'])->middleware(['auth', 'role:reviewer'])->name('reviews.approveReviewRequest');
     Route::get('/reviews/request/reject/{user_id}/{review_id}', [ReviewerController::class, 'rejectReviewRequest'])->middleware(['auth', 'role:reviewer'])->name('reviews.rejectReviewRequest');
     Route::put('/reviews/{id}', [ReviewerController::class, 'update'])->name('reviews.update');
-    Route::get('/reviews/{review_id}/{user_id}', [ReviewerController::class, 'showReviewComments'])->name('reviews.showReviewComments');
+    Route::get('/reviews/{article_id}/{user_id}', [ReviewerController::class, 'showReviewComments'])->name('reviews.showReviewComments');
     // user role update
     Route::post('admin/users/{user}/assign-role', [UserController::class, 'assignRole'])->name('admin.assign-role');
 
