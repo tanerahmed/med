@@ -1,7 +1,7 @@
 @extends('canva.home')
 @section('content')
     <!-- Document Wrapper
-                                                ============================================= -->
+                                                    ============================================= -->
     <div id="wrapper">
         {{-- <section id="content">
 			<div class="content-wrap">
@@ -28,30 +28,30 @@
 		</section><!-- .page-title end --> --}}
 
         <!-- Content
-                                          ============================================= -->
+                                              ============================================= -->
         <section id="content">
             <div class="content-wrap">
                 <div class="container">
 
                     <div class="row gx-5 col-mb-80">
                         <!-- Post Content
-                                              ============================================= -->
+                                                  ============================================= -->
                         <main class="postcontent col-lg-9">
 
                             <div class="single-post mb-0">
 
                                 <!-- Single Post
-                                                ============================================= -->
+                                                    ============================================= -->
                                 <div class="entry article-scroll">
                                     <p id='article-title' style="margin-bottom: 70px;"></p>
                                     <!-- Entry Title
-                                                 ============================================= -->
+                                                     ============================================= -->
                                     <div class="entry-title">
                                         <h2>{{ $article->title }}</h2>
                                     </div><!-- .entry-title end -->
 
                                     <!-- Entry Meta
-                                                 ============================================= -->
+                                                     ============================================= -->
                                     <div class="entry-meta">
                                         <ul>
                                             <li><i class="uil uil-schedule"></i>{{ $article->updated_at->format('Y-m-d') }}
@@ -63,13 +63,13 @@
                                     </div><!-- .entry-meta end -->
 
                                     <!-- Entry Image
-                                                 ============================================= -->
+                                                     ============================================= -->
                                     {{-- <div class="entry-image">
 										<a href="#"><img src="images/blog/full/1.jpg" alt="Blog Single"></a>
 									</div><!-- .entry-image end --> --}}
 
                                     <!-- Entry Content
-                                                 ============================================= -->
+                                                     ============================================= -->
                                     <div class="entry-content mt-0">
 
 
@@ -191,7 +191,7 @@
                                 </div><!-- .entry end -->
 
                                 <!-- Post Single - Share
-                                                  ============================================= -->
+                                                      ============================================= -->
 
                                 {{-- <h4 class="fs-4 fw-medium">Recommended for you - Тука можем да сложим </h4>
 
@@ -256,12 +256,11 @@
                         </main><!-- .postcontent end -->
 
                         <!-- Sidebar
-                                              ============================================= -->
+                                                  ============================================= -->
                         <aside class="sidebar col-lg-3">
                             <div class="sidebar-widgets-wrap">
 
                                 <div class="widget">
-
                                     <h4>Contnts</h4>
                                     <a href="{{ route('admin.downolad_summary_pdf', $article->id) }}"><button
                                             type="button" class="btn btn-success btn-sm">PDF</button></a>
@@ -272,8 +271,27 @@
                                         <a href="#">Manoscript</a>
                                         <a href="#supplementaryFiles">Supllementary Files</a>
                                     </div>
-
                                 </div>
+                           
+
+                                @if (isset($article->figures))
+                                <div class="widget">
+                                    <h4>Gallery</h4>
+                                    <div class="row">
+                                        @foreach ($article->figures as $file)
+
+                                        <div class="col-6 col-sm-6 mb-3">
+                                            <a href="{{ 'http://127.0.0.1:8000/storage/' . $file->file_path }}" data-lightbox="gallery"
+                                                data-title="Image 1">
+                                                <img src="{{ 'http://127.0.0.1:8000/storage/' . $file->file_path }}" class="img-fluid rounded"
+                                                    alt="Image 1">
+                                            </a>
+                                        </div>
+                                        @endforeach
+                                    </div>
+                                </div>
+                                @endif
+
 
                             </div>
                         </aside><!-- .sidebar end -->
