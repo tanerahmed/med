@@ -281,9 +281,9 @@
                                         @foreach ($article->figures as $file)
 
                                         <div class="col-6 col-sm-6 mb-3">
-                                            <a href="{{ 'http://127.0.0.1:8000/storage/' . $file->file_path }}" data-lightbox="gallery"
+                                            <a href="{{ 'blmprime.com/storage/' . $file->file_path }}" data-lightbox="gallery"
                                                 data-title="Image 1">
-                                                <img src="{{ 'http://127.0.0.1:8000/storage/' . $file->file_path }}" class="img-fluid rounded"
+                                                <img src="{{ 'blmprime.com/storage/' . $file->file_path }}" class="img-fluid rounded"
                                                     alt="Image 1">
                                             </a>
                                         </div>
