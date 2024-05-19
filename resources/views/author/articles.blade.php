@@ -46,7 +46,7 @@
                                             <td>{{ $article->title }}</td>
                                             {{-- <td><span class="badge bg-{{ $article->status_color }}">{{ $article->status_text }}</span></td> --}}
                                             {{-- <td>{!! $article->statusFromReview !!}</td> --}}
-                                            <td>{{ $article->updated_at }}</td>
+                                            <td>{{ $article->created_at }}</td>
                                             <td>{{ $article->issue_id }}</td>
                                             <td>
                                                 @if (Auth::check() && Auth::user()->role === 'admin')
@@ -166,7 +166,7 @@
     <script>
         $(document).ready(function() {
             $('#dataTable').DataTable({
-                "order": [[ 1, "asc" ]] // Сортиране по втората колона (индекс 1) във възходящ ред
+                "order": [[ 6, "desc" ]] // Сортиране по втората колона (индекс 1) във възходящ ред
             });
         });
     </script>
