@@ -62,7 +62,9 @@ class CanvaArticlesController extends Controller
     {
         $allArticles = Article::all();
         $issueIds = $allArticles->pluck('issue_id')->unique()->toArray();
-        return view('canva.showArticle', compact('article', 'issueIds'));
+        $content = Storage::get($article->final_article_path);
+
+        return view('canva.showArticle', compact('article', 'issueIds', 'content'));
     }
 
 

@@ -23,6 +23,7 @@ class Article extends Model
         'keywords',
         'funding_name',
         'grant_id',
+        'final_article_path',
     ];
 
     // public function getActivitylogOptions(): LogOptions

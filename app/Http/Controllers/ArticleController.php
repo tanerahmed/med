@@ -467,8 +467,8 @@ class ArticleController extends Controller
     public function addIssueIdBlade($articleId)
     {
         $maxIssueId = Article::max('issue_id');
+        $article = Article::findOrFail($articleId);        
 
-        $article = Article::findOrFail($articleId);
         return view('author.editIssue', compact('article', 'maxIssueId'));
     }
 
@@ -485,33 +485,38 @@ class ArticleController extends Controller
             return redirect()->route('article.list')->with($notification);
         }
 
-
         $article = Article::findOrFail($articleId);
         if ($article->status == 'accepted') {
             if ($request->has('issue_id')) {
                 $article->issue_id = $issueId;
             }
+
+            $file = $request->file('final_article');
+            $finalFilePath =  $file->storeAs('final_articles/' . $articleId, $file->getClientOriginalName(), 'public');
+            $article->final_article_path = $finalFilePath;
+    
+            $article->save();
+    
+            // Activity LOG
+            activity()
+                ->withProperties(['publishArticle' => "Admin publish article '$article->title' with issue #$issueId.", 'articleName' => $article->title, 'articleId' => $article->id])
+                ->log('publish article');
+        
+
+            //EMAIL че е PUBLISH
+            $authorEmail = $article->user->email;
+            $subject = 'Admin published your Article ' . $article->title . ' with #' . $article->id;
+            $body = [
+                'article_id' => $article->id,
+                'article_title' => $article->title,
+            ];
+            Mail::to($authorEmail)->send(new ArticlePublishedEmail($subject, $body));
+
+            $notification = [
+                'message' => 'Article was published successfully.',
+                'alert-type' => 'success'
+            ];
         }
-        $article->save();
-
-        // Activity LOG
-        activity()
-            ->withProperties(['publishArticle' => "Admin publish article '$article->title' with issue #$issueId.", 'articleName' => $article->title, 'articleId' => $article->id])
-            ->log('publish article');
-
-        //EMAIL че е PUBLISH
-        $authorEmail = $article->user->email;
-        $subject = 'Admin published your Article ' . $article->title . ' with #' . $article->id;
-        $body = [
-            'article_id' => $article->id,
-            'article_title' => $article->title,
-        ];
-        Mail::to($authorEmail)->send(new ArticlePublishedEmail($subject, $body));
-
-        $notification = [
-            'message' => 'Article was published successfully.',
-            'alert-type' => 'success'
-        ];
         return redirect()->route('article.list')->with($notification);
 
     }
