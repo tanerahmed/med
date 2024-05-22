@@ -23,8 +23,9 @@
                                         <a href="#article-title">Article title</a>
                                         <a href="#abstract">Abstract</a>
                                         <a href="#keywords">Keywords</a>
-                                        <a href="#">Manuscript</a>
-                                        <a href="#supplementaryFiles">Supplementary Files</a>
+                                        <a href="#title_page">Title Page</a>
+                                        <a href="#manuscript">Manuscript</a>
+                                        <a href="#supplementary">Supplementary Files</a>
                                         <a href="#specialnost">Specialnost</a>
                                         <a href="{{ route('admin.downolad_summary_pdf', $article->id) }}"><button
                                             type="button" class="btn btn-success btn-sm">PDF</button></a>
@@ -54,6 +55,14 @@
     </div><!-- #wrapper end -->
 
     <style>
+
+
+/* Стилове за котвите */
+:target {
+    scroll-margin-top: 100px;
+}
+
+
 /* Предварителен стил за позицията */
 .tagcloud-widget.fixed {
     position: fixed;
