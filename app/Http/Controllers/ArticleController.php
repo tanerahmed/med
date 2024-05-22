@@ -475,6 +475,17 @@ class ArticleController extends Controller
     public function addIssueId(Request $request, $articleId)
     {
         $issueId = $request->input('issue_id');
+        $maxIssueId = Article::max('issue_id');
+
+        if($issueId < $maxIssueId){
+            $notification = [
+                'message' => 'You can not publish article in old issue.',
+                'alert-type' => 'error'
+            ];
+            return redirect()->route('article.list')->with($notification);
+        }
+
+
         $article = Article::findOrFail($articleId);
         if ($article->status == 'accepted') {
             if ($request->has('issue_id')) {
