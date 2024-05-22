@@ -26,14 +26,11 @@
                                         <a href="#title_page">Title Page</a>
                                         <a href="#manuscript">Manuscript</a>
                                         <a href="#supplementary">Supplementary Files</a>
-                                        <a href="#specialnost">Specialnost</a>
-                                        <a href="{{ route('admin.downolad_summary_pdf', $article->id) }}"><button
-                                                type="button" class="btn btn-success btn-sm">Download</button></a>
-
-                                                <a href="https://blmprime.com/storage/{{ $article->final_article_path }}" download>
-                                                    <button type="button" class="btn btn-success btn-sm">Download2</button>
-                                                </a>
-
+                                        @if ($article->final_article_path)
+                                        <a href="https://blmprime.com/storage/{{ $article->final_article_path }}" download>
+                                            <button type="button" class="btn btn-success btn-sm">Download</button>
+                                        </a>
+                                        @endif
                                     </div>
                                 </div>
 
@@ -96,8 +93,9 @@
 
         .tagcloud a,
         .tagcloud button {
+            background-color: #198754;
             white-space: nowrap;
-            color: #333;
+            color: #fff;
             /* Тъмен цвят за текста за по-голяма видимост */
             text-decoration: none;
             /* Премахване на подчертаването на линковете */

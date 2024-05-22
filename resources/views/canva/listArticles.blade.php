@@ -1,7 +1,7 @@
 @extends('canva.home')
 @section('content')
     <!-- Page Title
-                  ============================================= -->
+                      ============================================= -->
     <section class="page-title bg-transparent">
         <div class="container">
             <div class="page-title-row">
@@ -22,18 +22,18 @@
     </section><!-- .page-title end -->
 
     <!-- Content
-                  ============================================= -->
+                      ============================================= -->
     <section id="content">
         <div class="content-wrap">
             <div class="container">
 
                 <div class="row gx-5 col-mb-80">
                     <!-- Post Content
-                      ============================================= -->
+                          ============================================= -->
                     <main class="postcontent col-lg-9 order-lg-last">
 
                         <!-- Posts
-                       ============================================= -->
+                           ============================================= -->
                         <div id="posts" class="row gutter-40">
                             @if ($articles->count())
                                 @foreach ($articles as $article)
@@ -79,12 +79,19 @@
                                                                     {{ $author->family_name }}</li>
                                                             @endif
                                                         @endforeach
-                                                        <li>
-                                                            <a
+                                                        @if ($article->final_article_path)
+                                                            <li>
+                                                                <a href="https://blmprime.com/storage/{{ $article->final_article_path }}"
+                                                                    download>
+                                                                    <button type="button"
+                                                                        class="btn btn-success btn-sm">Download</button>
+                                                                </a>
+                                                                {{-- <a
                                                                 href="{{ route('admin.downolad_summary_pdf', $article->id) }}"><button
                                                                     type="button"
-                                                                    class="btn btn-success btn-sm">PDF</button></a>
-                                                        </li>
+                                                                    class="btn btn-success btn-sm">PDF</button></a> --}}
+                                                            </li>
+                                                        @endif
                                                     </ul>
                                                 </div>
                                             </div>
@@ -107,7 +114,7 @@
                     </main><!-- .postcontent end -->
                     @if ($articles->count())
                         <!-- Sidebar
-                      ============================================= -->
+                          ============================================= -->
                         <aside class="sidebar col-lg-3">
                             <div class="sidebar-widgets-wrap">
                                 <div class="widget">

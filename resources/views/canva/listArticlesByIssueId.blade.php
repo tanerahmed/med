@@ -66,9 +66,14 @@
                                                                     {{ $author->family_name }}</li>
                                                             @endif
                                                         @endforeach
+                                                        @if ($article->final_article_path)
                                                         <li>
-                                                            <a href="{{ route('admin.downolad_summary_pdf', $article->id) }}"><button type="button" class="btn btn-success btn-sm">PDF</button></a>
+                                                            <a href="https://blmprime.com/storage/{{ $article->final_article_path }}" download>
+                                                                <button type="button" class="btn btn-success btn-sm">Download</button>
+                                                            </a>
+                                                            {{-- <a href="{{ route('admin.downolad_summary_pdf', $article->id) }}"><button type="button" class="btn btn-success btn-sm">PDF</button></a> --}}
                                                         </li>
+                                                        @endif
                                                     </ul>
                                                 </div>
                                             </div>
