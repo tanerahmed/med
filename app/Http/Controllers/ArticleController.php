@@ -130,22 +130,6 @@ class ArticleController extends Controller
 
                 // Добавяме подготвеното ревю към списъка с подготвени ревюта
                 $preparedReviews[] = $preparedReview;
-
-                // Make status logic
-                // if ($review->rating_1 === null || $review->rating_2 === null) {
-                //     $articles[$review->article_id]['statusFromReview'] = '<button type="button" class="btn btn-secondary" disabled>Pending</button>';
-                // } elseif ($review->rating_1 === 'accepted' && $review->rating_2 === 'accepted') {
-                //     $articles[$review->article_id]['statusFromReview'] = '<button type="button" class="btn btn-success" disabled>Accepted</button>';
-                // } elseif (
-                //     ($review->rating_1 === 'accepted' && $review->rating_2 === 'accepted with revision') ||
-                //     ($review->rating_1 === 'accepted with revision' && $review->rating_2 === 'accepted')
-                // ) {
-                //     $articles[$review->article_id]['statusFromReview'] = '<button type="button" class="btn btn-warning" disabled>Accept with revision</button>';
-                // } elseif ($review->rating_1 === 'declined' || $review->rating_2 === 'declined') {
-                //     $articles[$review->article_id]['statusFromReview'] = '<button type="button" class="btn btn-danger" disabled>Declined</button>';
-                // }
-
-
             }
         }
         // dd($articles);

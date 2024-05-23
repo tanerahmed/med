@@ -14,8 +14,8 @@
                     <div class="card-body">
                         <div class="table-responsive">
                             {{-- <table class="table table-hover mb-0"> --}}
-                                <table id="dataTable" class="table table-hover mb-0">
-                                
+                            <table id="dataTable" class="table table-hover mb-0">
+
                                 <thead>
                                     <tr>
                                         @if (Auth::check() && Auth::user()->role === 'admin')
@@ -51,69 +51,86 @@
                                             <td>
                                                 @if (Auth::check() && Auth::user()->role === 'admin')
                                                     @if ($article->admin_accept === 0)
-                                                        <a href="{{ route('articles.edit', $article->id) }}" class="btn btn-primary btn-sm disabled">Reviews<i class="fas fa-users"></i></a>
+                                                        <a href="{{ route('articles.edit', $article->id) }}"
+                                                            class="btn btn-primary btn-sm disabled">Reviews<i
+                                                                class="fas fa-users"></i></a>
                                                     @else
-                                                        <a href="{{ route('articles.edit', $article->id) }}" class="btn btn-primary btn-sm" >Reviews<i class="fas fa-users"></i></a>
+                                                        <a href="{{ route('articles.edit', $article->id) }}"
+                                                            class="btn btn-primary btn-sm">Reviews<i
+                                                                class="fas fa-users"></i></a>
                                                     @endif
-                                               
                                                 @endif
-                                                @if (Auth::user()->role === 'author' && $article->status === "accepted")
-                                                    <a href="{{ route('articles.articleEdit', $article->id) }}" class="btn btn-warning btn-sm disabled" >Full Accept<i class="fas fa-edit"></i></a>
-                                                @elseif  (Auth::user()->role === 'author' && $article->status === "declined")
-                                                    <a href="{{ route('articles.articleEdit', $article->id) }}" class="btn btn-warning btn-sm disabled" >Declined<i class="fas fa-edit"></i></a>
-                                                @elseif  (Auth::user()->role === 'author' && $article->author_can_edit === 1)
-                                                    <a href="{{ route('articles.articleEdit', $article->id) }}" class="btn btn-warning btn-sm">Edit<i class="fas fa-edit"></i></a>
-                                                @elseif  (Auth::user()->role === 'admin')
-
-                                                	@if ($article->admin_accept === 0)
-                                                        <a href="{{ route('articles.adminAcceptArticleBlade', $article->id) }}" class="btn btn-warning btn-sm">Editor Accept<i class="fas fa-edit"></i></a>
+                                                @if (Auth::user()->role === 'author' && $article->status === 'accepted')
+                                                    <a href="{{ route('articles.articleEdit', $article->id) }}"
+                                                        class="btn btn-warning btn-sm disabled">Full Accept<i
+                                                            class="fas fa-edit"></i></a>
+                                                @elseif (Auth::user()->role === 'author' && $article->status === 'declined')
+                                                    <a href="{{ route('articles.articleEdit', $article->id) }}"
+                                                        class="btn btn-warning btn-sm disabled">Declined<i
+                                                            class="fas fa-edit"></i></a>
+                                                @elseif (Auth::user()->role === 'author' && $article->author_can_edit === 1)
+                                                    <a href="{{ route('articles.articleEdit', $article->id) }}"
+                                                        class="btn btn-warning btn-sm">Edit<i class="fas fa-edit"></i></a>
+                                                @elseif (Auth::user()->role === 'admin')
+                                                    @if ($article->admin_accept === 0)
+                                                        <a href="{{ route('articles.adminAcceptArticleBlade', $article->id) }}"
+                                                            class="btn btn-warning btn-sm">Editor Accept<i
+                                                                class="fas fa-edit"></i></a>
                                                     @elseif ($article->admin_accept === 1)
-                                                        <a href="{{ route('articles.adminAcceptArticleBlade', $article->id) }}" class="btn btn-warning btn-sm disabled">Editor Accept<i class="fas fa-edit"></i></a>
-                                                    @endif   
+                                                        <a href="{{ route('articles.adminAcceptArticleBlade', $article->id) }}"
+                                                            class="btn btn-warning btn-sm disabled">Editor Accept<i
+                                                                class="fas fa-edit"></i></a>
+                                                    @endif
 
-                                                    <form action="{{ route('articles.destroy', $article->id) }}" method="POST">
+                                                    <form action="{{ route('articles.destroy', $article->id) }}"
+                                                        method="POST">
                                                         @csrf
                                                         @method('DELETE')
-                                                        <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this article?')">Delete</button>
-                                                    </form>  
+                                                        <button type="submit" class="btn btn-danger btn-sm"
+                                                            onclick="return confirm('Are you sure you want to delete this article?')">Delete</button>
+                                                    </form>
                                                     {{-- Editor Can edit  --}}
-                                                    <form action="{{ route('article.updateAuthorCanEdit', $article->id) }}" method="POST">
+                                                    <form action="{{ route('article.updateAuthorCanEdit', $article->id) }}"
+                                                        method="POST">
                                                         @csrf
                                                         @method('PUT')
-                                                        <input type="hidden" name="author_can_edit" value="1">  
-                                                        <button type="submit" class="btn btn-warning btn-sm">Send Edit</button>
-                                                    </form>  
-
-                                                @endif
-
-                                                @if  (Auth::user()->role === 'admin' && $article->status === "accepted")
-                                                    <a href="{{ route('articles.addIssueIdBlade', $article->id) }}" class="btn btn-warning btn-sm">Publish<i class="fas fa-edit"></i></a>
-                                                @endif
-                                                
-                                                @if (Auth::user()->role === 'author' && $article->status !== "accepted")
-                                                    <form action="{{ route('articles.destroy', $article->id) }}" method="POST">
-                                                        @csrf
-                                                        @method('DELETE')
-                                                        <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this article?')">Delete</button>
+                                                        <input type="hidden" name="author_can_edit" value="1">
+                                                        <button type="submit" class="btn btn-warning btn-sm">Send
+                                                            Edit</button>
                                                     </form>
                                                 @endif
-                                                
-                                                <a href="{{ route('review.downolad_files', $article->id) }}" class="btn btn-success btn-sm">Download ZIP<i class="fas fa-download"></i></a>
+
+                                                @if (Auth::user()->role === 'admin' && $article->status === 'accepted')
+                                                    <a href="{{ route('articles.addIssueIdBlade', $article->id) }}"
+                                                        class="btn btn-warning btn-sm">Publish<i
+                                                            class="fas fa-edit"></i></a>
+                                                @endif
+
+                                                @if (Auth::user()->role === 'author' && $article->status !== 'accepted')
+                                                    <form action="{{ route('articles.destroy', $article->id) }}"
+                                                        method="POST">
+                                                        @csrf
+                                                        @method('DELETE')
+                                                        <button type="submit" class="btn btn-danger btn-sm"
+                                                            onclick="return confirm('Are you sure you want to delete this article?')">Delete</button>
+                                                    </form>
+                                                @endif
+
+                                                <a href="{{ route('review.downolad_files', $article->id) }}"
+                                                    class="btn btn-success btn-sm">Download ZIP<i
+                                                        class="fas fa-download"></i></a>
                                                 {{-- <a href="{{ route('admin.downolad_summary_pdf', $article->id) }}" class="btn btn-success btn-sm">Summary PDF<i class="fas fa-download"></i></a> --}}
                                             </td>
-                                            
                                             <td>
-                                                <!-- Разгъната секция за ревюта -->
-                                                @foreach ($preparedReviews as $preparedReview)
-                                                    @if (isset($review['message']))
-                                                        <span>{{ $review['message'] }}</span>
-                                                    @else
+                                                @if (Auth::check() && Auth::user()->role === 'admin')
+                                                    @foreach ($preparedReviews as $preparedReview)
                                                         @if ($preparedReview['article_id'] == $article->id)
                                                             <div class="review">
                                                                 <span>1. {{ $preparedReview['reviewer1_name'] }} -
                                                                     @if (!empty($preparedReview['reviewer1_id']))
                                                                         <strong>
-                                                                            <a href="{{ route('reviews.showReviewComments', ['article_id' => $article->id, 'user_id' => $preparedReview['reviewer1_id']]) }}">
+                                                                            <a
+                                                                                href="{{ route('reviews.showReviewComments', ['article_id' => $article->id, 'user_id' => $preparedReview['reviewer1_id']]) }}">
                                                                                 {{ $preparedReview['rating_1'] ?: '' }}
                                                                             </a>
                                                                         </strong>
@@ -125,7 +142,8 @@
                                                                 <span>2. {{ $preparedReview['reviewer2_name'] }} -
                                                                     @if (!empty($preparedReview['reviewer2_id']))
                                                                         <strong>
-                                                                            <a href="{{ route('reviews.showReviewComments', ['article_id' => $article->id, 'user_id' => $preparedReview['reviewer2_id']]) }}">
+                                                                            <a
+                                                                                href="{{ route('reviews.showReviewComments', ['article_id' => $article->id, 'user_id' => $preparedReview['reviewer2_id']]) }}">
                                                                                 {{ $preparedReview['rating_2'] ?: '' }}
                                                                             </a>
                                                                         </strong>
@@ -137,7 +155,8 @@
                                                                 <span>3. {{ $preparedReview['reviewer3_name'] }} -
                                                                     @if (!empty($preparedReview['reviewer3_id']))
                                                                         <strong>
-                                                                            <a href="{{ route('reviews.showReviewComments', ['article_id' => $article->id, 'user_id' => $preparedReview['reviewer3_id']]) }}">
+                                                                            <a
+                                                                                href="{{ route('reviews.showReviewComments', ['article_id' => $article->id, 'user_id' => $preparedReview['reviewer3_id']]) }}">
                                                                                 {{ $preparedReview['rating_3'] ?: '' }}
                                                                             </a>
                                                                         </strong>
@@ -147,8 +166,18 @@
                                                                 </span>
                                                             </div>
                                                         @endif
+                                                    @endforeach
+                                                @else
+                                                    @if ($article->status === 'accepted')
+                                                        <span>Full Accept!</span>
+                                                    @elseif ($article->status === 'pending')
+                                                        <span>Pending...</span>
+                                                    @elseif ($article->status === 'declined')
+                                                        <span>Declined!</span>
+                                                    @else
+                                                        <span>Under Review.</span>
                                                     @endif
-                                                @endforeach
+                                                @endif
                                             </td>
                                         </tr>
                                     @endforeach
@@ -166,11 +195,10 @@
     <script>
         $(document).ready(function() {
             $('#dataTable').DataTable({
-                "order": [[ 6, "desc" ]] // Сортиране по втората колона (индекс 1) във възходящ ред
+                "order": [
+                    [6, "desc"]
+                ] // Сортиране по втората колона (индекс 1) във възходящ ред
             });
         });
     </script>
 @endsection
-
-
-
