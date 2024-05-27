@@ -15,7 +15,7 @@
             <div class="card">
                 <div class="card-body">
                     <div class="table-responsive">
-                        <table class="table table-hover mb-0">
+                        <table id="dataTable" class="table table-hover mb-0">
                             <thead>
                                 <tr>
                                     @if (Auth::check() &&  Auth::user()->role === 'admin')
@@ -41,7 +41,7 @@
                                         <td>{{ $review->article->specialty }}</td>
                                         <td>{{ $review->article->scientific_area }}</td>
                                         <td><span class="badge bg-{{ $review->status_color }}">{{ $review->status_text }}</span></td>
-                                        <td>{{ $review->article->updated_at }}</td>
+                                        <td>{{ $review->article->created_at }}</td>
                                         <td>
                                             <a href="{{ route('review.downolad_files', $review->article->id) }}"><button type="button" class="btn btn-warning btn-sm">Dowload files</button></a>
                                             {{-- <a href="{{ route('review.summary_pdf', $review->article->id) }}"><button type="button" class="btn btn-success btn-sm">Summary PDF files</button></a> --}}
@@ -60,5 +60,13 @@
 
 </div>
 
-
+<script>
+    $(document).ready(function() {
+        $('#dataTable').DataTable({
+            "order": [
+                [5, "desc"]
+            ] // Сортиране по втората колона (индекс 1) във възходящ ред
+        });
+    });
+</script>
 @endsection
