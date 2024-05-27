@@ -203,10 +203,6 @@ class ReviewerController extends Controller
             $article->save();
         }
 
-
-
-
-
         $review_questions =  $this->prepareQuestions($request->input('answer1'), $request->input('answer2'), $request->input('answer3'));
         // Review Comments
         $reviewComment = new ReviewComment();
@@ -239,17 +235,11 @@ class ReviewerController extends Controller
         $subject = "Article '$article->title' was reviwed.";
         if (!empty($filePath)) {
             // Mail::to($article->user->email)->send(new ReviewArticleEmail($subject, $body, $filePath));
-            Mail::to("office@zaracomputers.bg")->send(new ReviewArticleEmail($subject, $body, $filePath));
+            Mail::to("Superuser.blmprime@gmail.com")->send(new ReviewArticleEmail($subject, $body, $filePath));
         } else {
             // Mail::to($article->user->email)->send(new ReviewArticleEmail($subject, $body));
-            Mail::to("office@zaracomputers.bg")->send(new ReviewArticleEmail($subject, $body));
+            Mail::to("Superuser.blmprime@gmail.com")->send(new ReviewArticleEmail($subject, $body));
         }
-
-
-
-
-
-
 
         if ($acceptedCount >= 2) {
             // Ако има поне два "accepted" рейтинга, извикваме метода за създаване на XML файла
@@ -273,7 +263,6 @@ class ReviewerController extends Controller
                 // Значи XML файлат е създаден успешно
             }
         }
-
 
         $notification = array(
             'message' => 'You reviewd article successfully.',
