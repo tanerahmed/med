@@ -96,7 +96,96 @@
                                         <option selected>Select Speciality</option>
                                         <option value="Урология">Урология</option>
                                         <option value="УНГ">УНГ</option>
-
+                                        <option value="Anesthesiology & Intensive care">Anesthesiology & Intensive care</option>
+                                        <option value="Clinical anatomy">Clinical anatomy</option>
+                                        <option value="Clinical laboratory sciences">Clinical laboratory sciences</option>
+                                        <option value="Clinical biochemistry">Clinical biochemistry</option>
+                                        <option value="Cytogenetics">Cytogenetics</option>
+                                        <option value="Cytohematology">Cytohematology</option>
+                                        <option value="Cytology">Cytology</option>
+                                        <option value="Hemostaseology">Hemostaseology</option>
+                                        <option value="Histology">Histology</option>
+                                        <option value="Clinical immunology">Clinical immunology</option>
+                                        <option value="Clinical microbiology">Clinical microbiology</option>
+                                        <option value="Molecular genetics">Molecular genetics</option>
+                                        <option value="Clinical genetics">Clinical genetics</option>
+                                        <option value="Parasitology">Parasitology</option>
+                                        <option value="Clinical physiology">Clinical physiology</option>
+                                        <option value="Dentistry">Dentistry</option>
+                                        <option value="Dental surgery">Dental surgery</option>
+                                        <option value="Endodontics">Endodontics</option>
+                                        <option value="Orthodontics">Orthodontics</option>
+                                        <option value="Oral and maxillofacial surgery">Oral and maxillofacial surgery</option>
+                                        <option value="Dermatology">Dermatology</option>
+                                        <option value="Emergency medicine">Emergency medicine</option>
+                                        <option value="Health informatics/Clinical informatics">Health informatics/Clinical
+                                            informatics</option>
+                                        <option value="Nursing">Nursing</option>
+                                        <option value="Nutrition and dietetics">Nutrition and dietetics</option>
+                                        <option value="Physiotherapy">Physiotherapy</option>
+                                        <option value="Speech and language pathology">Speech and language pathology</option>
+                                        <option value="Internal medicine">Internal medicine</option>
+                                        <option value="Preventive medicine">Preventive medicine</option>
+                                        <option value="Cardiology">Cardiology</option>
+                                        <option value="Cardiac electrophysiology">Cardiac electrophysiology</option>
+                                        <option value="Pulmonology">Pulmonology</option>
+                                        <option value="Medical toxicology">Medical toxicology</option>
+                                        <option value="Endocrinology">Endocrinology</option>
+                                        <option value="Gastroenterology">Gastroenterology</option>
+                                        <option value="Hepatology">Hepatology</option>
+                                        <option value="Oncology">Oncology</option>
+                                        <option value="Radiation therapy">Radiation therapy</option>
+                                        <option value="Geriatrics">Geriatrics</option>
+                                        <option value="Gynaecology">Gynaecology</option>
+                                        <option value="Hematology">Hematology</option>
+                                        <option value="Infectious disease">Infectious disease</option>
+                                        <option value="Nephrology">Nephrology</option>
+                                        <option value="Neurology">Neurology</option>
+                                        <option value="Neurosurgery">Neurosurgery</option>
+                                        <option value="Obstetrics">Obstetrics</option>
+                                        <option value="Ophthalmology">Ophthalmology</option>
+                                        <option value="Neuro-ophthalmology">Neuro-ophthalmology</option>
+                                        <option value="Orthopedic surgery">Orthopedic surgery</option>
+                                        <option value="Otorhinolaryngology">Otorhinolaryngology</option>
+                                        <option value="Pathology">Pathology</option>
+                                        <option value="Pediatrics">Pediatrics</option>
+                                        <option value="Pharmaceutical sciences">Pharmaceutical sciences</option>
+                                        <option value="Clinical pharmacology">Clinical pharmacology</option>
+                                        <option value="Physical therapy">Physical therapy</option>
+                                        <option value="General practice">General practice</option>
+                                        <option value="Psychiatry">Psychiatry</option>
+                                        <option value="Public health">Public health</option>
+                                        <option value="Radiology">Radiology</option>
+                                        <option value="Rehabilitation medicine">Rehabilitation medicine</option>
+                                        <option value="Respiratory medicine">Respiratory medicine</option>
+                                        <option value="Pulmonology">Pulmonology</option>
+                                        <option value="Sleep medicine">Sleep medicine</option>
+                                        <option value="Respiratory therapy">Respiratory therapy</option>
+                                        <option value="Rheumatology">Rheumatology</option>
+                                        <option value="Sports medicine">Sports medicine</option>
+                                        <option value="Surgery">Surgery</option>
+                                        <option value="Pediatric surgery">Pediatric surgery</option>
+                                        <option value="Colorectal surgery">Colorectal surgery</option>
+                                        <option value="Transplant surgery">Transplant surgery</option>
+                                        <option value="Trauma surgery">Trauma surgery</option>
+                                        <option value="Hepatobiliary and pancreatic surgery">Hepatobiliary and pancreatic
+                                            surgery
+                                        </option>
+                                        <option value="Bariatric surgery">Bariatric surgery</option>
+                                        <option value="Cardiothoracic surgery">Cardiothoracic surgery</option>
+                                        <option value="Neurosurgery">Neurosurgery</option>
+                                        <option value="Plastic surgery">Plastic surgery</option>
+                                        <option value="Traumatology">Traumatology</option>
+                                        <option value="Urology">Urology</option>
+                                        <option value="Andrology">Andrology</option>
+                                        <option value="Epidemiology">Epidemiology</option>
+                                        <option value="Nuclear medicine">Nuclear medicine</option>
+                                        <option value="Allergology">Allergology</option>
+                                        <option value="Forensic medicine & deontology">Forensic medicine & deontology</option>
+                                        <option value="Vascular surgery">Vascular surgery</option>
+                                        <option value="Cardiovascular surgery">Cardiovascular surgery</option>
+                                        <option value="Interventional cardiology">Interventional cardiology</option>
+                                        <option value="Interventional neuroradiology">Interventional neuroradiology</option>
                                     </select>
                                 </div>
                                 <!-- Scientific Area -->
