@@ -510,6 +510,9 @@ class ArticleController extends Controller
     {
         $article = Article::findOrFail($articleId);
         $article->admin_accept = $request->has('admin_accept') ? 1 : 0;
+        if($request->has('admin_accept') == 1){
+            $article->author_can_edit = 0;
+        }
         $article->save();
 
         // Activity LOG

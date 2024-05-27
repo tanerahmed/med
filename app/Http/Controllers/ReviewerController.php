@@ -180,6 +180,32 @@ class ReviewerController extends Controller
             $review->rating_3 = $rating;
         }
         $review->save();
+        
+        // Проверяме дали ще даваме право на Автор да прави промени по артикъла
+        // Повторно зареждане на инстанцията на Review
+        $review = Review::where('article_id', $articleId)->first();
+        // Проверка на комбинацията от рейтинги
+        $ratings = [$review->rating_1, $review->rating_2, $review->rating_3];
+        if (in_array('accepted', $ratings) && in_array('accepted with revision', $ratings)) {            
+            $article->author_can_edit = 1;
+            $article->status = 'pending';
+            $article->save();
+        } elseif (in_array('declined', $ratings) && in_array('accepted with revision', $ratings)) {
+            $article->author_can_edit = 1;
+            $article->status = 'pending';
+            $article->save();
+        } elseif (count(array_filter($ratings, fn($rating) => $rating === 'accepted with revision')) >= 2) {
+            $article->author_can_edit = 1;
+            $article->status = 'pending';
+            $article->save();
+        }else{
+            $article->author_can_edit = 0;
+            $article->save();
+        }
+
+
+
+
 
         $review_questions =  $this->prepareQuestions($request->input('answer1'), $request->input('answer2'), $request->input('answer3'));
         // Review Comments
@@ -311,6 +337,13 @@ class ReviewerController extends Controller
                 );
                 return redirect()->route('review.list')->with($notification);
             }
+
+            $articleId = $review->article->id;
+            $article = Article::find($articleId);
+            $article->author_can_edit = 0;
+            $article->status = 'pending';
+            $article->save();
+
             $review->save();
 
             // Activity LOG

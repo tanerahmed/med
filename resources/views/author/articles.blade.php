@@ -71,6 +71,7 @@
                                                 @elseif (Auth::user()->role === 'author' && $article->author_can_edit === 1)
                                                     <a href="{{ route('articles.articleEdit', $article->id) }}"
                                                         class="btn btn-warning btn-sm">Edit<i class="fas fa-edit"></i></a>
+                                                        
                                                 @elseif (Auth::user()->role === 'admin')
                                                     @if ($article->admin_accept === 0)
                                                         <a href="{{ route('articles.adminAcceptArticleBlade', $article->id) }}"
@@ -170,6 +171,8 @@
                                                 @else
                                                     @if ($article->status === 'accepted')
                                                         <span>Full Accept!</span>
+                                                    @elseif ($article->status === 'review_needed')
+                                                        <span>Review Needed</span>
                                                     @elseif ($article->status === 'pending')
                                                         <span>Pending...</span>
                                                     @elseif ($article->status === 'declined')
