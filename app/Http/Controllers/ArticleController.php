@@ -36,8 +36,12 @@ use Illuminate\Support\Facades\Storage;
 use PhpOffice\PhpWord\Settings;
 use setasign\Fpdi\Tcpdf\Fpdi;
 use TCPDF;
-use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\Writer\Pdf\Dompdf;
+
+use PhpOffice\PhpWord\IOFactory as PhpWordIOFactory;
+use PhpOffice\PhpSpreadsheet\IOFactory as PhpSpreadsheetIOFactory;
+use PhpOffice\PhpSpreadsheet\Writer\Html as PhpSpreadsheetWriterHtml;
+
 
 class ArticleController extends Controller
 {
@@ -817,6 +821,7 @@ class ArticleController extends Controller
 
     public function summaryPdfFile(Article $article)
     {
+
         $pdf = new FPDI(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
         $pdf->SetCreator(PDF_CREATOR);
         $pdf->SetAuthor('Author');
@@ -831,101 +836,88 @@ class ArticleController extends Controller
         $pdf->SetAutoPageBreak(TRUE, PDF_MARGIN_BOTTOM);
         $pdf->SetFont('dejavusans', '', 10);
         $pdf->AddPage();
-
+    
         $htmlType = '<div style="text-align: center; background-color: #808080; color: #ffffff;">
         <h1>' . $article->type . '</h1></div>';
-
+    
         $pdf->writeHTML($htmlType);
-
         $pdf->writeHTML('<h1>' . $article->title . '</h1><p></p>');
-
-
-
-
         $pdf->writeHTML("<hr>");
-
         $abstract_html = '<p><h2>Abstract:</h2><br>' . $article->abstract . '</p><br>';
         $pdf->writeHTML($abstract_html);
-
         $pdf->writeHTML("<hr>");
-
         $coauthors_html = '<p><h2>Keywords:</h2>' . $article->keywords . '</p><br>';
         $pdf->writeHTML($coauthors_html);
 
-        $rendererName = Settings::PDF_RENDERER_DOMPDF;
-        $rendererLibraryPath = base_path('vendor/dompdf/dompdf');
-        Settings::setPdfRenderer($rendererName, $rendererLibraryPath);
-
-        foreach ([$article->coverLetter, $article->figures, $article->manuscript, $article->supplementaryFiles, $article->tables] as $files) {
+        foreach ([$article->titlePage, $article->manuscript, $article->figures, $article->tables,  $article->supplementaryFiles, $article->coverLetter] as $files) {
             foreach ($files as $file) {
                 $filePath = storage_path('app/public/' . $file->file_path);
                 $filePath = str_replace('\\', '/', $filePath);
-
+    
                 $ext = pathinfo($filePath, PATHINFO_EXTENSION);
-
                 $content = '';
-                switch ($ext) {
-                    case 'doc':
-                        $php_word = \PhpOffice\PhpWord\IOFactory::load($filePath, 'MsDoc');
-                        $html_writer = new \PhpOffice\PhpWord\Writer\HTML($php_word);
-                        $html_file = tempnam(sys_get_temp_dir(), 'phpword');
-                        $html_writer->save($html_file);
-                        $content = file_get_contents($html_file);
-                        unlink($html_file);
-                        $pdf->AddPage();
-                        $pdf->writeHTML($content, true, false, true, false, '');
-                        break;
-                    case 'docx':
-                        $php_word = \PhpOffice\PhpWord\IOFactory::load($filePath);
-                        $html_writer = new \PhpOffice\PhpWord\Writer\HTML($php_word);
-                        $html_file = tempnam(sys_get_temp_dir(), 'phpword');
-                        $html_writer->save($html_file);
-                        $content = file_get_contents($html_file);
-                        unlink($html_file);
-                        $pdf->AddPage();
-                        $pdf->writeHTML($content, true, false, true, false, '');
-                        break;
-                    case 'pdf':
-                        $pdf->AddPage();
-                        $pdf->Write(10, 'This is a PDF file');
-                        $pagecount1 = $pdf->setSourceFile($filePath);
-                        // Import pages from the source PDF file
-                        for ($i = 1; $i <= $pagecount1; $i++) {
-                            $tplIdx = $pdf->importPage($i);
-                            $pdf->useTemplate($tplIdx);
-                            if ($i < $pagecount1) {
-                                $pdf->AddPage();
-                            }
-                        }
 
-                        break;
-                    case 'jpg':
-                        $pdf->AddPage();
-                        $pdf->Image($filePath, 10, 10, '', '', '', '', '', false, 300, '', false, false, 0, false, false, false);
-                        break;
-                    case 'jpeg':
-                        $pdf->AddPage();
-                        $pdf->Image($filePath, 0, 0, '', '', '', '', '', false, 300, '', false, false, 0, false, false, false);
-                        break;
-                    case 'png':
-                        $pdf->AddPage();
-                        $pdf->Image($filePath, 0, 0, '', '', '', '', '', false, 300, '', false, false, 0, false, false, false);
-                        break;
-                    case 'html':
-                        $content = file_get_contents($filePath);
-                        $pdf->AddPage();
-                        $pdf->writeHTML($content, true, false, true, false, '');
-                        break;
-                    default:
-                        break;
+                try {
+                    switch ($ext) {
+                        case 'doc':
+                        case 'docx':
+                            $phpWord = PhpWordIOFactory::load($filePath);
+                            $htmlWriter = PhpWordIOFactory::createWriter($phpWord, 'HTML');
+                            $htmlFile = tempnam(sys_get_temp_dir(), 'phpword');
+                            $htmlWriter->save($htmlFile);
+                            $content = file_get_contents($htmlFile);
+                            unlink($htmlFile);
+                            $pdf->AddPage();
+                            $pdf->writeHTML($content, true, false, true, false, '');
+                            break;
+                        case 'xlsx':
+                        case 'xls':
+                            $spreadsheet = PhpSpreadsheetIOFactory::load($filePath);
+                            $htmlWriter = new PhpSpreadsheetWriterHtml($spreadsheet);
+                            $htmlFile = tempnam(sys_get_temp_dir(), 'phpspreadsheet');
+                            $htmlWriter->save($htmlFile);
+                            $content = file_get_contents($htmlFile);
+                            unlink($htmlFile);
+                            $pdf->AddPage();
+                            $pdf->writeHTML($content, true, false, true, false, '');
+                            break;
+                        case 'pdf':
+                            $pageCount = $pdf->setSourceFile($filePath);
+                            $pdf->AddPage();
+                            for ($i = 1; $i <= $pageCount; $i++) {
+                                $tplIdx = $pdf->importPage($i);
+                                $pdf->useTemplate($tplIdx);
+                                if ($i < $pageCount) {
+                                    $pdf->AddPage();
+                                }
+                            }
+                            break;
+                        case 'jpg':
+                        case 'jpeg':
+                        case 'png':
+                            $pdf->AddPage();
+                            $pdf->Image($filePath, 10, 10, '', '', '', '', '', false, 300, '', false, false, 0, false, false, false);
+                            break;
+                        case 'html':
+                            $content = file_get_contents($filePath);
+                            $pdf->AddPage();
+                            $pdf->writeHTML($content, true, false, true, false, '');
+                            break;
+                        default:
+                            break;
+                    }
+                } catch (\Exception $e) {
+                    
+                    \Log::error("Error processing file {$filePath}: " . $e->getMessage());
                 }
             }
         }
-        // reset pointer to the last page
+    
         $pdf->lastPage();
         $pdf->Output('article_id_#' . $article->id . '.pdf', 'I');
-
     }
+    
+    
 
     private function mergePdf($apiKey, $uploadedFiles)
     {
