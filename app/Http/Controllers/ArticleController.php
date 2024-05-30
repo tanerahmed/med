@@ -55,9 +55,9 @@ class ArticleController extends Controller
         $user = Auth::user();
         // dd($user->role );
 
-        if ($user->role !== "admin" && $user->role !== "author") {
-            abort(403);
-        }
+        // if ($user->role !== "admin" && $user->role !== "author") {
+        //     abort(403);
+        // }
 
         return view('author.create');
     }
