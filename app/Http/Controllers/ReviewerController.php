@@ -350,9 +350,10 @@ class ReviewerController extends Controller
             $body['reviwer'] = $user->name; // Reviwer
             $body['article_id'] = $review->article->id;
 
-            // send to author
-            $author_email = $review->article->user->email;
-            Mail::to($author_email)->send(new UserApproveReviewRequestEmail($subject, $body));
+            // NOT send to author
+            // $author_email = $review->article->user->email;
+            // Mail::to($author_email)->send(new UserApproveReviewRequestEmail($subject, $body));
+            
             // send to  admin
             Mail::to('superuser.blmprime@gmail.com')->send(new UserApproveReviewRequestEmail($subject, $body));
 
