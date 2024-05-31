@@ -13,6 +13,7 @@ class CanvaHomeController extends Controller
         // get issue ids
         $articles = Article::all();
         $issueIds = $articles->pluck('issue_id')->unique()->filter()->sort()->values()->toArray();
+         rsort($issueIds);
 
         return view('canva.home', ['issueIds' => $issueIds]);
     }
@@ -22,6 +23,7 @@ class CanvaHomeController extends Controller
     {
         $allArticles = Article::all();
         $issueIds = $allArticles->pluck('issue_id')->unique()->filter()->sort()->values()->toArray();
+         rsort($issueIds);
 
         $maxIssueId = $allArticles->pluck('issue_id')->filter()->max();
         $articles = Article::where('issue_id', $maxIssueId)->where('status', 'accepted')->get();
@@ -36,6 +38,7 @@ class CanvaHomeController extends Controller
     {
         $articles = Article::all();
         $issueIds = $articles->pluck('issue_id')->unique()->filter()->sort()->values()->toArray();
+         rsort($issueIds);
 
         return view('frontend.journal_info', ['issueIds' => $issueIds]);
     }
@@ -47,6 +50,7 @@ class CanvaHomeController extends Controller
         // get issue ids
         $articles = Article::all();
         $issueIds = $articles->pluck('issue_id')->unique()->filter()->sort()->values()->toArray();
+         rsort($issueIds);
 
         return view('frontend.gdpr', ['issueIds' => $issueIds]);
     }
@@ -56,6 +60,7 @@ class CanvaHomeController extends Controller
         // get issue ids
         $articles = Article::all();
         $issueIds = $articles->pluck('issue_id')->unique()->filter()->sort()->values()->toArray();
+         rsort($issueIds);
 
         return view('frontend.editorial_publishing_practice', ['issueIds' => $issueIds]);
     }
@@ -64,6 +69,7 @@ class CanvaHomeController extends Controller
         // Логика за получаване на issue IDs
         $articles = Article::all();
         $issueIds = $articles->pluck('issue_id')->unique()->filter()->sort()->values()->toArray();
+         rsort($issueIds);
 
         return view('frontend.editorial_board', ['issueIds' => $issueIds]);
     }
@@ -73,6 +79,7 @@ class CanvaHomeController extends Controller
         // Логика за получаване на issue IDs
         $articles = Article::all();
         $issueIds = $articles->pluck('issue_id')->unique()->filter()->sort()->values()->toArray();
+         rsort($issueIds);
 
         return view('frontend.ethical_publishing_practice', ['issueIds' => $issueIds]);
     }
@@ -82,6 +89,7 @@ class CanvaHomeController extends Controller
         // Логика за получаване на issue IDs
         $articles = Article::all();
         $issueIds = $articles->pluck('issue_id')->unique()->filter()->sort()->values()->toArray();
+         rsort($issueIds);
 
         return view('frontend.contact_us', ['issueIds' => $issueIds]);
     }
@@ -91,6 +99,7 @@ class CanvaHomeController extends Controller
         // Логика за получаване на issue IDs
         $articles = Article::all();
         $issueIds = $articles->pluck('issue_id')->unique()->filter()->sort()->values()->toArray();
+         rsort($issueIds);
 
         return view('frontend.submission_guidance', ['issueIds' => $issueIds]);
     }
@@ -100,6 +109,7 @@ class CanvaHomeController extends Controller
         // Логика за получаване на issue IDs
         $articles = Article::all();
         $issueIds = $articles->pluck('issue_id')->unique()->filter()->sort()->values()->toArray();
+         rsort($issueIds);
 
         return view('frontend.tehnical_publishing_practice', ['issueIds' => $issueIds]);
     }
@@ -109,6 +119,7 @@ class CanvaHomeController extends Controller
         // Логика за получаване на issue IDs
         $articles = Article::all();
         $issueIds = $articles->pluck('issue_id')->unique()->filter()->sort()->values()->toArray();
+         rsort($issueIds);
 
         return view('frontend.editorial_publishing_practice', ['issueIds' => $issueIds]);
     }

@@ -19,7 +19,7 @@ class CanvaArticlesController extends Controller
         $allArticles = Article::all();
         $issueIds = $allArticles->pluck('issue_id')->unique()->toArray();
         $issueIds = array_filter($issueIds, fn($value) => !is_null($value)); // премахва null стойностите
-        sort($issueIds); // сортира масива в нарастващ ред
+        rsort($issueIds); // сортира масива в нарастващ ред
 
 
         return view('canva.listArticles', compact('articles', 'issueIds', 'activeSpecialty'));
@@ -34,7 +34,7 @@ class CanvaArticlesController extends Controller
         $allArticles = Article::all();
         $issueIds = $allArticles->pluck('issue_id')->unique()->toArray();
         $issueIds = array_filter($issueIds, fn($value) => !is_null($value)); // премахва null стойностите
-        sort($issueIds); // сортира масива в нарастващ ред
+        rsort($issueIds); // сортира масива в нарастващ ред
 
         return view('canva.listArticles', compact('articles', 'issueIds', 'activeSpecialty'));
     }
@@ -49,7 +49,7 @@ class CanvaArticlesController extends Controller
         $allArticles = Article::all();
         $issueIds = $allArticles->pluck('issue_id')->unique()->toArray();
         $issueIds = array_filter($issueIds, fn($value) => !is_null($value)); // премахва null стойностите
-        sort($issueIds); // сортира масива в нарастващ ред
+        rsort($issueIds); // сортира масива в нарастващ ред
 
         // Търсене на статии по ключова дума
         $articles = Article::where(function ($query) use ($keyword) {
@@ -74,7 +74,7 @@ class CanvaArticlesController extends Controller
         $allArticles = Article::all();
         $issueIds = $allArticles->pluck('issue_id')->unique()->toArray();
         $issueIds = array_filter($issueIds, fn($value) => !is_null($value)); // премахва null стойностите
-        sort($issueIds); // сортира масива в нарастващ ред
+        rsort($issueIds); // сортира масива в нарастващ ред
 
         $content = Storage::get('public/' . $article->final_article_path);
         // $content = Storage::get('public/final_articles/1/tttttt.html');
@@ -94,7 +94,7 @@ class CanvaArticlesController extends Controller
         $allArticles = Article::all();
         $issueIds = $allArticles->pluck('issue_id')->unique()->toArray();
         $issueIds = array_filter($issueIds, fn($value) => !is_null($value)); // премахва null стойностите
-        sort($issueIds); // сортира масива в нарастващ ред
+        rsort($issueIds); // сортира масива в нарастващ ред
 
         return view('canva.listArticlesByIssueId', compact('articles', 'issueId', 'issueIds', 'activeSpecialty'));
     }
