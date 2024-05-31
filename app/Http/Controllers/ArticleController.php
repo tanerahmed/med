@@ -277,7 +277,7 @@ class ArticleController extends Controller
                     'rating_3' => null,
                     'reviewer_id_3' => null,
                 ]);
-                $notification = array (
+                $notification = array(
                     'message' => 'Article created successfully.',
                     'alert-type' => 'success'
                 );
@@ -455,7 +455,7 @@ class ArticleController extends Controller
     public function addIssueIdBlade($articleId)
     {
         $maxIssueId = Article::max('issue_id');
-        $article = Article::findOrFail($articleId);        
+        $article = Article::findOrFail($articleId);
 
         return view('author.editIssue', compact('article', 'maxIssueId'));
     }
@@ -465,7 +465,7 @@ class ArticleController extends Controller
         $issueId = $request->input('issue_id');
         $maxIssueId = Article::max('issue_id');
 
-        if($issueId < $maxIssueId){
+        if ($issueId < $maxIssueId) {
             $notification = [
                 'message' => 'You can not publish article in old issue.',
                 'alert-type' => 'error'
@@ -480,16 +480,16 @@ class ArticleController extends Controller
             }
 
             $file = $request->file('final_article');
-            $finalFilePath =  $file->storeAs('final_articles/' . $articleId, $file->getClientOriginalName(), 'public');
+            $finalFilePath = $file->storeAs('final_articles/' . $articleId, $file->getClientOriginalName(), 'public');
             $article->final_article_path = $finalFilePath;
-    
+
             $article->save();
-    
+
             // Activity LOG
             activity()
                 ->withProperties(['publishArticle' => "Admin publish article '$article->title' with issue #$issueId.", 'articleName' => $article->title, 'articleId' => $article->id])
                 ->log('publish article');
-        
+
 
             //EMAIL че е PUBLISH
             $authorEmail = $article->user->email;
@@ -514,7 +514,7 @@ class ArticleController extends Controller
     {
         $article = Article::findOrFail($articleId);
         $article->admin_accept = $request->has('admin_accept') ? 1 : 0;
-        if($request->has('admin_accept') == 1){
+        if ($request->has('admin_accept') == 1) {
             $article->author_can_edit = 0;
         }
         $article->save();
@@ -530,13 +530,13 @@ class ArticleController extends Controller
         $body['author_name'] = $article->user->name;
 
         // Send Email Author
-        Mail::to($article->user->email)->send(new AdminAcceptArticleEmail($subject, $body));   
-        
+        Mail::to($article->user->email)->send(new AdminAcceptArticleEmail($subject, $body));
+
         $notification = [
             'message' => 'Article was accepted successfully.',
             'alert-type' => 'success'
         ];
-        return redirect()->route('article.list')->with($notification); 
+        return redirect()->route('article.list')->with($notification);
 
 
     }
@@ -836,10 +836,10 @@ class ArticleController extends Controller
         $pdf->SetAutoPageBreak(TRUE, PDF_MARGIN_BOTTOM);
         $pdf->SetFont('dejavusans', '', 10);
         $pdf->AddPage();
-    
+
         $htmlType = '<div style="text-align: center; background-color: #808080; color: #ffffff;">
         <h1>' . $article->type . '</h1></div>';
-    
+
         $pdf->writeHTML($htmlType);
         $pdf->writeHTML('<h1>' . $article->title . '</h1><p></p>');
         $pdf->writeHTML("<hr>");
@@ -849,11 +849,11 @@ class ArticleController extends Controller
         $coauthors_html = '<p><h2>Keywords:</h2>' . $article->keywords . '</p><br>';
         $pdf->writeHTML($coauthors_html);
 
-        foreach ([$article->titlePage, $article->manuscript, $article->figures, $article->tables,  $article->supplementaryFiles, $article->coverLetter] as $files) {
+        foreach ([$article->titlePage, $article->manuscript, $article->figures, $article->tables, $article->supplementaryFiles, $article->coverLetter] as $files) {
             foreach ($files as $file) {
                 $filePath = storage_path('app/public/' . $file->file_path);
                 $filePath = str_replace('\\', '/', $filePath);
-    
+
                 $ext = pathinfo($filePath, PATHINFO_EXTENSION);
                 $content = '';
 
@@ -896,7 +896,42 @@ class ArticleController extends Controller
                         case 'jpeg':
                         case 'png':
                             $pdf->AddPage();
-                            $pdf->Image($filePath, 10, 10, '', '', '', '', '', false, 300, '', false, false, 0, false, false, false);
+                            // $pdf->Image($filePath, 10, 10, '', '', '', '', '', false, 300, '', false, false, 0, false, false, false);
+                            // Добавяне на изображение
+                            // $pdf->Image($file, $x, $y, $w, $h, $type, $link, $align, $resize, $dpi, $palign, $ismask, $imgmask, $border, $fitbox, $hidden, $fitonpage);
+                            // Ако искате изображението да пасне на ширината на страницата и да се мащабира пропорционално:
+                            $pdf->AddPage();
+                            $margin = 10; // Може да се променя според нуждите за маржове.
+                            $pageWidth = $pdf->GetPageWidth() - 2 * $margin; // ширина на страницата минус маржовете от двете страни
+                            $pageHeight = $pdf->GetPageHeight() - 2 * $margin; // височина на страницата минус маржовете от двете страни
+
+                            // Получаване размерите на изображението
+                            list($width, $height) = getimagesize($filePath);
+
+                            // Изчисляване на аспектното съотношение
+                            $aspectRatio = $width / $height;
+
+                            // Изчисляване на новите размери
+                            if ($width > $height) {
+                                // Ландшафтно изображение
+                                $newWidth = $pageWidth; // ширината на страницата е максималната ширина
+                                $newHeight = $newWidth / $aspectRatio;
+                                if ($newHeight > $pageHeight) {
+                                    $newHeight = $pageHeight;
+                                    $newWidth = $newHeight * $aspectRatio;
+                                }
+                            } else {
+                                // Портретно изображение
+                                $newHeight = $pageHeight;
+                                $newWidth = $newHeight * $aspectRatio;
+                                if ($newWidth > $pageWidth) {
+                                    $newWidth = $pageWidth;
+                                    $newHeight = $newWidth / $aspectRatio;
+                                }
+                            }
+
+                            // Добавяне на изображението
+                            $pdf->Image($filePath, $margin, $margin, $newWidth, $newHeight, 'JPG', '', '', true, 300, '', false, false, 0, false, false, false);
                             break;
                         case 'html':
                             $content = file_get_contents($filePath);
@@ -907,17 +942,17 @@ class ArticleController extends Controller
                             break;
                     }
                 } catch (\Exception $e) {
-                    
+
                     \Log::error("Error processing file {$filePath}: " . $e->getMessage());
                 }
             }
         }
-    
+
         $pdf->lastPage();
         $pdf->Output('article_id_#' . $article->id . '.pdf', 'I');
     }
-    
-    
+
+
 
     private function mergePdf($apiKey, $uploadedFiles)
     {
@@ -1007,7 +1042,7 @@ class ArticleController extends Controller
         $article->save();
 
         $notification = array(
-            'message' => 'Send Edit to article'.$article->title.' successfully.',
+            'message' => 'Send Edit to article' . $article->title . ' successfully.',
             'alert-type' => 'success'
         );
         return redirect()->route('article.list')->with($notification);
