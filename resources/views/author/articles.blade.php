@@ -68,7 +68,7 @@
                                                     <a href="{{ route('articles.articleEdit', $article->id) }}"
                                                         class="btn btn-warning btn-sm disabled">Declined<i
                                                             class="fas fa-edit"></i></a>
-                                                @elseif (Auth::user()->role === 'author' && $article->author_can_edit === 1)
+                                                @elseif (Auth::user()->role !== 'admin' && $article->author_can_edit === 1)
                                                     <a href="{{ route('articles.articleEdit', $article->id) }}"
                                                         class="btn btn-warning btn-sm">Edit<i class="fas fa-edit"></i></a>
                                                         
@@ -107,7 +107,7 @@
                                                             class="fas fa-edit"></i></a>
                                                 @endif
 
-                                                @if (Auth::user()->role === 'author' && $article->status !== 'accepted')
+                                                @if ((Auth::user()->role === 'author' || Auth::user()->role === 'reviewer' ) && $article->status !== 'accepted')
                                                     <form action="{{ route('articles.destroy', $article->id) }}"
                                                         method="POST">
                                                         @csrf

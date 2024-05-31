@@ -31,7 +31,7 @@
                 <div class="row">
                     <!-- !!!!!!!!!!!! Първа колона !!!!!!!!!!!! -->
                     <div class="col-md-6">
-                        @if (Auth::user()->role === 'author')
+                        @if (Auth::user()->role === 'author' || Auth::user()->role === 'reviewer')
                             <!-- Choice type of article -->
                             <div class="mb-3">
                                 <label for="funding_name" class="form-label"><strong>Type: </strong></label>
@@ -176,7 +176,7 @@
 
                     <!-- !!!!!!!!!!!! Втора колона !!!!!!!!!!!! -->
                     <div class="col-md-6">
-                        @if (Auth::user()->role === 'author')
+                        @if (Auth::user()->role === 'author' || Auth::user()->role === 'reviewer')
                             <!-- Upload Title Page -->
                             <div class="mb-3">
                                 @foreach ($fileNames['titlePage'] as $fileName)
