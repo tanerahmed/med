@@ -849,7 +849,8 @@ class ArticleController extends Controller
         $coauthors_html = '<p><h2>Keywords:</h2>' . $article->keywords . '</p><br>';
         $pdf->writeHTML($coauthors_html);
 
-        foreach ([$article->titlePage, $article->manuscript, $article->figures, $article->tables, $article->supplementaryFiles, $article->coverLetter] as $files) {
+        // $article->titlePage = без него!
+        foreach ([$article->manuscript, $article->figures, $article->tables, $article->supplementaryFiles, $article->coverLetter] as $files) {
             foreach ($files as $file) {
                 $filePath = storage_path('app/public/' . $file->file_path);
                 $filePath = str_replace('\\', '/', $filePath);
