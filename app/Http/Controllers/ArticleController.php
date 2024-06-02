@@ -592,6 +592,9 @@ class ArticleController extends Controller
                 // This action doing at  public function adminAcceptArticle
                 // $article->admin_accept = $request->has('admin_accept') ? 1 : 0;
 
+                // след ъпдейт на артикъл автора пак чака повторно разрешение за да прави промени
+                $article->author_can_edit = 0;
+
                 $article->save();
 
                 $this->articleId = $article->id;
