@@ -20,7 +20,7 @@ function validateTitlePageFileType() {
     } else {
         // Покажете съобщение за грешка
         document.getElementById('title_page_error').innerText =
-        'Invalid file type. Please select doc, docx or LaTex doc files.';
+        'Invalid file type. Please select docx or LaTex doc files.';
         // Изчистете стойността на input полето
         document.getElementById('title_pages').value = '';
     }
@@ -49,7 +49,7 @@ function validateManuscriptFileType() {
     } else {
         // Покажете съобщение за грешка
         document.getElementById('manuscript_error').innerText =
-        'Invalid file type. Please select doc, docx or LaTex doc files.';
+        'Invalid file type. Please select docx or LaTex doc files.';
         // Изчистете стойността на input полето
         document.getElementById('manuscript').value = '';
     }
@@ -106,7 +106,7 @@ function validateTablesFileType() {
     } else {
         // Покажете съобщение за грешка
         document.getElementById('tables_error').innerText =
-        'Invalid file type. Please select doc or docx files.';
+        'Invalid file type. Please select docx files.';
         // Изчистете стойността на input полето
         document.getElementById('tables').value = '';
     }
@@ -134,7 +134,7 @@ function validateSupplementaryFileType() {
     } else {
         // Покажете съобщение за грешка
         document.getElementById('supplementary_error').innerText =
-        'Invalid file type. Please select doc, docx, xls, xlsx, pdf or jpg files.';
+        'Invalid file type. Please select docx, xls, xlsx, pdf or jpg files.';
         // Изчистете стойността на input полето
         document.getElementById('supplementary').value = '';
     }
@@ -163,7 +163,7 @@ function validateCoverLaterFileType() {
     } else {
         // Покажете съобщение за грешка
         document.getElementById('cover_letter_error').innerText =
-        'Invalid file type. Please select doc or docx files.';
+        'Invalid file type. Please select docx files.';
         // Изчистете стойността на input полето
         document.getElementById('cover_letter').value = '';
     }

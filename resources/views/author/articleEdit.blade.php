@@ -182,9 +182,7 @@
                                 @foreach ($fileNames['titlePage'] as $fileName)
                                     <p style="color:burlywood">{{ $fileName }} </p>
                                 @endforeach
-                                <label for="title_pages" class="form-label"><strong>Upload Title Page: </strong><i>(doc,
-                                        docx,
-                                        LaTeX doc)</i></label>
+                                <label for="title_pages" class="form-label"><strong>Upload Title Page: </strong><i>(docx,LaTeX doc)</i></label>
                                 <div id="title_pages_selected_files"></div>
                                 <input type="file" name="title_pages[]" multiple class="form-control"
                                     id="title_pages"
@@ -197,8 +195,7 @@
                                 @foreach ($fileNames['manuscript'] as $fileName)
                                     <p style="color:burlywood">{{ $fileName }} </p>
                                 @endforeach
-                                <label for="manuscript" class="form-label"><strong>Upload Manuscript: </strong><i>(doc,
-                                        docx,
+                                <label for="manuscript" class="form-label"><strong>Upload Manuscript: </strong><i>(docx,
                                         LaTeX doc)</i></label>
                                 <div id="manuscript_selected_files"></div>
                                 <input type="file" name="manuscript[]" multiple class="form-control" id="manuscript"
@@ -224,8 +221,7 @@
                                 @foreach ($fileNames['tables'] as $fileName)
                                     <p style="color:burlywood">{{ $fileName }} </p>
                                 @endforeach
-                                <label for="tables" class="form-label"><strong>Upload Tables: </strong><i>(doc,
-                                        docx)</i></label>
+                                <label for="tables" class="form-label"><strong>Upload Tables: </strong><i>(docx)</i></label>
                                 <div id="tables_selected_files"></div>
                                 <input type="file" name="tables[]" multiple class="form-control" id="tables"
                                     onchange="validateTablesFileType(); displaySelectedFiles('tables')">
@@ -238,8 +234,7 @@
                                     <p style="color:burlywood">{{ $fileName }} </p>
                                 @endforeach
                                 <label for="supplementary" class="form-label"><strong>Upload Supplementary:
-                                    </strong><i>(doc,
-                                        docx, xls, xlsx, pdf, jpg, tiff)</i></label>
+                                    </strong><i>(docx, xls, xlsx, pdf, jpg, tiff)</i></label>
                                 <div id="supplementary_selected_files"></div>
                                 <input type="file" name="supplementary[]" multiple class="form-control"
                                     id="supplementary"

@@ -219,8 +219,7 @@
                                 <!-- Upload Title Page -->
                                 <div class="mb-3">
                                     <label for="title_pages" class="form-label"><strong>Upload Title Page:</strong>
-                                        <i>(doc,
-                                            docx,
+                                        <i>(docx,
                                             LaTeX doc)</i></label>
                                     <ul id="title_pages_selected_files" class="list-group mb-3"></ul>
                                     <input type="file" name="title_pages[]" multiple class="form-control"
@@ -231,7 +230,7 @@
                                 <!-- Manuscript -->
                                 <div class="mb-3">
                                     <label for="manuscript" class="form-label"><strong>Upload Manuscript:</strong>
-                                        <i>(doc, docx,
+                                        <i>(docx,
                                             LaTeX doc)</i></label>
                                     <ul id="manuscript_selected_files" class="list-group mb-3"></ul>
                                     <input type="file" name="manuscript[]" multiple class="form-control"
@@ -251,8 +250,7 @@
 
                                 <!-- Tables -->
                                 <div class="mb-3">
-                                    <label for="tables" class="form-label"><strong>Upload Tables:</strong> <i>(doc,
-                                            docx)</i></label>
+                                    <label for="tables" class="form-label"><strong>Upload Tables:</strong> <i>(docx)</i></label>
                                     <ul id="tables_selected_files" class="list-group mb-3"></ul>
                                     <input type="file" name="tables[]" multiple class="form-control"
                                         id="tables" onchange="validateTablesFileType(); ">
@@ -263,8 +261,7 @@
                                 <div class="mb-3">
                                     <label for="supplementary" class="form-label"><strong>Upload
                                             Supplementary:</strong>
-                                        <i>(doc,
-                                            docx, xls, xlsx, pdf, png, jpg)</i></label>
+                                        <i>(docx, xls, xlsx, pdf, png, jpg)</i></label>
                                     <ul id="supplementary_selected_files" class="list-group mb-3"></ul>
                                     <input type="file" name="supplementary[]" multiple class="form-control"
                                         id="supplementary" onchange="validateSupplementaryFileType(); ">
@@ -274,8 +271,7 @@
                                 <!-- Cover Letter -->
                                 <div class="mb-3">
                                     <label for="cover_letter" class="form-label"><strong>Upload Cover Letter:</strong>
-                                        <i>(doc,
-                                            docx, LaTeX doc)</i></label>
+                                        <i>(docx, LaTeX doc)</i></label>
                                     <ul id="cover_letter_selected_files" class="list-group mb-3"></ul>
                                     <input type="file" name="cover_letter[]" multiple class="form-control"
                                         id="cover_letter" onchange="validateCoverLaterFileType(); ">
