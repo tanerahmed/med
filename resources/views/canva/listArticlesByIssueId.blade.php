@@ -42,7 +42,12 @@
                                             <div class="col-md-4">
                                                 <div class="entry-image">
                                                     <a href={{ route('canva.showArticle', $article->id)}}>
+                                                    @if ($article->figures->count() > 0)
                                                     <img src="{{ asset('storage/' . $article->figures[0]->file_path) }}" alt="" style="width: 200px !important; ">
+                                                    @else
+                                                    <img src="{{ asset('storage/no-img.jpg') }}" alt="Default Image"
+                                                        style="width: 200px !important;">
+                                                    @endif
                                                 </a>
                                                   </div>
                                             </div>
