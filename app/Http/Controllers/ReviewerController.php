@@ -275,11 +275,11 @@ class ReviewerController extends Controller
     public function showReviewComments( $article_id, $user_id)
     {
 
-        $review = ReviewComment::where('article_id', $article_id)
+        $reviews = ReviewComment::where('article_id', $article_id)
         ->where('user_id', $user_id)
         ->get();
 
-        return view('reviewer.show_review_comments', ['review' => $review[0]]);
+        return view('reviewer.show_review_comments', ['reviews' => $reviews]);
 
     }
 
