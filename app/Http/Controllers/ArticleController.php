@@ -899,7 +899,6 @@ class ArticleController extends Controller
                         case 'jpg':
                         case 'jpeg':
                         case 'png':
-                            $pdf->AddPage();
                             // $pdf->Image($filePath, 10, 10, '', '', '', '', '', false, 300, '', false, false, 0, false, false, false);
                             // Добавяне на изображение
                             // $pdf->Image($file, $x, $y, $w, $h, $type, $link, $align, $resize, $dpi, $palign, $ismask, $imgmask, $border, $fitbox, $hidden, $fitonpage);
