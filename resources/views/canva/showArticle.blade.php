@@ -29,8 +29,15 @@
                                         @if ($article->final_article_path)
                                         <a href="https://blmprime.com/storage/{{ $article->final_article_path }}" download>
                                             <button type="button" class="btn btn-success btn-sm">Download</button>
-                                        </a>
+                                        </a>                                       
                                         @endif
+
+                                        @if ($article->xmlFiles->isNotEmpty())
+                                        <a href="{{ route('download.latest.xml.for.article', ['articleId' => $article->id]) }}">
+                                            <button type="button" class="btn btn-primary btn-sm">Download XML</button>
+                                        </a>                                        
+                                        @endif
+
                                     </div>
                                 </div>
 

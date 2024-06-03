@@ -133,5 +133,8 @@ Route::get('/articles/search', [CanvaArticlesController::class, 'search'])->name
 Route::get('/articles/{specialty}',   [CanvaArticlesController::class, 'listArticlesBySpecialty'])->name('canva.listArticlesBySpecialty');
 Route::get('/issue/{id}',   [CanvaArticlesController::class, 'listArticlesByIssue'])->name('canva.listArticlesByIssue');
 
+Route::get('/download-latest-xml/{articleId}', [XMLController::class, 'downloadLatestXMLForArticle'])->name('download.latest.xml.for.article');
+
+
 // Route::get('/login/orcid', 'Auth\LoginController@redirectToOrcid');
 // Route::get('/login/orcid/callback', 'Auth\LoginController@handleOrcidCallback');
