@@ -57,8 +57,7 @@
             </div>
         </section><!-- #content end -->
     </div><!-- #wrapper end -->
-
-    {{-- <style>
+<style>
         /* Стилове за котвите */
         :target {
             scroll-margin-top: 100px;
@@ -106,7 +105,7 @@
             text-decoration: underline;
             /* Подчертаване на линковете при hover за по-голяма видимост */
         }
-    </style> --}}
+    </style> 
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
