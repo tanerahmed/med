@@ -90,7 +90,7 @@
             /* Центриране на елементите вътре в tagcloud */
         }
 
-        .tagcloud a,
+        /* .tagcloud a, */
         .tagcloud button {
             background-color: #198754;
             white-space: nowrap;
