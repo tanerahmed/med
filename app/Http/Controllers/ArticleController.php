@@ -612,7 +612,7 @@ class ArticleController extends Controller
                     }
                 }
                 // Manuscript
-                if ($request->hasFile('title_pages')) {
+                if ($request->hasFile('manuscript')) {
                     Manuscript::where('article_id', $articleId)->delete();
                     foreach ($request->file('manuscript') as $file) {
                         $filePath = $file->storeAs('manuscripts/' . $this->articleId, $file->getClientOriginalName(), 'public');
