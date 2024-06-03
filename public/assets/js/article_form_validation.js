@@ -1,14 +1,14 @@
 function validateTitlePageFileType() {
-
-    var allowedTypes = ['application/vnd.openxmlformats-officedocument.wordprocessingml.document', 'application/msword', 'application/x-latex'];
+    var allowedExtensions = ['docx', 'tex']; // Разрешените разширения за файлове
 
     var files = document.getElementById('title_pages').files;
 
     var isValid = true;
 
     for (var i = 0; i < files.length; i++) {
+        var fileExtension = files[i].name.split('.').pop().toLowerCase(); // Вземаме разширението на файла и го конвертираме към малки букви
 
-        if (allowedTypes.indexOf(files[i].type) === -1) {
+        if (allowedExtensions.indexOf(fileExtension) === -1) {
             isValid = false;
             break;
         }
@@ -18,26 +18,27 @@ function validateTitlePageFileType() {
         // Файловете са валидни, няма грешка
         document.getElementById('title_page_error').innerText = '';
     } else {
-        // Покажете съобщение за грешка
+        // Показване на съобщение за грешка
         document.getElementById('title_page_error').innerText =
-        'Invalid file type. Please select docx or LaTex doc files.';
-        // Изчистете стойността на input полето
+            'Invalid file type. Please select docx or LaTex doc files.';
+        // Изчистване на стойността на input полето
         document.getElementById('title_pages').value = '';
     }
 }
 
 
-function validateManuscriptFileType() {
 
-    var allowedTypes = ['application/vnd.openxmlformats-officedocument.wordprocessingml.document', 'application/msword', 'application/x-latex'];
+function validateManuscriptFileType() {
+    var allowedExtensions = ['docx', 'tex']; // Разрешените разширения за файлове
 
     var files = document.getElementById('manuscript').files;
 
     var isValid = true;
 
     for (var i = 0; i < files.length; i++) {
+        var fileExtension = files[i].name.split('.').pop().toLowerCase(); // Вземаме разширението на файла и го конвертираме към малки букви
 
-        if (allowedTypes.indexOf(files[i].type) === -1) {
+        if (allowedExtensions.indexOf(fileExtension) === -1) {
             isValid = false;
             break;
         }
@@ -47,13 +48,14 @@ function validateManuscriptFileType() {
         // Файловете са валидни, няма грешка
         document.getElementById('manuscript_error').innerText = '';
     } else {
-        // Покажете съобщение за грешка
+        // Показване на съобщение за грешка
         document.getElementById('manuscript_error').innerText =
-        'Invalid file type. Please select docx or LaTex doc files.';
-        // Изчистете стойността на input полето
+            'Invalid file type. Please select docx or LaTex doc files.';
+        // Изчистване на стойността на input полето
         document.getElementById('manuscript').value = '';
     }
 }
+
 
 function validateFiguresFileType() {
 
@@ -85,16 +87,16 @@ function validateFiguresFileType() {
 
 
 function validateTablesFileType() {
-
-    var allowedTypes = ['application/vnd.openxmlformats-officedocument.wordprocessingml.document', 'application/msword'];
+    var allowedExtensions = ['docx']; // Разрешените разширения за файлове
 
     var files = document.getElementById('tables').files;
 
     var isValid = true;
 
     for (var i = 0; i < files.length; i++) {
+        var fileExtension = files[i].name.split('.').pop().toLowerCase(); // Вземаме разширението на файла и го конвертираме към малки букви
 
-        if (allowedTypes.indexOf(files[i].type) === -1) {
+        if (allowedExtensions.indexOf(fileExtension) === -1) {
             isValid = false;
             break;
         }
@@ -106,21 +108,22 @@ function validateTablesFileType() {
     } else {
         // Покажете съобщение за грешка
         document.getElementById('tables_error').innerText =
-        'Invalid file type. Please select docx files.';
-        // Изчистете стойността на input полето
+            'Invalid file type. Please select docx files.';
+        // Изчистване на стойността на input полето
         document.getElementById('tables').value = '';
     }
 }
 
-function validateSupplementaryFileType() {
 
-    var allowedTypes = ['application/vnd.openxmlformats-officedocument.wordprocessingml.document', 'application/msword', 'application/vnd.ms-excel', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', 'application/pdf', 'image/png','image/jpeg'];
+function validateSupplementaryFileType() {
+    var allowedTypes = ['application/vnd.openxmlformats-officedocument.wordprocessingml.document', 'application/vnd.ms-excel', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', 'application/pdf', 'image/png', 'image/jpeg'];
 
     var files = document.getElementById('supplementary').files;
 
     var isValid = true;
 
     for (var i = 0; i < files.length; i++) {
+        var fileExtension = files[i].name.split('.').pop().toLowerCase(); // Вземаме разширението на файла и го конвертираме към малки букви
 
         if (allowedTypes.indexOf(files[i].type) === -1) {
             isValid = false;
@@ -134,24 +137,24 @@ function validateSupplementaryFileType() {
     } else {
         // Покажете съобщение за грешка
         document.getElementById('supplementary_error').innerText =
-        'Invalid file type. Please select docx, xls, xlsx, pdf or jpg files.';
-        // Изчистете стойността на input полето
+            'Invalid file type. Please select docx, xls, xlsx, pdf, png, or jpg files.';
+        // Изчистване на стойността на input полето
         document.getElementById('supplementary').value = '';
     }
 }
 
 
+
 function validateCoverLaterFileType() {
-
-    var allowedTypes = ['application/vnd.openxmlformats-officedocument.wordprocessingml.document', 'application/msword', 'application/x-latex'];
-
+    var allowedExtensions = ['docx', 'tex']; // Разрешените разширения за файлове
     var files = document.getElementById('cover_letter').files;
 
     var isValid = true;
 
     for (var i = 0; i < files.length; i++) {
+        var fileExtension = files[i].name.split('.').pop().toLowerCase(); // Вземаме разширението на файла и го конвертираме към малки букви
 
-        if (allowedTypes.indexOf(files[i].type) === -1) {
+        if (allowedExtensions.indexOf(fileExtension) === -1) {
             isValid = false;
             break;
         }
@@ -161,13 +164,14 @@ function validateCoverLaterFileType() {
         // Файловете са валидни, няма грешка
         document.getElementById('cover_letter_error').innerText = '';
     } else {
-        // Покажете съобщение за грешка
+        // Показване на съобщение за грешка
         document.getElementById('cover_letter_error').innerText =
-        'Invalid file type. Please select docx files.';
-        // Изчистете стойността на input полето
+            'Invalid file type. Please select docx files.';
+        // Изчистване на стойността на input полето
         document.getElementById('cover_letter').value = '';
     }
 }
+
 
 
 function validateZIPFileType() {
