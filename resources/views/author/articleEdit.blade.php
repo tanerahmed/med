@@ -265,8 +265,7 @@
                                 @foreach ($fileNames['figures'] as $fileName)
                                     <p style="color:burlywood">{{ $fileName }} </p>
                                 @endforeach
-                                <label for="figures" class="form-label"><strong>Upload Figures: </strong> <i>(jpg,
-                                        tiff)</i></label>
+                                <label for="figures" class="form-label"><strong>Upload Figures: </strong> <i>(jpg)</i></label>
                                 <div id="figures_selected_files"></div>
                                 <input type="file" name="figures[]" multiple class="form-control" id="figures"
                                     onchange="validateFiguresFileType(); displaySelectedFiles('figures')">
@@ -291,7 +290,7 @@
                                     <p style="color:burlywood">{{ $fileName }} </p>
                                 @endforeach
                                 <label for="supplementary" class="form-label"><strong>Upload Supplementary:
-                                    </strong><i>(docx, xls, xlsx, pdf, jpg, tiff)</i></label>
+                                    </strong><i>(docx, xls, xlsx, pdf, jpg)</i></label>
                                 <div id="supplementary_selected_files"></div>
                                 <input type="file" name="supplementary[]" multiple class="form-control"
                                     id="supplementary"
