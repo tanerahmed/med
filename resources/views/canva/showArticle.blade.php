@@ -83,6 +83,10 @@
             z-index: 1000;
         }
 
+        .sidebar-widgets-wrap.widget:first-child{
+            z-index: 10000;
+        }
+        
         /* Подреждане на елементите в tagcloud на един ред */
         .custom-tagcloud {
             display: flex;
