@@ -71,7 +71,10 @@
                         id="articleForm">
                         @csrf
                         <div class="row">
-
+                            <div class="alert alert-info" role="alert">
+                                If you want to upload more than one file at a time, please hold down the
+                                <strong>Ctrl</strong> button while selecting the files.
+                            </div>
                             <!-- !!!!!!!!!!!! Първа колона !!!!!!!!!!!! -->
                             <div class="col-md-6">
                                 <!-- Choice type of article -->
@@ -96,9 +99,11 @@
                                         <option selected>Select Speciality</option>
                                         <option value="Урология">Урология</option>
                                         <option value="УНГ">УНГ</option>
-                                        <option value="Anesthesiology & Intensive care">Anesthesiology & Intensive care</option>
+                                        <option value="Anesthesiology & Intensive care">Anesthesiology & Intensive care
+                                        </option>
                                         <option value="Clinical anatomy">Clinical anatomy</option>
-                                        <option value="Clinical laboratory sciences">Clinical laboratory sciences</option>
+                                        <option value="Clinical laboratory sciences">Clinical laboratory sciences
+                                        </option>
                                         <option value="Clinical biochemistry">Clinical biochemistry</option>
                                         <option value="Cytogenetics">Cytogenetics</option>
                                         <option value="Cytohematology">Cytohematology</option>
@@ -115,15 +120,18 @@
                                         <option value="Dental surgery">Dental surgery</option>
                                         <option value="Endodontics">Endodontics</option>
                                         <option value="Orthodontics">Orthodontics</option>
-                                        <option value="Oral and maxillofacial surgery">Oral and maxillofacial surgery</option>
+                                        <option value="Oral and maxillofacial surgery">Oral and maxillofacial surgery
+                                        </option>
                                         <option value="Dermatology">Dermatology</option>
                                         <option value="Emergency medicine">Emergency medicine</option>
-                                        <option value="Health informatics/Clinical informatics">Health informatics/Clinical
+                                        <option value="Health informatics/Clinical informatics">Health
+                                            informatics/Clinical
                                             informatics</option>
                                         <option value="Nursing">Nursing</option>
                                         <option value="Nutrition and dietetics">Nutrition and dietetics</option>
                                         <option value="Physiotherapy">Physiotherapy</option>
-                                        <option value="Speech and language pathology">Speech and language pathology</option>
+                                        <option value="Speech and language pathology">Speech and language pathology
+                                        </option>
                                         <option value="Internal medicine">Internal medicine</option>
                                         <option value="Preventive medicine">Preventive medicine</option>
                                         <option value="Cardiology">Cardiology</option>
@@ -168,7 +176,8 @@
                                         <option value="Colorectal surgery">Colorectal surgery</option>
                                         <option value="Transplant surgery">Transplant surgery</option>
                                         <option value="Trauma surgery">Trauma surgery</option>
-                                        <option value="Hepatobiliary and pancreatic surgery">Hepatobiliary and pancreatic
+                                        <option value="Hepatobiliary and pancreatic surgery">Hepatobiliary and
+                                            pancreatic
                                             surgery
                                         </option>
                                         <option value="Bariatric surgery">Bariatric surgery</option>
@@ -181,11 +190,13 @@
                                         <option value="Epidemiology">Epidemiology</option>
                                         <option value="Nuclear medicine">Nuclear medicine</option>
                                         <option value="Allergology">Allergology</option>
-                                        <option value="Forensic medicine & deontology">Forensic medicine & deontology</option>
+                                        <option value="Forensic medicine & deontology">Forensic medicine & deontology
+                                        </option>
                                         <option value="Vascular surgery">Vascular surgery</option>
                                         <option value="Cardiovascular surgery">Cardiovascular surgery</option>
                                         <option value="Interventional cardiology">Interventional cardiology</option>
-                                        <option value="Interventional neuroradiology">Interventional neuroradiology</option>
+                                        <option value="Interventional neuroradiology">Interventional neuroradiology
+                                        </option>
                                     </select>
                                 </div>
                                 <!-- Scientific Area -->
@@ -216,6 +227,8 @@
 
                             <!-- !!!!!!!!!!!! Втора колона !!!!!!!!!!!! -->
                             <div class="col-md-6">
+
+
                                 <!-- Upload Title Page -->
                                 <div class="mb-3">
                                     <label for="title_pages" class="form-label"><strong>Upload Title Page:</strong>
@@ -223,7 +236,8 @@
                                             LaTeX doc)</i></label>
                                     <ul id="title_pages_selected_files" class="list-group mb-3"></ul>
                                     <input type="file" name="title_pages[]" multiple class="form-control"
-                                        id="title_pages" onchange="validateTitlePageFileType(); ">
+                                        id="title_pages"
+                                        onchange="validateTitlePageFileType(); displaySelectedFiles('title_pages')">
                                     <div class="text-danger" id="title_page_error"></div>
                                 </div>
 
@@ -234,7 +248,8 @@
                                             LaTeX doc)</i></label>
                                     <ul id="manuscript_selected_files" class="list-group mb-3"></ul>
                                     <input type="file" name="manuscript[]" multiple class="form-control"
-                                        id="manuscript" onchange="validateManuscriptFileType(); ">
+                                        id="manuscript"
+                                        onchange="validateManuscriptFileType(); displaySelectedFiles('manuscript')">
                                     <div class="text-danger" id="manuscript_error"></div>
                                 </div>
 
@@ -244,16 +259,19 @@
                                         <i>(jpg)</i></label>
                                     <ul id="figures_selected_files" class="list-group mb-3"></ul>
                                     <input type="file" name="figures[]" multiple class="form-control"
-                                        id="figures" onchange="validateFiguresFileType(); ">
+                                        id="figures"
+                                        onchange="validateFiguresFileType(); displaySelectedFiles('figures')">
                                     <div class="text-danger" id="figures_error"></div>
                                 </div>
 
                                 <!-- Tables -->
                                 <div class="mb-3">
-                                    <label for="tables" class="form-label"><strong>Upload Tables:</strong> <i>(docx)</i></label>
+                                    <label for="tables" class="form-label"><strong>Upload Tables:</strong>
+                                        <i>(docx)</i></label>
                                     <ul id="tables_selected_files" class="list-group mb-3"></ul>
                                     <input type="file" name="tables[]" multiple class="form-control"
-                                        id="tables" onchange="validateTablesFileType(); ">
+                                        id="tables"
+                                        onchange="validateTablesFileType(); displaySelectedFiles('tables')">
                                     <div class="text-danger" id="tables_error"></div>
                                 </div>
 
@@ -264,7 +282,8 @@
                                         <i>(docx, xls, xlsx, pdf, png, jpg)</i></label>
                                     <ul id="supplementary_selected_files" class="list-group mb-3"></ul>
                                     <input type="file" name="supplementary[]" multiple class="form-control"
-                                        id="supplementary" onchange="validateSupplementaryFileType(); ">
+                                        id="supplementary"
+                                        onchange="validateSupplementaryFileType(); displaySelectedFiles('supplementary')">
                                     <div class="text-danger" id="supplementary_error"></div>
                                 </div>
 
@@ -274,7 +293,8 @@
                                         <i>(docx, LaTeX doc)</i></label>
                                     <ul id="cover_letter_selected_files" class="list-group mb-3"></ul>
                                     <input type="file" name="cover_letter[]" multiple class="form-control"
-                                        id="cover_letter" onchange="validateCoverLaterFileType(); ">
+                                        id="cover_letter"
+                                        onchange="validateCoverLaterFileType(); displaySelectedFiles('cover_letter')">
                                     <div class="text-danger" id="cover_letter_error"></div>
                                 </div>
 
@@ -323,39 +343,29 @@
             </div>
 
             <script>
-                // Функция за добавяне на файлове към даден списък
-                function addFilesToList(fileInputId, fileListId) {
-                    const fileInput = document.getElementById(fileInputId);
-                    const fileList = document.getElementById(fileListId);
-
-                    fileInput.addEventListener('change', function(event) {
-                        const files = event.target.files;
-                        for (const file of files) {
-                            const listItem = document.createElement('li');
-                            listItem.className = 'list-group-item d-flex justify-content-between align-items-center';
-                            listItem.innerHTML = `
-                        <span>${file.name}</span>
-                        <button type="button" class="btn btn-danger btn-sm" onclick="removeFile(this, '${fileListId}')">&times;</button>
-                    `;
-                            fileList.appendChild(listItem);
+                function displaySelectedFiles(inputId) {
+                    var input = document.getElementById(inputId);
+                    var fileList = input.files;
+                    var fileNames = "<span style='font-weight: bold; font-style: italic;'>";
+                    for (var i = 0; i < fileList.length; i++) {
+                        fileNames += fileList[i].name;
+                        if (i !== fileList.length - 1) {
+                            fileNames += ", "; // Добавете запетая между имената на файловете, освен ако не е последният файл
                         }
+                    }
+                    fileNames += "</span>"; // Затварящ таг за span
+                    var selectedFilesDiv = document.getElementById(inputId + '_selected_files');
+                    selectedFilesDiv.innerHTML = fileNames;
+                }
+
+
+
+                document.addEventListener('DOMContentLoaded', function() {
+                    document.getElementById('articleForm').addEventListener('submit', function() {
+                        document.getElementById('submitBtn').disabled =
+                            true; // Деактивирайте бутона след изпращане на формата
                     });
-                }
-
-                // Функция за премахване на файлове от даден списък
-                function removeFile(button, listId) {
-                    const listItem = button.parentElement;
-                    const list = document.getElementById(listId);
-                    list.removeChild(listItem);
-                }
-
-                // Добавяне на файлове към всички input полета
-                addFilesToList('title_pages', 'title_pages_selected_files');
-                addFilesToList('manuscript', 'manuscript_selected_files');
-                addFilesToList('figures', 'figures_selected_files');
-                addFilesToList('tables', 'tables_selected_files');
-                addFilesToList('supplementary', 'supplementary_selected_files');
-                addFilesToList('cover_letter', 'cover_letter_selected_files');
+                });
             </script>
 
             <!-- partial:partials/_footer.html -->

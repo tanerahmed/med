@@ -86,6 +86,10 @@
                 @method('PUT')
 
                 <div class="row">
+                    <div class="alert alert-info" role="alert">
+                        If you want to upload more than one file at a time, please hold down the
+                        <strong>Ctrl</strong> button while selecting the files.
+                    </div>
                     <!-- !!!!!!!!!!!! Първа колона !!!!!!!!!!!! -->
                     <div class="col-md-6">
                         @if (Auth::user()->role === 'author' || Auth::user()->role === 'reviewer')
@@ -233,6 +237,7 @@
 
                     <!-- !!!!!!!!!!!! Втора колона !!!!!!!!!!!! -->
                     <div class="col-md-6">
+
                         @if (Auth::user()->role === 'author' || Auth::user()->role === 'reviewer')
                             <!-- Upload Title Page -->
                             <div class="mb-3">
@@ -361,39 +366,29 @@
 
  
     <script>
-        // Функция за добавяне на файлове към даден списък
-        function addFilesToList(fileInputId, fileListId) {
-            const fileInput = document.getElementById(fileInputId);
-            const fileList = document.getElementById(fileListId);
-
-            fileInput.addEventListener('change', function(event) {
-                const files = event.target.files;
-                for (const file of files) {
-                    const listItem = document.createElement('li');
-                    listItem.className = 'list-group-item d-flex justify-content-between align-items-center';
-                    listItem.innerHTML = `
-                <span>${file.name}</span>
-                <button type="button" class="btn btn-danger btn-sm" onclick="removeFile(this, '${fileListId}')">&times;</button>
-            `;
-                    fileList.appendChild(listItem);
+        function displaySelectedFiles(inputId) {
+            var input = document.getElementById(inputId);
+            var fileList = input.files;
+            var fileNames = "<span style='font-weight: bold; font-style: italic;'>";
+            for (var i = 0; i < fileList.length; i++) {
+                fileNames += fileList[i].name;
+                if (i !== fileList.length - 1) {
+                    fileNames += ", "; // Добавете запетая между имената на файловете, освен ако не е последният файл
                 }
+            }
+            fileNames += "</span>"; // Затварящ таг за span
+            var selectedFilesDiv = document.getElementById(inputId + '_selected_files');
+            selectedFilesDiv.innerHTML = fileNames;
+        }
+
+
+
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('articleForm').addEventListener('submit', function() {
+                document.getElementById('submitBtn').disabled =
+                    true; // Деактивирайте бутона след изпращане на формата
             });
-        }
-
-        // Функция за премахване на файлове от даден списък
-        function removeFile(button, listId) {
-            const listItem = button.parentElement;
-            const list = document.getElementById(listId);
-            list.removeChild(listItem);
-        }
-
-        // Добавяне на файлове към всички input полета
-        addFilesToList('title_pages', 'title_pages_selected_files');
-        addFilesToList('manuscript', 'manuscript_selected_files');
-        addFilesToList('figures', 'figures_selected_files');
-        addFilesToList('tables', 'tables_selected_files');
-        addFilesToList('supplementary', 'supplementary_selected_files');
-        addFilesToList('cover_letter', 'cover_letter_selected_files');
+        });
     </script>
 
     <!-- partial:partials/_footer.html -->
