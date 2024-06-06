@@ -137,20 +137,20 @@ class XMLController extends Controller
     {
         // Вземане на последния XML файл за даденото article_id от базата данни
         $xmlFile = XMLFile::where('article_id', $articleId)->latest()->first();
-
+    
         if (!$xmlFile) {
             return redirect()->back()->with('error', 'No XML file found for this article.');
         }
-
+    
         // Съдържание на XML файла
         $xmlContent = $xmlFile->content;
         $fileName = $xmlFile->filename;
-
+    
         // Сваляне на файла
-        return response()->make($xmlContent, 200, [
-            'Content-Type' => 'application/xml',
-            'Content-Disposition' => 'attachment; filename="' . $fileName . '"'
-        ])->header('Location', $request->header('Referer'));
+        return response($xmlContent, 200)
+            ->header('Content-Type', 'application/xml')
+            ->header('Content-Disposition', 'attachment; filename="' . $fileName . '"');
     }
+    
 
 }
