@@ -119,7 +119,11 @@
                                 <div class="widget">
                                     <h4>Specialty Filtre</h4>
                                     <div class="tagcloud">
-                                        <a href="{{ route('canva.listArticlesBySpecialty', 'УНГ') }}" class="{{ $activeSpecialty === 'УНГ' ? 'active' : '' }}">УНГ</a>
+                                        @foreach ($specialties as $speciality)
+                                        <a href="{{ route('canva.listArticlesBySpecialty', "$speciality") }}" class="{{ $activeSpecialty === "$speciality" ? 'active' : '' }}">{{ $speciality}}</a>
+                                        @endforeach
+
+                                        {{-- <a href="{{ route('canva.listArticlesBySpecialty', 'УНГ') }}" class="{{ $activeSpecialty === 'УНГ' ? 'active' : '' }}">УНГ</a>
                                         <a href="{{ route('canva.listArticlesBySpecialty', 'Урология') }}" class="{{ $activeSpecialty === 'Урология' ? 'active' : '' }}">Урология</a>
                                         <a href="{{ route('canva.listArticlesBySpecialty', 'Anesthesiology & Intensive care') }}" class="{{ $activeSpecialty === 'Anesthesiology & Intensive care' ? 'active' : '' }}">Anesthesiology & Intensive care</a>
                                         <a href="{{ route('canva.listArticlesBySpecialty', 'Clinical anatomy') }}" class="{{ $activeSpecialty === 'Clinical anatomy' ? 'active' : '' }}">Clinical anatomy</a>
@@ -206,7 +210,7 @@
                                         <a href="{{ route('canva.listArticlesBySpecialty', 'Vascular surgery') }}" class="{{ $activeSpecialty === 'Vascular surgery' ? 'active' : '' }}">Vascular surgery</a>
                                         <a href="{{ route('canva.listArticlesBySpecialty', 'Cardiovascular surgery') }}" class="{{ $activeSpecialty === 'Cardiovascular surgery' ? 'active' : '' }}">Cardiovascular surgery</a>
                                         <a href="{{ route('canva.listArticlesBySpecialty', 'Interventional cardiology') }}" class="{{ $activeSpecialty === 'Interventional cardiology' ? 'active' : '' }}">Interventional cardiology</a>
-                                        <a href="{{ route('canva.listArticlesBySpecialty', 'Interventional neuroradiology') }}" class="{{ $activeSpecialty === 'Interventional neuroradiology' ? 'active' : '' }}">Interventional neuroradiology</a>
+                                        <a href="{{ route('canva.listArticlesBySpecialty', 'Interventional neuroradiology') }}" class="{{ $activeSpecialty === 'Interventional neuroradiology' ? 'active' : '' }}">Interventional neuroradiology</a> --}}
                                     </div>
                                 </div>
                             </div>

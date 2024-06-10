@@ -21,8 +21,11 @@ class CanvaArticlesController extends Controller
         $issueIds = array_filter($issueIds, fn($value) => !is_null($value)); // премахва null стойностите
         rsort($issueIds); // сортира масива в нарастващ ред
 
+        $specialties = $allArticles->pluck('specialty')->unique()->filter(function ($value) {
+            return !is_null($value) && $value !== 'Select Speciality';
+        })->toArray();
 
-        return view('canva.listArticles', compact('articles', 'issueIds', 'activeSpecialty'));
+        return view('canva.listArticles', compact('articles', 'issueIds', 'activeSpecialty', 'specialties'));
     }
 
     public function listArticlesBySpecialty($specialty)
@@ -36,7 +39,11 @@ class CanvaArticlesController extends Controller
         $issueIds = array_filter($issueIds, fn($value) => !is_null($value)); // премахва null стойностите
         rsort($issueIds); // сортира масива в нарастващ ред
 
-        return view('canva.listArticles', compact('articles', 'issueIds', 'activeSpecialty'));
+        $specialties = $allArticles->pluck('specialty')->unique()->filter(function ($value) {
+            return !is_null($value) && $value !== 'Select Speciality';
+        })->toArray();
+
+        return view('canva.listArticles', compact('articles', 'issueIds', 'activeSpecialty', 'specialties'));
     }
 
 
@@ -64,8 +71,10 @@ class CanvaArticlesController extends Controller
             ->whereNotNull('issue_id')
             ->get();
 
-
-        return view('canva.listArticles', compact('articles', 'issueIds', 'activeSpecialty'));
+        $specialties = $allArticles->pluck('specialty')->unique()->filter(function ($value) {
+            return !is_null($value) && $value !== 'Select Speciality';
+        })->toArray();
+        return view('canva.listArticles', compact('articles', 'issueIds', 'activeSpecialty',  'specialties'));
     }
 
     public function showArticle(Article $article)
@@ -79,7 +88,11 @@ class CanvaArticlesController extends Controller
         $content = Storage::get('public/' . $article->final_article_path);
         // $content = Storage::get('public/final_articles/1/tttttt.html');
 
-        return view('canva.showArticle', compact('article', 'issueIds', 'content'));
+        $specialties = $allArticles->pluck('specialty')->unique()->filter(function ($value) {
+            return !is_null($value) && $value !== 'Select Speciality';
+        })->toArray();
+
+        return view('canva.showArticle', compact('article', 'issueIds', 'content',  'specialties'));
     }
 
 
@@ -96,7 +109,10 @@ class CanvaArticlesController extends Controller
         $issueIds = array_filter($issueIds, fn($value) => !is_null($value)); // премахва null стойностите
         rsort($issueIds); // сортира масива в нарастващ ред
 
-        return view('canva.listArticlesByIssueId', compact('articles', 'issueId', 'issueIds', 'activeSpecialty'));
+        $specialties = $allArticles->pluck('specialty')->unique()->filter(function ($value) {
+            return !is_null($value) && $value !== 'Select Speciality';
+        })->toArray();
+        return view('canva.listArticlesByIssueId', compact('articles', 'issueId', 'issueIds', 'activeSpecialty',  'specialties'));
     }
 
 }
