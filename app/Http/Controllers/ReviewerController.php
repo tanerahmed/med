@@ -189,11 +189,19 @@ class ReviewerController extends Controller
         $ratings = [$review->rating_1, $review->rating_2, $review->rating_3];
         if (in_array('accepted', $ratings) && in_array('accepted with revision', $ratings)) {            
             $article->author_can_edit = 1;
+            $article->status = 'accepted';
+            $article->save();
+        } elseif (in_array('declined', $ratings) && in_array('acceptedn', $ratings)) {
+            $article->author_can_edit = 1;
             $article->status = 'pending';
             $article->save();
         } elseif (in_array('declined', $ratings) && in_array('accepted with revision', $ratings)) {
             $article->author_can_edit = 1;
             $article->status = 'pending';
+            $article->save();
+        } elseif (in_array('declined', $ratings) && in_array('declined', $ratings)) {
+            $article->author_can_edit = 1;
+            $article->status = 'declined';
             $article->save();
         } elseif (count(array_filter($ratings, fn($rating) => $rating === 'accepted with revision')) >= 2) {
             $article->author_can_edit = 1;
