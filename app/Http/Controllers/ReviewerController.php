@@ -81,12 +81,13 @@ class ReviewerController extends Controller
         $zipFileName = "article_id = " . $article->id . ".zip";
 
         if ($zip->open($zipFileName, ZipArchive::CREATE) === TRUE) {
-
-            foreach ($article->titlePage as $value) {
-                $filePath = storage_path('app/public/' . $value->file_path);
-                $filePath = str_replace('\\', '/', $filePath);
-                $zip->addFile($filePath, basename($filePath));
-            }
+            
+            //  TITLE PAGE dont show in ZIP file
+            // foreach ($article->titlePage as $value) {
+            //     $filePath = storage_path('app/public/' . $value->file_path);
+            //     $filePath = str_replace('\\', '/', $filePath);
+            //     $zip->addFile($filePath, basename($filePath));
+            // }
 
             foreach ($article->manuscript as $value) {
                 $filePath = storage_path('app/public/' . $value->file_path);
