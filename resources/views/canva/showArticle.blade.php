@@ -153,12 +153,19 @@
             const offsetTop = tagcloudWidget.offsetTop;
 
             window.addEventListener('scroll', function() {
+                var element = document.querySelector('.primary-menu.primary-menu-init');
+                var search = document.querySelector('.uil.uil-search')
                 if (window.pageYOffset > offsetTop) {
                     tagcloudWidget.classList.add('fixed');
                     tagcloud.classList.add('fixed-layout');
+                    
+                    element.style.display = 'none';
+                    search.style.display = 'none';
+
                 } else {
                     tagcloudWidget.classList.remove('fixed');
                     tagcloud.classList.remove('fixed-layout');
+                    element.style.display = 'block';
                 }
             });
         });
