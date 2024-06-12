@@ -720,7 +720,7 @@ class ArticleController extends Controller
 
     public function sendEmailForReviewRequest(Request $request, $id)
     {
-
+       
         $review = Review::where('article_id', $id)->first();
         if ($review) {
             $reviewerIds = [$review->reviewer_id_1, $review->reviewer_id_2, $review->reviewer_id_3];
@@ -729,34 +729,44 @@ class ArticleController extends Controller
 
                 if ($reviewerId && !in_array($reviewerId, $reviewerIds)) {
                     $user = User::find($reviewerId);
+                    // Изпрати покана ако не си пращал преди.
+                    $invitedReviewers = InvitedReviewer::where('article_id', $id)->pluck('user_id')->toArray();
+                    if (!in_array($reviewerId, $invitedReviewers)) {
+                        if ($user) {
+                            $subject = 'Reviewer Request for Article #' . $id;
+                            $domain = URL::to('/');
+                            $body = [
+                                'name' => $user->name,
+                                'article' => $id,
+                                'link_approve' => $domain . '/reviews/request/' . $user->id . '/' . $review->id,
+                                'link_reject' => $domain . '/reviews/request/reject/' . $user->id . '/' . $review->id,
+                            ];
 
-                    if ($user) {
-                        $subject = 'Reviewer Request for Article #' . $id;
-                        $domain = URL::to('/');
-                        $body = [
-                            'name' => $user->name,
-                            'article' => $id,
-                            'link_approve' => $domain . '/reviews/request/' . $user->id . '/' . $review->id,
-                            'link_reject' => $domain . '/reviews/request/reject/' . $user->id . '/' . $review->id,
-                        ];
+                            Mail::to($user->email)->send(new ReviewRequestEmail($subject, $body));
 
-                        Mail::to($user->email)->send(new ReviewRequestEmail($subject, $body));
+                            // Запазваме информация за поканения рецензент в таблицата
+                            InvitedReviewer::saveInvitedReviewer($id, $user->id);
 
-                        // Запазваме информация за поканения рецензент в таблицата
-                        InvitedReviewer::saveInvitedReviewer($id, $user->id);
-
-                        $article = Article::findOrFail($id);
-                        // Activity LOG
-                        activity()
-                            ->withProperties(['sendEmailForReviewRequest' => "$user->email got email for review request on article id #$id", 'articleName' => $article->title, 'articleId' => $article->id])
-                            ->log('sent email review request');
+                            $article = Article::findOrFail($id);
+                            // Activity LOG
+                            activity()
+                                ->withProperties(['sendEmailForReviewRequest' => "$user->email got email for review request on article id #$id", 'articleName' => $article->title, 'articleId' => $article->id])
+                                ->log('sent email review request');
+                            $notification = array(
+                                'message' => 'Review requests was sent successfully.',
+                                'alert-type' => 'success'
+                            );
+                        }
+                    // Ако вече сме изпратили имейл към ревювър за с покана не пращай повече!
+                    }else{
+                        $notification = array(
+                            'message' => 'Review requests already was sent.',
+                            'alert-type' => 'danger'
+                        );
                     }
                 }
             }
-            $notification = array(
-                'message' => 'Review requests was sent successfully.',
-                'alert-type' => 'success'
-            );
+
             return redirect()->route('article.list')->with($notification);
         }
 
