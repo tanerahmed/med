@@ -21,7 +21,7 @@ class CanvaArticlesController extends Controller
         $issueIds = array_filter($issueIds, fn($value) => !is_null($value)); // премахва null стойностите
         rsort($issueIds); // сортира масива в нарастващ ред
 
-        $specialties = $allArticles->pluck('specialty')->unique()->filter(function ($value) {
+        $specialties = $articles->pluck('specialty')->unique()->filter(function ($value) {
             return !is_null($value) && $value !== 'Select Speciality';
         })->toArray();
 
