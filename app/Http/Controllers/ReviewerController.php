@@ -75,19 +75,21 @@ class ReviewerController extends Controller
 
     public function downloadArticleFiles(Article $article)
     {
-
         // Създаване на нов ZIP архив
         $zip = new ZipArchive;
         $zipFileName = "article_id = " . $article->id . ".zip";
 
         if ($zip->open($zipFileName, ZipArchive::CREATE) === TRUE) {
-            
-            //  TITLE PAGE dont show in ZIP file
-            // foreach ($article->titlePage as $value) {
-            //     $filePath = storage_path('app/public/' . $value->file_path);
-            //     $filePath = str_replace('\\', '/', $filePath);
-            //     $zip->addFile($filePath, basename($filePath));
-            // }
+
+            //  TITLE PAGE dont show in ZIP file if is REVIWER
+            $user = Auth::user();
+            if ($user->role !== "reviewer") {
+                foreach ($article->titlePage as $value) {
+                    $filePath = storage_path('app/public/' . $value->file_path);
+                    $filePath = str_replace('\\', '/', $filePath);
+                    $zip->addFile($filePath, basename($filePath));
+                }
+            }
 
             foreach ($article->manuscript as $value) {
                 $filePath = storage_path('app/public/' . $value->file_path);
@@ -181,13 +183,13 @@ class ReviewerController extends Controller
             $review->rating_3 = $rating;
         }
         $review->save();
-        
+
         // Проверяме дали ще даваме право на Автор да прави промени по артикъла
         // Повторно зареждане на инстанцията на Review
         $review = Review::where('article_id', $articleId)->first();
         // Проверка на комбинацията от рейтинги
         $ratings = [$review->rating_1, $review->rating_2, $review->rating_3];
-        if (in_array('accepted', $ratings) && in_array('accepted with revision', $ratings)) {            
+        if (in_array('accepted', $ratings) && in_array('accepted with revision', $ratings)) {
             // $article->author_can_edit = 1;
             $article->status = 'accepted';
             $article->save();
@@ -207,19 +209,19 @@ class ReviewerController extends Controller
             // $article->author_can_edit = 1;
             $article->status = 'pending';
             $article->save();
-        }else{
+        } else {
             // $article->author_can_edit = 0;
             $article->save();
         }
 
-        $review_questions =  $this->prepareQuestions($request->input('answer1'), $request->input('answer2'), $request->input('answer3'));
+        $review_questions = $this->prepareQuestions($request->input('answer1'), $request->input('answer2'), $request->input('answer3'));
         // Review Comments
         $reviewComment = new ReviewComment();
         $reviewComment->article_id = $article->id;
         $reviewComment->user_id = $user->id;
         $reviewComment->rating = $request->input('rating');
         $reviewComment->review_questions = $review_questions;
-        $reviewComment->review_comments = $request->input('review_comments') ;
+        $reviewComment->review_comments = $request->input('review_comments');
         $reviewComment->file_path = '';
         $reviewComment->save();
 
@@ -281,12 +283,12 @@ class ReviewerController extends Controller
         return redirect()->route('review.list')->with($notification);
     }
 
-    public function showReviewComments( $article_id, $user_id)
+    public function showReviewComments($article_id, $user_id)
     {
 
         $reviews = ReviewComment::where('article_id', $article_id)
-        ->where('user_id', $user_id)
-        ->get();
+            ->where('user_id', $user_id)
+            ->get();
 
         return view('reviewer.show_review_comments', ['reviews' => $reviews]);
 
@@ -362,7 +364,7 @@ class ReviewerController extends Controller
             // NOT send to author
             // $author_email = $review->article->user->email;
             // Mail::to($author_email)->send(new UserApproveReviewRequestEmail($subject, $body));
-            
+
             // send to  admin
             Mail::to('superuser.blmprime@gmail.com')->send(new UserApproveReviewRequestEmail($subject, $body));
 
