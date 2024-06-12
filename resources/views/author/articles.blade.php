@@ -131,8 +131,10 @@
                                                         <a href="#" class="btn btn-danger btn-sm disabled">Declined</a>
                                                         @else
                                                             @if ($article->admin_accept === 0)
+                                                                <a href="{{ route('articles.adminAcceptArticleBlade', $article->id) }}"class="btn btn-warning btn-sm">Editor Accept</a>
                                                                 <a href="{{ route('articles.edit', $article->id) }}" class="btn btn-primary btn-sm disabled">Reviews<i class="fas fa-users"></i></a>
                                                             @else
+                                                                <a href="{{ route('articles.adminAcceptArticleBlade', $article->id) }}"class="btn btn-warning btn-sm disabled">Editor Accept</a>
                                                                 <a href="{{ route('articles.edit', $article->id) }}" class="btn btn-primary btn-sm">Reviews<i class="fas fa-users"></i></a>
                                                             @endif
                                             

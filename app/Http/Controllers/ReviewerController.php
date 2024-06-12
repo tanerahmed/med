@@ -186,7 +186,9 @@ class ReviewerController extends Controller
 
         // Проверяме дали ще даваме право на Автор да прави промени по артикъла
         // Повторно зареждане на инстанцията на Review
-        $review = Review::where('article_id', $articleId)->first();
+        $review = Review::where('article_id', $articleId)->latest()->first();
+        // $review = Review::where('article_id', $articleId)->first();
+
         // Проверка на комбинацията от рейтинги
         $ratings = [$review->rating_1, $review->rating_2, $review->rating_3];
         if (in_array('accepted', $ratings) && in_array('accepted with revision', $ratings)) {
