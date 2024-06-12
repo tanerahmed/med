@@ -191,11 +191,17 @@ class ReviewerController extends Controller
 
         // Проверка на комбинацията от рейтинги
         $ratings = [$review->rating_1, $review->rating_2, $review->rating_3];
-        if (in_array('accepted', $ratings) && in_array('accepted with revision', $ratings)) {
+        if (in_array('accepted', $ratings) && in_array('accepted', $ratings)) {
             // $article->author_can_edit = 1;
             $article->status = 'accepted';
             $article->save();
-        } elseif (in_array('declined', $ratings) && in_array('acceptedn', $ratings)) {
+        } 
+        if (in_array('accepted', $ratings) && in_array('accepted with revision', $ratings)) {
+            // $article->author_can_edit = 1;
+            $article->status = 'pending';
+            $article->save();
+        }
+        elseif (in_array('declined', $ratings) && in_array('acceptedn', $ratings)) {
             // $article->author_can_edit = 1;
             $article->status = 'pending';
             $article->save();
