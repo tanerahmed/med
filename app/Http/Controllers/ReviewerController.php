@@ -201,7 +201,7 @@ class ReviewerController extends Controller
             $article->status = 'pending';
             $article->save();
         }
-        elseif (in_array('declined', $ratings) && in_array('acceptedn', $ratings)) {
+        elseif (in_array('declined', $ratings) && in_array('accepted', $ratings)) {
             // $article->author_can_edit = 1;
             $article->status = 'pending';
             $article->save();
