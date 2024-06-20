@@ -163,12 +163,12 @@
                                                         @elseif ($article->status === 'declined')
                                                             <a href="{{ route('articles.articleEdit', $article->id) }}" class="btn btn-warning btn-sm disabled">Declined<i class="fas fa-edit"></i></a>
                                                         @elseif ($article->author_can_edit === 1)
-                                                            <a href="{{ route('articles.articleEdit', $article->id) }}" class="btn btn-warning btn-sm">Edit<i class="fas fa-edit"></i></a>
+                                                            <a href="{{ route('articles.articleEdit', $article->id) }}" class="btn btn-warning btn-sm">Edit1<i class="fas fa-edit"></i></a>
                                                         @endif
                                                     @endif
                                             
-                                                    @if ($user->role !== 'admin' && $article->author_can_edit === 1)
-                                                        <a href="{{ route('articles.articleEdit', $article->id) }}" class="btn btn-warning btn-sm">Edit<i class="fas fa-edit"></i></a>
+                                                    @if ($user->role === 'reviewer' && $article->author_can_edit === 1)
+                                                        <a href="{{ route('articles.articleEdit', $article->id) }}" class="btn btn-warning btn-sm">Edit2<i class="fas fa-edit"></i></a>
                                                     @endif
                                             
                                                     @if (($user->role === 'author' || $user->role === 'reviewer') && $article->status !== 'accepted')
