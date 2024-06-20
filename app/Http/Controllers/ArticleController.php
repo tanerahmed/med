@@ -692,23 +692,23 @@ class ArticleController extends Controller
         $body['article_id'] = $this->articleId;
         $body['title'] = $this->articleTitle;
 
-        // Send Email to Admin !!!!!!  NO NEEDED !!!!!!
-        // Mail::to("superuser.blmprime@gmail.com")->send(new ArticleEditEmail($subject, $body));
+        // Send Email to Admin 
+        Mail::to("superuser.blmprime@gmail.com")->send(new ArticleEditEmail($subject, $body));
 
-        // Send Email to Reviewers 
-        $review = Review::where('article_id', $articleId)->first();
-        if ($review) {
-            $reviewerIds = [$review->reviewer_id_1, $review->reviewer_id_2, $review->reviewer_id_3];
+        // Send Email to Reviewers  !!!!!!  NO NEEDED !!!!!!
+        // $review = Review::where('article_id', $articleId)->first();
+        // if ($review) {
+        //     $reviewerIds = [$review->reviewer_id_1, $review->reviewer_id_2, $review->reviewer_id_3];
 
-            foreach ($reviewerIds as $reviewerId) {
-                if ($reviewerId) {
-                    $user = User::find($reviewerId);
-                    if ($user) {
-                        Mail::to($user->email)->send(new ArticleEditEmail($subject, $body));
-                    }
-                }
-            }
-        }
+        //     foreach ($reviewerIds as $reviewerId) {
+        //         if ($reviewerId) {
+        //             $user = User::find($reviewerId);
+        //             if ($user) {
+        //                 Mail::to($user->email)->send(new ArticleEditEmail($subject, $body));
+        //             }
+        //         }
+        //     }
+        // }
 
         $notification = [
             'message' => 'Article was updated successfully.',
