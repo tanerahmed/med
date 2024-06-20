@@ -19,7 +19,7 @@
                                 <thead>
                                     <tr>
                                         @if (Auth::check() && Auth::user()->role === 'admin')
-                                            <th class="pt-0">Author</th>
+                                            {{-- <th class="pt-0">Author</th> --}}
                                         @endif
                                         <th class="pt-0">#</th>
                                         <th class="pt-0">Type</th>
@@ -37,7 +37,7 @@
                                     @foreach ($articles as $article)
                                         <tr>
                                             @if (Auth::check() && Auth::user()->role === 'admin')
-                                                <td>{{ $article->user->name }}</td>
+                                                {{-- <td>{{ $article->user->name }}</td> --}}
                                             @endif
                                             <td>{{ $article->id }}</td>
                                             <td>{{ $article->type }}</td>
