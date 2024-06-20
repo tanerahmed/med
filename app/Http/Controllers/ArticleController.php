@@ -17,6 +17,7 @@ use App\Models\Author;
 use App\Models\User;
 use App\Models\Review;
 use App\Models\InvitedReviewer;
+use App\Models\ReviewComment;
 
 use Illuminate\Support\Facades\Mail;
 use App\Mail\CoAuthorRequestEmail;
@@ -812,6 +813,11 @@ class ArticleController extends Controller
         $article->figures()->delete();
         $article->tables()->delete();
         $article->supplementaryFiles()->delete();
+
+
+        // Изтриване на свързаните коментари за ревюта
+        ReviewComment::where('article_id', $article->id)->delete();
+
         // Изтрий самия артикул от базата данни
         $article->delete();
 
