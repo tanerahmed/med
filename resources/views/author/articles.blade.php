@@ -260,7 +260,7 @@
         $(document).ready(function() {
             $('#dataTable').DataTable({
                 "order": [
-                    [6, "desc"]
+                    [5, "desc"]
                 ] // Сортиране по втората колона (индекс 1) във възходящ ред
             });
         });
