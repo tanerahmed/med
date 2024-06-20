@@ -671,6 +671,12 @@ class ArticleController extends Controller
                     }
                 }
 
+                // след като автора нарпави промени по статията даваме рпаво на всички Ревювъри да могат да правят ревю
+                $review = Review::where('article_id', $articleId)->first();
+                $review->reviewer_id_1_canedit = 1;
+                $review->reviewer_id_2_canedit = 1;
+                $review->reviewer_id_3_canedit = 1;
+                $review->save();
             });
         } catch (\Exception $e) {
             $notification = [

@@ -38,14 +38,18 @@ class ReviewerController extends Controller
             ->orWhere('reviewer_id_2', $user->id)
             ->orWhere('reviewer_id_3', $user->id)
             ->get();
-
+        
+        $can_edit = 1;
         foreach ($reviews as $review) {
             if ($review->reviewer_id_1 === $user->id) {
                 $rating = $review->rating_1;
+                $can_edit = $review->reviewer_id_1_canedit;
             } elseif ($review->reviewer_id_2 === $user->id) {
                 $rating = $review->rating_2;
+                $can_edit = $review->reviewer_id_2_canedit;
             } elseif ($review->reviewer_id_3 === $user->id) {
                 $rating = $review->rating_3;
+                $can_edit = $review->reviewer_id_3_canedit;
             }
 
             if ($rating == null) {
@@ -61,6 +65,7 @@ class ReviewerController extends Controller
                 $review->status_color = 'danger';
                 $review->status_text = 'Declined';
             }
+            $review->can_edit = $can_edit;
         }
 
         // Показване на изгледа с данните за статиите
@@ -177,10 +182,13 @@ class ReviewerController extends Controller
         $rating = $request->input('rating');
         if ($review->reviewer_id_1 === $user->id) {
             $review->rating_1 = $rating;
+            $review->reviewer_id_1_canedit = 0;
         } elseif ($review->reviewer_id_2 === $user->id) {
             $review->rating_2 = $rating;
+            $review->reviewer_id_2_canedit = 0;
         } elseif ($review->reviewer_id_3 === $user->id) {
             $review->rating_3 = $rating;
+            $review->reviewer_id_3_canedit = 0;
         }
         $review->save();
 
