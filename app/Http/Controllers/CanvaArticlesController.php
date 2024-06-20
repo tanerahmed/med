@@ -35,11 +35,15 @@ class CanvaArticlesController extends Controller
 
         // get issue ids
         $allArticles = Article::all();
+        $filteredArticles = $allArticles->filter(function ($article) {
+            return !is_null($article->issue_id);
+        });
+
         $issueIds = $allArticles->pluck('issue_id')->unique()->toArray();
         $issueIds = array_filter($issueIds, fn($value) => !is_null($value)); // премахва null стойностите
         rsort($issueIds); // сортира масива в нарастващ ред
 
-        $specialties = $allArticles->pluck('specialty')->unique()->filter(function ($value) {
+        $specialties = $filteredArticles->pluck('specialty')->unique()->filter(function ($value) {
             return !is_null($value) && $value !== 'Select Speciality';
         })->toArray();
 
@@ -54,6 +58,10 @@ class CanvaArticlesController extends Controller
 
         // get issue ids
         $allArticles = Article::all();
+        $filteredArticles = $allArticles->filter(function ($article) {
+            return !is_null($article->issue_id);
+        });
+
         $issueIds = $allArticles->pluck('issue_id')->unique()->toArray();
         $issueIds = array_filter($issueIds, fn($value) => !is_null($value)); // премахва null стойностите
         rsort($issueIds); // сортира масива в нарастващ ред
@@ -71,7 +79,7 @@ class CanvaArticlesController extends Controller
             ->whereNotNull('issue_id')
             ->get();
 
-        $specialties = $allArticles->pluck('specialty')->unique()->filter(function ($value) {
+        $specialties = $filteredArticles->pluck('specialty')->unique()->filter(function ($value) {
             return !is_null($value) && $value !== 'Select Speciality';
         })->toArray();
         return view('canva.listArticles', compact('articles', 'issueIds', 'activeSpecialty',  'specialties'));
@@ -81,6 +89,10 @@ class CanvaArticlesController extends Controller
     {
         // get issue ids
         $allArticles = Article::all();
+        $filteredArticles = $allArticles->filter(function ($article) {
+            return !is_null($article->issue_id);
+        });
+
         $issueIds = $allArticles->pluck('issue_id')->unique()->toArray();
         $issueIds = array_filter($issueIds, fn($value) => !is_null($value)); // премахва null стойностите
         rsort($issueIds); // сортира масива в нарастващ ред
@@ -88,7 +100,7 @@ class CanvaArticlesController extends Controller
         $content = Storage::get('public/' . $article->final_article_path);
         // $content = Storage::get('public/final_articles/1/tttttt.html');
 
-        $specialties = $allArticles->pluck('specialty')->unique()->filter(function ($value) {
+        $specialties = $filteredArticles->pluck('specialty')->unique()->filter(function ($value) {
             return !is_null($value) && $value !== 'Select Speciality';
         })->toArray();
 
@@ -105,11 +117,15 @@ class CanvaArticlesController extends Controller
 
         // get issue ids
         $allArticles = Article::all();
+        $filteredArticles = $allArticles->filter(function ($article) {
+            return !is_null($article->issue_id);
+        });
+
         $issueIds = $allArticles->pluck('issue_id')->unique()->toArray();
         $issueIds = array_filter($issueIds, fn($value) => !is_null($value)); // премахва null стойностите
         rsort($issueIds); // сортира масива в нарастващ ред
 
-        $specialties = $allArticles->pluck('specialty')->unique()->filter(function ($value) {
+        $specialties = $filteredArticles->pluck('specialty')->unique()->filter(function ($value) {
             return !is_null($value) && $value !== 'Select Speciality';
         })->toArray();
         return view('canva.listArticlesByIssueId', compact('articles', 'issueId', 'issueIds', 'activeSpecialty',  'specialties'));
