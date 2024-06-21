@@ -70,7 +70,7 @@
                                                             class="fas fa-edit"></i></a>
                                                 @elseif (Auth::user()->role !== 'admin' && $article->author_can_edit === 1)
                                                     <a href="{{ route('articles.articleEdit', $article->id) }}"
-                                                        class="btn btn-warning btn-sm">Edit<i class="fas fa-edit"></i></a>
+                                                        class="btn btn-warning btn-sm">Edit</a>
                                                         
                                                 @elseif (Auth::user()->role === 'admin')
                                                     @if ($article->admin_accept === 0)
@@ -132,10 +132,10 @@
                                                         @else
                                                             @if ($article->admin_accept === 0)
                                                                 <a href="{{ route('articles.adminAcceptArticleBlade', $article->id) }}"class="btn btn-warning btn-sm">Editor Accept</a>
-                                                                <a href="{{ route('articles.edit', $article->id) }}" class="btn btn-primary btn-sm disabled">Reviews<i class="fas fa-users"></i></a>
+                                                                <a href="{{ route('articles.edit', $article->id) }}" class="btn btn-primary btn-sm disabled">Reviews</a>
                                                             @else
                                                                 <a href="{{ route('articles.adminAcceptArticleBlade', $article->id) }}"class="btn btn-warning btn-sm disabled">Editor Accept</a>
-                                                                <a href="{{ route('articles.edit', $article->id) }}" class="btn btn-primary btn-sm">Reviews<i class="fas fa-users"></i></a>
+                                                                <a href="{{ route('articles.edit', $article->id) }}" class="btn btn-primary btn-sm">Reviews</a>
                                                             @endif
                                             
                                                             <form action="{{ route('articles.destroy', $article->id) }}" method="POST" style="display:inline;">
@@ -152,23 +152,23 @@
                                                             </form>
                                             
                                                             @if ($article->status === 'accepted')
-                                                                <a href="{{ route('articles.addIssueIdBlade', $article->id) }}" class="btn btn-warning btn-sm">Publish<i class="fas fa-edit"></i></a>
+                                                                <a href="{{ route('articles.addIssueIdBlade', $article->id) }}" class="btn btn-warning btn-sm">Publish</a>
                                                             @endif
                                                         @endif
                                                     @endif
                                             
                                                     @if ($user->role === 'author')
                                                         @if ($article->status === 'accepted')
-                                                            <a href="{{ route('articles.articleEdit', $article->id) }}" class="btn btn-warning btn-sm disabled">Full Accept<i class="fas fa-edit"></i></a>
+                                                            <a href="{{ route('articles.articleEdit', $article->id) }}" class="btn btn-warning btn-sm disabled">Full Accept</a>
                                                         @elseif ($article->status === 'declined')
-                                                            <a href="{{ route('articles.articleEdit', $article->id) }}" class="btn btn-warning btn-sm disabled">Declined<i class="fas fa-edit"></i></a>
+                                                            <a href="{{ route('articles.articleEdit', $article->id) }}" class="btn btn-warning btn-sm disabled">Declined</a>
                                                         @elseif ($article->author_can_edit === 1)
-                                                            <a href="{{ route('articles.articleEdit', $article->id) }}" class="btn btn-warning btn-sm">Edit<i class="fas fa-edit"></i></a>
+                                                            <a href="{{ route('articles.articleEdit', $article->id) }}" class="btn btn-warning btn-sm">Edit</a>
                                                         @endif
                                                     @endif
                                             
                                                     @if ($user->role === 'reviewer' && $article->author_can_edit === 1)
-                                                        <a href="{{ route('articles.articleEdit', $article->id) }}" class="btn btn-warning btn-sm">Edit<i class="fas fa-edit"></i></a>
+                                                        <a href="{{ route('articles.articleEdit', $article->id) }}" class="btn btn-warning btn-sm">Edit</a>
                                                     @endif
                                             
                                                     @if (($user->role === 'author' || $user->role === 'reviewer') && $article->status !== 'accepted')
@@ -179,7 +179,7 @@
                                                         </form>
                                                     @endif
                                             
-                                                    <a href="{{ route('review.downolad_files', $article->id) }}" class="btn btn-success btn-sm">Download ZIP<i class="fas fa-download"></i></a>
+                                                    <a href="{{ route('review.downolad_files', $article->id) }}" class="btn btn-success btn-sm">Download ZIP</a>
                                                 @endif
                                             </td>
                                             
