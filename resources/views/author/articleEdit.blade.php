@@ -239,82 +239,96 @@
                     <div class="col-md-6">
 
                         @if (Auth::user()->role === 'author' || Auth::user()->role === 'reviewer')
-                            <!-- Upload Title Page -->
-                            <div class="mb-3">
-                                @foreach ($fileNames['titlePage'] as $fileName)
-                                    <p style="color:burlywood">{{ $fileName }} </p>
-                                @endforeach
-                                <label for="title_pages" class="form-label"><strong>Upload Title Page: </strong><i>(docx,LaTeX doc)</i></label>
-                                <div id="title_pages_selected_files"></div>
-                                <input type="file" name="title_pages[]" multiple class="form-control"
-                                    id="title_pages"
-                                    onchange="validateTitlePageFileType(); displaySelectedFiles('title_pages')">
-                                <div class="text-danger" id="title_page_error"></div>
-                            </div>
-
-                            <!-- Manuscript -->
-                            <div class="mb-3">
-                                @foreach ($fileNames['manuscript'] as $fileName)
-                                    <p style="color:burlywood">{{ $fileName }} </p>
-                                @endforeach
-                                <label for="manuscript" class="form-label"><strong>Upload Manuscript: </strong><i>(docx,
-                                        LaTeX doc)</i></label>
-                                <div id="manuscript_selected_files"></div>
-                                <input type="file" name="manuscript[]" multiple class="form-control" id="manuscript"
-                                    onchange="validateManuscriptFileType(); displaySelectedFiles('manuscript')">
-                                <div class="text-danger" id="manuscript_error"></div>
-                            </div>
-
-                            <!-- Figures -->
-                            <div class="mb-3">
-                                @foreach ($fileNames['figures'] as $fileName)
-                                    <p style="color:burlywood">{{ $fileName }} </p>
-                                @endforeach
-                                <label for="figures" class="form-label"><strong>Upload Figures: </strong> <i>(jpg)</i></label>
-                                <div id="figures_selected_files"></div>
-                                <input type="file" name="figures[]" multiple class="form-control" id="figures"
-                                    onchange="validateFiguresFileType(); displaySelectedFiles('figures')">
-                                <div class="text-danger" id="figures_error"></div>
-                            </div>
-
-                            <!-- Tables -->
-                            <div class="mb-3">
-                                @foreach ($fileNames['tables'] as $fileName)
-                                    <p style="color:burlywood">{{ $fileName }} </p>
-                                @endforeach
-                                <label for="tables" class="form-label"><strong>Upload Tables: </strong><i>(docx)</i></label>
-                                <div id="tables_selected_files"></div>
-                                <input type="file" name="tables[]" multiple class="form-control" id="tables"
-                                    onchange="validateTablesFileType(); displaySelectedFiles('tables')">
-                                <div class="text-danger" id="tables_error"></div>
-                            </div>
-
-                            <!-- Supplementary -->
-                            <div class="mb-3">
-                                @foreach ($fileNames['supplementaryFiles'] as $fileName)
-                                    <p style="color:burlywood">{{ $fileName }} </p>
-                                @endforeach
-                                <label for="supplementary" class="form-label"><strong>Upload Supplementary:
-                                    </strong><i>(docx, xls, xlsx, pdf, jpg)</i></label>
-                                <div id="supplementary_selected_files"></div>
-                                <input type="file" name="supplementary[]" multiple class="form-control"
-                                    id="supplementary"
-                                    onchange="validateSupplementaryFileType(); displaySelectedFiles('supplementary')">
-                                <div class="text-danger" id="supplementary_error"></div>
-                            </div>
-
-                            <!-- Cover Later -->
-                            <div class="mb-3">
-                                @foreach ($fileNames['coverLetter'] as $fileName)
-                                    <p style="color:burlywood">{{ $fileName }} </p>
-                                @endforeach
-                                <label for="cover_letter" class="form-label"><strong>Upload Cover Later:</strong></label>
-                                <div id="cover_letter_selected_files"></div>
-                                <input type="file" name="cover_letter[]" multiple class="form-control"
-                                    id="cover_letter"
-                                    onchange="validateCoverLaterFileType(); displaySelectedFiles('cover_letter')">
-                                <div class="text-danger" id="cover_letter_error"></div>
-                            </div>
+                           <!-- Upload Title Page -->
+<div class="mb-3">
+    @foreach ($fileNames['titlePage'] as $fileName)
+    <p style="color:burlywood">{{ $fileName }}</p>
+    <div class="mb-3 form-check">
+        <input type="checkbox" class="form-check-input" name="delete_title_pages[]" value="{{ $fileName }}" id="delete_title_page_{{ $loop->index }}">
+        <label class="form-check-label" for="delete_title_page_{{ $loop->index }}">Delete file</label>
+    </div>
+    @endforeach
+    <label for="title_pages" class="form-label"><strong>Upload Title Page: </strong><i>(docx, LaTeX doc)</i></label>
+    <div id="title_pages_selected_files"></div>
+    <input type="file" name="title_pages[]" multiple class="form-control" id="title_pages" onchange="validateTitlePageFileType(); displaySelectedFiles('title_pages')">
+    <div class="text-danger" id="title_page_error"></div>
+</div>
+<hr>
+<!-- Manuscript -->
+<div class="mb-3">
+    @foreach ($fileNames['manuscript'] as $fileName)
+    <p style="color:burlywood">{{ $fileName }}</p>
+    <div class="mb-3 form-check">
+        <input type="checkbox" class="form-check-input" name="delete_manuscripts[]" value="{{ $fileName }}" id="delete_manuscript_{{ $loop->index }}">
+        <label class="form-check-label" for="delete_manuscript_{{ $loop->index }}">Delete file</label>
+    </div>
+    @endforeach
+    <label for="manuscript" class="form-label"><strong>Upload Manuscript: </strong><i>(docx, LaTeX doc)</i></label>
+    <div id="manuscript_selected_files"></div>
+    <input type="file" name="manuscript[]" multiple class="form-control" id="manuscript" onchange="validateManuscriptFileType(); displaySelectedFiles('manuscript')">
+    <div class="text-danger" id="manuscript_error"></div>                         
+</div>
+<hr>
+<!-- Figures -->
+<div class="mb-3">
+    @foreach ($fileNames['figures'] as $fileName)
+    <p style="color:burlywood">{{ $fileName }}</p>
+    <div class="mb-3 form-check">
+        <input type="checkbox" class="form-check-input" name="delete_figures[]" value="{{ $fileName }}" id="delete_figure_{{ $loop->index }}">
+        <label class="form-check-label" for="delete_figure_{{ $loop->index }}">Delete file</label>
+    </div>
+    @endforeach
+    <label for="figures" class="form-label"><strong>Upload Figures: </strong> <i>(jpg)</i></label>
+    <div id="figures_selected_files"></div>
+    <input type="file" name="figures[]" multiple class="form-control" id="figures" onchange="validateFiguresFileType(); displaySelectedFiles('figures')">
+    <div class="text-danger" id="figures_error"></div>
+</div>
+<hr>
+<!-- Tables -->
+<div class="mb-3">
+    @foreach ($fileNames['tables'] as $fileName)
+    <p style="color:burlywood">{{ $fileName }}</p>
+    <div class="mb-3 form-check">
+        <input type="checkbox" class="form-check-input" name="delete_tables[]" value="{{ $fileName }}" id="delete_table_{{ $loop->index }}">
+        <label class="form-check-label" for="delete_table_{{ $loop->index }}">Delete file</label>
+    </div>
+    @endforeach
+    <label for="tables" class="form-label"><strong>Upload Tables: </strong><i>(docx)</i></label>
+    <div id="tables_selected_files"></div>
+    <input type="file" name="tables[]" multiple class="form-control" id="tables" onchange="validateTablesFileType(); displaySelectedFiles('tables')">
+    <div class="text-danger" id="tables_error"></div>
+</div>
+<hr>
+<!-- Supplementary -->
+<div class="mb-3">
+    @foreach ($fileNames['supplementaryFiles'] as $fileName)
+    <p style="color:burlywood">{{ $fileName }}</p>
+    <div class="mb-3 form-check">
+        <input type="checkbox" class="form-check-input" name="delete_supplementary[]" value="{{ $fileName }}" id="delete_supplementary_{{ $loop->index }}">
+        <label class="form-check-label" for="delete_supplementary_{{ $loop->index }}">Delete file</label>
+    </div>
+    @endforeach
+    <label for="supplementary" class="form-label"><strong>Upload Supplementary: </strong><i>(docx, xls, xlsx, pdf, jpg)</i></label>
+    <div id="supplementary_selected_files"></div>
+    <input type="file" name="supplementary[]" multiple class="form-control" id="supplementary" onchange="validateSupplementaryFileType(); displaySelectedFiles('supplementary')">
+    <div class="text-danger" id="supplementary_error"></div>
+</div>
+<hr>
+<!-- Cover Letter -->
+<div class="mb-3">
+    @foreach ($fileNames['coverLetter'] as $fileName)
+    <p style="color:burlywood">{{ $fileName }}</p>
+    <div class="mb-3 form-check">
+        <input type="checkbox" class="form-check-input" name="delete_cover_letter[]" value="{{ $fileName }}" id="delete_cover_letter_{{ $loop->index }}">
+        <label class="form-check-label" for="delete_cover_letter_{{ $loop->index }}">Delete file</label>
+    </div>
+    @endforeach
+    <label for="cover_letter" class="form-label"><strong>Upload Cover Letter:</strong></label>
+    <div id="cover_letter_selected_files"></div>
+    <input type="file" name="cover_letter[]" multiple class="form-control" id="cover_letter" onchange="validateCoverLaterFileType(); displaySelectedFiles('cover_letter')">
+    <div class="text-danger" id="cover_letter_error"></div>
+</div>
+<hr>
 
                             <!-- Keywords -->
                             <div class="mb-3">

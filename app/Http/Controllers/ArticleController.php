@@ -42,6 +42,7 @@ use PhpOffice\PhpSpreadsheet\Writer\Pdf\Dompdf;
 use PhpOffice\PhpWord\IOFactory as PhpWordIOFactory;
 use PhpOffice\PhpSpreadsheet\IOFactory as PhpSpreadsheetIOFactory;
 use PhpOffice\PhpSpreadsheet\Writer\Html as PhpSpreadsheetWriterHtml;
+use Illuminate\Support\Facades\File;
 
 
 class ArticleController extends Controller
@@ -555,6 +556,7 @@ class ArticleController extends Controller
             // Валидацията на данните тук...
         ]);
 
+
         try {
             DB::transaction(function () use ($request, $articleId) {
                 $article = Article::findOrFail($articleId);
@@ -669,6 +671,97 @@ class ArticleController extends Controller
                         $coverLetter->article_id = $article->id;
                         $coverLetter->file_path = $filePath;
                         $coverLetter->save();
+                    }
+                }
+
+                // ИЗТРИВАНЕ НА ФАЙЛОВЕТЕ
+                // Изтриване на заглавни страници (title pages)
+                if ($request->has('delete_title_pages')) {
+                    foreach ($request->input('delete_title_pages') as $fileName) {
+                        // Изтриване на файла от системата
+                        $filePath = storage_path("app/public/title_pages/$articleId/$fileName");
+                        if (File::exists($filePath)) {
+                            File::delete($filePath);
+                        }
+                        // Изтриване на записа от базата данни
+                        TitlePage::where('file_path', "title_pages/$articleId/$fileName")
+                            ->where('article_id', $article->id)
+                            ->delete();
+                    }
+                }
+
+                // Изтриване на ръкописи (manuscripts)
+                if ($request->has('delete_manuscripts')) {
+                    foreach ($request->input('delete_manuscripts') as $fileName) {
+                        // Изтриване на файла от системата
+                        $filePath = storage_path("app/public/manuscripts/$articleId/$fileName");
+                        if (File::exists($filePath)) {
+                            File::delete($filePath);
+                        }
+                        // Изтриване на записа от базата данни
+                        Manuscript::where('file_path', "manuscripts/$articleId/$fileName")
+                            ->where('article_id', $article->id)
+                            ->delete();
+                    }
+                }
+
+                // Изтриване на фигури (figures)
+                if ($request->has('delete_figures')) {
+                    foreach ($request->input('delete_figures') as $fileName) {
+                        // Изтриване на файла от системата
+                        $filePath = storage_path("app/public/figures/$articleId/$fileName");
+                        if (File::exists($filePath)) {
+                            File::delete($filePath);
+                        }
+                        // Изтриване на записа от базата данни
+                        Figure::where('file_path', "figures/$articleId/$fileName")
+                            ->where('article_id', $article->id)
+                            ->delete();
+                    }
+                }
+
+                // Изтриване на таблици (tables)
+                if ($request->has('delete_tables')) {
+                    foreach ($request->input('delete_tables') as $fileName) {
+                        // Изтриване на файла от системата
+                        $filePath = storage_path("app/public/tables/$articleId/$fileName");
+                        if (File::exists($filePath)) {
+                            File::delete($filePath);
+                        }
+                        // Изтриване на записа от базата данни
+                        Table::where('file_path', "tables/$articleId/$fileName")
+                            ->where('article_id', $article->id)
+                            ->delete();
+                    }
+                }
+
+                // Изтриване на допълнителни файлове (supplementary files)
+                if ($request->has('delete_supplementary')) {
+                    foreach ($request->input('delete_supplementary') as $fileName) {
+                        // Изтриване на файла от системата
+                        $filePath = storage_path("app/public/supplementary/$articleId/$fileName");
+                        if (File::exists($filePath)) {
+                            File::delete($filePath);
+                        }
+                        // Изтриване на записа от базата данни
+                        SupplementaryFile::where('file_path', "supplementary/$articleId/$fileName")
+                            ->where('article_id', $article->id)
+                            ->delete();
+                    }
+                }
+
+                // Изтриване на съпроводителни писма (cover letters)
+                if ($request->has('delete_cover_letter')) {
+                    foreach ($request->input('delete_cover_letter') as $fileName) {
+                        // Изтриване на файла от системата
+                        $filePath = storage_path("app/public/cover_letters/$articleId/$fileName");
+                        if (File::exists($filePath)) {
+                            File::delete($filePath);
+                        }
+                        // Изтриване на записа от базата данни
+                        CoverLetter::where('file_path', "cover_letters/$articleId/$fileName")
+                            ->where('article_id', $article->id)
+                            ->delete();
                     }
                 }
 
