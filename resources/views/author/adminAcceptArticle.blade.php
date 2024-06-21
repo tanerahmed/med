@@ -24,29 +24,30 @@
                 </div>
             @endif
 
-            <form action="{{ route('articles.adminAcceptArticle', $article->id) }}" method="POST" enctype="multipart/form-data">
+            <form action="{{ route('articles.adminAcceptArticle', $article->id) }}" method="POST" id="acceptForm"
+                enctype="multipart/form-data">
                 @csrf
                 @method('PUT')
 
                 <div class="row">
                     <!-- !!!!!!!!!!!! Първа колона !!!!!!!!!!!! -->
                     <div class="col-md-6">
-                       
+
                     </div>
 
                     <!-- !!!!!!!!!!!! Втора колона !!!!!!!!!!!! -->
                     <div class="col-md-6">
-                            <div class="mb-3 form-check">
-                                <input type="checkbox" class="form-check-input" id="admin_accept" name="admin_accept"
-                                    {{ $article->admin_accept ? 'checked' : '' }}>
-                                <label class="form-check-label" for="admin_accept">Admin Accept</label>
-                            </div>
+                        <div class="mb-3 form-check">
+                            <input type="checkbox" class="form-check-input" id="admin_accept" name="admin_accept"
+                                {{ $article->admin_accept ? 'checked' : '' }}>
+                            <label class="form-check-label" for="admin_accept">Admin Accept</label>
+                        </div>
                     </div>
                     <hr>
 
 
                     <div class="mb-3 d-flex justify-content-end">
-                        <button type="submit" class="btn btn-warning">Accept Article</button>
+                        <button type="submit" class="btn btn-warning" id='submitBtn'>Accept Article</button>
                     </div>
                 </div>
             </form>
@@ -54,3 +55,12 @@
     </div>
 @endsection
 
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        document.getElementById('acceptForm').addEventListener('submit', function() {
+            document.getElementById('submitBtn').disabled =
+                true; // Деактивирайте бутона след изпращане на формата
+        });
+    });
+</script>
