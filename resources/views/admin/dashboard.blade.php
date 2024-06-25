@@ -49,6 +49,31 @@
   <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/dataTables.bootstrap5.min.css">
   <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
   <script src="https://cdn.datatables.net/1.11.5/js/dataTables.bootstrap5.min.js"></script>
+
+
+  <style>
+    #toast-container > .toast {
+        font-size: 25px; /* Променете размера на текста */
+        width: 700px; /* Променете ширината на съобщението */
+    }
+    #toast-container > .toast-success {
+        background-color: #28a745;
+        color: white;
+    }
+    #toast-container > .toast-error {
+        background-color: #dc3545;
+        color: white;
+    }
+    #toast-container > .toast-warning {
+        background-color: #ffc107;
+        color: black;
+    }
+    #toast-container > .toast-info {
+        background-color: #17a2b8;
+        color: white;
+    }
+</style>
+
 </head>
 
 <body>
