@@ -344,6 +344,12 @@ class ReviewerController extends Controller
                 // Проверка на условието
                 if (($isRating1Accepted && $isRating2Declined) || ($isRating1Declined && $isRating2Accepted)) {
                     $review->reviewer_id_3 = $user->id;
+                }else{
+                    $notification = array(
+                        'message' => 'All reviewers found.',
+                        'alert-type' => 'error'
+                    );
+                    return redirect()->route('review.list')->with($notification);
                 }
             }// Тува вече квотата е пълна от Ревювъри и казваме, че към момента няма как да стане ревювър
             else {
