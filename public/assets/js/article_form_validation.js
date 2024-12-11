@@ -1,7 +1,7 @@
 function validateTitlePageFileType() {
     var allowedExtensions = ['docx', 'tex']; // Разрешените разширения за файлове
 
-    var files = document.getElementById('title_pages').files;
+    var files = document.getElementById('upload1').files;
 
     var isValid = true;
 
@@ -17,12 +17,14 @@ function validateTitlePageFileType() {
     if (isValid) {
         // Файловете са валидни, няма грешка
         document.getElementById('title_page_error').innerText = '';
+        return true;
     } else {
         // Показване на съобщение за грешка
         document.getElementById('title_page_error').innerText =
             'Invalid file type. Please select docx or LaTex doc files.';
         // Изчистване на стойността на input полето
-        document.getElementById('title_pages').value = '';
+        document.getElementById('upload1').value = '';
+        return false;
     }
 }
 

@@ -145,6 +145,14 @@ class ArticleController extends Controller
     }
     public function articleStore(Request $request)
     {
+        dd( $request->file('title_pages'));
+        return response()->json([
+            'taner' =>  $request->title_pages[0], 
+        ], 422); 
+
+
+
+        
         $user = Auth::user();
 
         $validator = Validator::make($request->all(), [
@@ -161,7 +169,13 @@ class ArticleController extends Controller
 
         if ($validator->fails()) {
             $errors = $validator->errors()->all();
-            return back()->with('errors', $errors);
+
+            return response()->json([
+                'success' => false,
+                'errors' => $errors 
+            ], 422); // 422 е HTTP статус код за неуспешна валидация
+
+           // return back()->with('errors', $errors);
             // $validator->getMessageBag()->toArray();
             // return back()->with('error', 'An error occurred while validat data. Please try again with correct data.');
         }
@@ -323,7 +337,12 @@ class ArticleController extends Controller
             'alert-type' => 'success'
         );
 
-        return redirect()->route('article.list')->with($notification);
+        // return redirect()->route('article.list')->with($notification);
+        return response()->json([
+            'success' => true,
+            'redirect_url' => route('article.list'),
+            'message' => 'Article stored successfully!'
+        ]);
     }
 
     public function edit($id)
