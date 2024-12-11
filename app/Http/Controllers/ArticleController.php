@@ -145,18 +145,12 @@ class ArticleController extends Controller
     }
     public function articleStore(Request $request)
     {
-        dd( $request->file('title_pages'));
-        return response()->json([
-            'taner' =>  $request->title_pages[0], 
-        ], 422); 
-
-
-
-        
+        // dd( $request->file('title_pages'));       
+        //dd( $request->input('article_type'));       
         $user = Auth::user();
 
         $validator = Validator::make($request->all(), [
-            'type' => 'required|in:original article,review,letter to the editor,case of the month/how do I do it',
+            'article_type' => 'required|in:original article,review,letter to the editor,case of the month/how do I do it',
             'specialty' => 'required',
             'scientific_area' => 'nullable',
             'title' => 'required',
@@ -184,7 +178,7 @@ class ArticleController extends Controller
             DB::transaction(function () use ($request) {
                 $article = new Article();
                 $article->user_id = Auth::id();
-                $article->type = $request->input('type');
+                $article->type = $request->input('article_type');
                 $article->specialty = $request->input('specialty');
                 $article->scientific_area = $request->input('scientific_area');
                 $article->title = $request->input('title');

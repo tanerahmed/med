@@ -347,8 +347,6 @@
 
                      <!-- !!!!!!!!!!!! Втора колона !!!!!!!!!!!! -->
                      <div class="col-md-6">
-
-
                         <!-- Upload Title Page -->
                         <div class="mb-3">
                            <div class="box">
@@ -373,8 +371,9 @@
                         <div class="mb-3">
                            <div class="box">
                               <div class="input-box">
-                                 <h2 class="upload-area-title">Upload Manuscript <i>(pdf, images)</i></h2>
-                                    <input type="file" id="upload2" data-id="manuscript" hidden multiple />
+                                 <h2 class="upload-area-title">Upload Manuscript <i>(docx, LaTeX doc)</i></h2>
+                                    <input type="file" id="upload2" data-id="manuscript" hidden multiple onchange="validateManuscriptFileType()"/>
+                                    <div class="text-danger" id="manuscript_error"></div>
                                     <label for="upload2" class="uploadLabel">
                                        <span><i class="fa fa-cloud-upload"></i></span>
                                        <p>Click to Upload</p>
@@ -495,8 +494,6 @@
             </div>
          </div>
 
-         //TODO public_html/resources/views/author
-
          <script>
             window.addEventListener("load", () => {
                const fileInputs = document.querySelectorAll("input[type='file']")
@@ -578,18 +575,24 @@
 
                   const typeSelect = document.getElementById("article_type");
                   const specialtySelect = document.getElementById("specialty");
+                  const scientificArea = document.getElementById("scientific_area");
+                  const fundingInput = document.getElementById("funding_name");
                   const titleInput = document.getElementById("title");
                   const abstractInput = document.getElementById("abstract");
+                  const grantInput = document.getElementById("grant_id");
                   const keywordsInput = document.getElementById("keywords");
 
                   formData.append("article_type", typeSelect.value);
                   formData.append("specialty", specialtySelect.value);
+                  formData.append("scientific_area", scientificArea.value);
+                  formData.append("funding_name", fundingInput.value);
                   formData.append("title", titleInput.value);
                   formData.append("abstract", abstractInput.value);
+                  formData.append("grant_id", grantInput.value);
                   formData.append("keywords", keywordsInput.value);
 
-                  console.log([...formData.entries()]);
-                  console.log(formData);                  
+                //   console.log([...formData.entries()]);
+                //   console.log(formData);                  
 
                   fetch("{{ route('article.store') }}", { //TODO replace "test" with text in test.txt
                         method: "POST",

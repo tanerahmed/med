@@ -33,7 +33,7 @@ function validateTitlePageFileType() {
 function validateManuscriptFileType() {
     var allowedExtensions = ['docx', 'tex']; // Разрешените разширения за файлове
 
-    var files = document.getElementById('manuscript').files;
+    var files = document.getElementById('upload2').files;
 
     var isValid = true;
 
