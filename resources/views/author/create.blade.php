@@ -190,10 +190,6 @@
                   id="articleForm">
                   @csrf
                   <div class="row">
-                     <div class="alert alert-info" role="alert">
-                        If you want to upload more than one file at a time, please hold down the
-                        <strong>Ctrl</strong> button while selecting the files.
-                     </div>
                      <!-- !!!!!!!!!!!! Първа колона !!!!!!!!!!!! -->
 
                      <div class="col-md-6">
@@ -337,6 +333,30 @@
                            <label for="abstract" class="form-label"><strong>Type Abstract:</strong></label>
                            <textarea class="form-control" id="abstract" name="abstract" rows="8" required></textarea>
                         </div>
+                         <!-- Keywords -->
+                         <div class="mb-3">
+                            <label for="Keywords" class="form-label"><strong>Type Keywords: </strong>
+                               <i>(separate
+                                  with a
+                                  comma)</i></label>
+                            <input type="text" class="form-control" name="keywords" id="keywords"
+                               placeholder="Add Keywords" required>
+                         </div>
+ 
+                         <!-- Funding name -->
+                         <div class="mb-3">
+                            <label for="funding_name" class="form-label"><strong>Type Funding name:
+                               </strong></label>
+                            <input type="text" class="form-control" name="funding_name" id="funding_name"
+                               placeholder="Add Funding name (Optional)">
+                         </div>
+ 
+                         <!-- Grand ID -->
+                         <div class="mb-3">
+                            <label for="grant_id" class="form-label"><strong>Type Grand ID: </strong></label>
+                            <input type="text" class="form-control" name="grant_id" id="grant_id"
+                               placeholder="Add Grand ID (Optional)">
+                         </div>
                         <div class="mb-3">
                            <label class="form-check-label" for="declarations">
                               <input class="form-check-input" type="checkbox" id="declarations" required>
@@ -385,96 +405,81 @@
                            </div>
                         </div>
 
-                        <!-- <div class="mb-3">
-                           <label for="manuscript" class="form-label"><strong>Upload Manuscript:</strong>
-                              <i>(docx,
-                                 LaTeX doc)</i></label>
-                           <ul id="manuscript_selected_files" class="list-group mb-3"></ul>
-                           <input type="file" name="manuscript[]" multiple class="form-control"
-                              id="manuscript"
-                              onchange="validateManuscriptFileType(); displaySelectedFiles('manuscript')">
-                           <div class="text-danger" id="manuscript_error"></div>
-                        </div> -->
 
                         <!-- Figures -->
-                        <!-- <div class="mb-3">
-                           <label for="figures" class="form-label"><strong>Upload Figures:</strong>
-                              <i>(jpg)</i></label>
-                           <ul id="figures_selected_files" class="list-group mb-3"></ul>
-                           <input type="file" name="figures[]" multiple class="form-control"
-                              id="figures"
-                              onchange="validateFiguresFileType(); displaySelectedFiles('figures')">
-                           <div class="text-danger" id="figures_error"></div>
-                        </div> -->
+                        <div class="mb-3">
+                            <div class="box">
+                               <div class="input-box">
+                                  <h2 class="upload-area-title">Upload Figures <i>(jpg)</i></h2>
+                                     <input type="file" id="upload3" data-id="figures" hidden multiple onchange="validateFiguresFileType()"/>
+                                     <div class="text-danger" id="figures_error"></div>
+                                     <label for="upload3" class="uploadLabel">
+                                        <span><i class="fa fa-cloud-upload"></i></span>
+                                        <p>Click to Upload</p>
+                                     </label>
+                               </div>
+                               <div id="filewrapper3">
+                                  <h3 class="uploaded">Uploaded Documents</h3>
+                               </div>
+                            </div>
+                         </div>
 
                         <!-- Tables -->
-                        <!-- <div class="mb-3">
-                           <label for="tables" class="form-label"><strong>Upload Tables:</strong>
-                              <i>(docx)</i></label>
-                           <ul id="tables_selected_files" class="list-group mb-3"></ul>
-                           <input type="file" name="tables[]" multiple class="form-control"
-                              id="tables"
-                              onchange="validateTablesFileType(); displaySelectedFiles('tables')">
-                           <div class="text-danger" id="tables_error"></div>
-                        </div> -->
+                        <div class="mb-3">
+                            <div class="box">
+                               <div class="input-box">
+                                  <h2 class="upload-area-title">Upload Tables <i>(docx)</i></h2>
+                                     <input type="file" id="upload4" data-id="tables" hidden multiple onchange="validateTablesFileType()"/>
+                                     <div class="text-danger" id="tables_error"></div>
+                                     <label for="upload4" class="uploadLabel">
+                                        <span><i class="fa fa-cloud-upload"></i></span>
+                                        <p>Click to Upload</p>
+                                     </label>
+                               </div>
+                               <div id="filewrapper4">
+                                  <h3 class="uploaded">Uploaded Documents</h3>
+                               </div>
+                            </div>
+                         </div>
+
 
                         <!-- Supplementary -->
-                        <!-- <div class="mb-3">
-                           <label for="supplementary" class="form-label"><strong>Upload
-                                 Supplementary:</strong>
-                              <i>(docx, xls, xlsx, pdf, png, jpg)</i></label>
-                           <ul id="supplementary_selected_files" class="list-group mb-3"></ul>
-                           <input type="file" name="supplementary[]" multiple class="form-control"
-                              id="supplementary"
-                              onchange="validateSupplementaryFileType(); displaySelectedFiles('supplementary')">
-                           <div class="text-danger" id="supplementary_error"></div>
-                        </div> -->
+                        <div class="mb-3">
+                            <div class="box">
+                               <div class="input-box">
+                                  <h2 class="upload-area-title">Upload Supplementary <i>(docx, xls, xlsx, pdf, png, jpg)</i></h2>
+                                     <input type="file" id="upload5" data-id="supplementary" hidden multiple onchange="validateSupplementaryFileType()"/>
+                                     <div class="text-danger" id="supplementary_error"></div>
+                                     <label for="upload5" class="uploadLabel">
+                                        <span><i class="fa fa-cloud-upload"></i></span>
+                                        <p>Click to Upload</p>
+                                     </label>
+                               </div>
+                               <div id="filewrapper5">
+                                  <h3 class="uploaded">Uploaded Documents</h3>
+                               </div>
+                            </div>
+                         </div>
+
+
 
                         <!-- Cover Letter -->
-                        <!-- <div class="mb-3">
-                           <label
-                              for="cover_letter"
-                              class="form-label">
-                              <strong>Upload Cover Letter:</strong>
-                              <i>(docx, LaTeX doc)</i>
-                           </label>
-                           <ul id="cover_letter_selected_files" class="list-group mb-3"></ul>
-                           <input
-                              type="file"
-                              name="cover_letter[]"
-                              class="form-control"
-                              id="cover_letter"
-                              style="display: none;"
-                              multiple
-                              onchange="validateCoverLaterFileType(); ">
-                           <button type="button" id="addFileButton">Choose files</button>
-                           <div class="text-danger" id="cover_letter_error"></div>
-                        </div> -->
-
-                        <!-- Keywords -->
                         <div class="mb-3">
-                           <label for="Keywords" class="form-label"><strong>Type Keywords: </strong>
-                              <i>(separate
-                                 with a
-                                 comma)</i></label>
-                           <input type="text" class="form-control" name="keywords" id="keywords"
-                              placeholder="Add Keywords" required>
-                        </div>
-
-                        <!-- Funding name -->
-                        <div class="mb-3">
-                           <label for="funding_name" class="form-label"><strong>Type Funding name:
-                              </strong></label>
-                           <input type="text" class="form-control" name="funding_name" id="funding_name"
-                              placeholder="Add Funding name (Optional)">
-                        </div>
-
-                        <!-- Grand ID -->
-                        <div class="mb-3">
-                           <label for="grant_id" class="form-label"><strong>Type Grand ID: </strong></label>
-                           <input type="text" class="form-control" name="grant_id" id="grant_id"
-                              placeholder="Add Grand ID (Optional)">
-                        </div>
+                            <div class="box">
+                               <div class="input-box">
+                                  <h2 class="upload-area-title">Upload Cover Letter  <i>(docx, LaTeX doc)</i></h2>
+                                     <input type="file" id="upload6" data-id="cover_letter" hidden multiple onchange="validateCoverLaterFileType()"/>
+                                     <div class="text-danger" id="cover_letter_error"></div>
+                                     <label for="upload6" class="uploadLabel">
+                                        <span><i class="fa fa-cloud-upload"></i></span>
+                                        <p>Click to Upload</p>
+                                     </label>
+                               </div>
+                               <div id="filewrapper6">
+                                  <h3 class="uploaded">Uploaded Documents</h3>
+                               </div>
+                            </div>
+                         </div>
                      </div>
                      <hr>
                      <div class="col-md-12">
@@ -487,7 +492,7 @@
                      </div>
 
                      <div class="mb-3 d-flex justify-content-end">
-                        <button type="submit" class="btn btn-success" id="submitBtn">Create Article NIKOLAY</button>
+                        <button type="submit" class="btn btn-success" id="submitBtn">Create Article</button>
                      </div>
                   </div>
                </form>
@@ -602,28 +607,23 @@
                         body: formData,
                      })
                      .then((response) => {
-                        response.json();
-                     })
-                     .then((data) => {
-                        if (data.taner) {
-                           alert("Files Uploaded Successfully");
-                           Object.keys(filesByInput).forEach((inputType) => {
-                              filesByInput[inputType] = []; // Clear the files array for each input type
-                              document.getElementById(`filewrapper${inputType}`).innerHTML = "<h3 class='uploaded'>Uploaded Documents</h3>";
-                           });
-                           typeSelect.selectedIndex = 0;
-                           specialtySelect.selectedIndex = 0;
-                           titleInput.innerHTML = "";
-                           abstractInput.innerHTML = "";
-                           keywordsInput.innerHTML = "";
-                        } else {
-                           alert("File Upload Failed");
+                        if (!response.ok) {
+                            throw new Error('Network response was not ok');
                         }
-                     })
-                     .catch((error) => {
-                        console.error("Error:", error);
-                        //alert("An error occurred while uploading files!");
-                     });
+                        return response.json();
+                    })
+                    .then((data) => {
+                        if (data.success) {
+                            alert(data.message);
+                            window.location.href = data.redirect_url; // Redirect to article.list
+                        } else {
+                            alert("An error occurred: " + (data.message || "Unknown error"));
+                        }
+                    })
+                    .catch((error) => {
+                        console.error("There was a problem with the fetch operation:", error);
+                        alert("An unexpected error occurred. Please try again.");
+                    });
                });
             });
          </script>

@@ -144,9 +144,7 @@ class ArticleController extends Controller
 
     }
     public function articleStore(Request $request)
-    {
-        // dd( $request->file('title_pages'));       
-        //dd( $request->input('article_type'));       
+    {      
         $user = Auth::user();
 
         $validator = Validator::make($request->all(), [
@@ -296,12 +294,11 @@ class ArticleController extends Controller
             }); // transaction
         } catch (Exception $e) {
 
-            $notification = array(
-                'message' => 'An error occurred while creating the article. Please try again.',
-                'alert-type' => 'danger'
-            );
+            return response()->json([
+                'success' => false,
+                'errors' => 'An error occurred while creating the article. Please try again.'
+            ], 422); // 422 е HTTP статус код за неуспешна валидация
 
-            return back()->with($notification);
         }
 
         // Activity LOG
@@ -326,16 +323,10 @@ class ArticleController extends Controller
 
         Mail::to("superuser.blmprime@gmail.com")->send(new AdminGetArticleCreatedEmail($subject, $body));
 
-        $notification = array(
-            'message' => 'Article was created successfully.',
-            'alert-type' => 'success'
-        );
-
-        // return redirect()->route('article.list')->with($notification);
         return response()->json([
             'success' => true,
             'redirect_url' => route('article.list'),
-            'message' => 'Article stored successfully!'
+            'message' => 'Article was created successfully.'
         ]);
     }
 

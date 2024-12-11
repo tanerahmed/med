@@ -24,7 +24,6 @@ function validateTitlePageFileType() {
             'Invalid file type. Please select docx or LaTex doc files.';
         // Изчистване на стойността на input полето
         document.getElementById('upload1').value = '';
-        return false;
     }
 }
 
@@ -54,7 +53,7 @@ function validateManuscriptFileType() {
         document.getElementById('manuscript_error').innerText =
             'Invalid file type. Please select docx or LaTex doc files.';
         // Изчистване на стойността на input полето
-        document.getElementById('manuscript').value = '';
+        document.getElementById('upload2').value = '';
     }
 }
 
@@ -63,7 +62,7 @@ function validateFiguresFileType() {
 
     var allowedTypes = ['image/jpeg',];
 
-    var files = document.getElementById('figures').files;
+    var files = document.getElementById('upload3').files;
 
     var isValid = true;
 
@@ -83,7 +82,7 @@ function validateFiguresFileType() {
         document.getElementById('figures_error').innerText =
         'Invalid file type. Please select jpg files.';
         // Изчистете стойността на input полето
-        document.getElementById('figures').value = '';
+        document.getElementById('upload3').value = '';
     }
 }
 
@@ -91,7 +90,7 @@ function validateFiguresFileType() {
 function validateTablesFileType() {
     var allowedExtensions = ['docx']; // Разрешените разширения за файлове
 
-    var files = document.getElementById('tables').files;
+    var files = document.getElementById('upload4').files;
 
     var isValid = true;
 
@@ -112,7 +111,7 @@ function validateTablesFileType() {
         document.getElementById('tables_error').innerText =
             'Invalid file type. Please select docx files.';
         // Изчистване на стойността на input полето
-        document.getElementById('tables').value = '';
+        document.getElementById('upload4').value = '';
     }
 }
 
@@ -120,7 +119,7 @@ function validateTablesFileType() {
 function validateSupplementaryFileType() {
     var allowedTypes = ['application/vnd.openxmlformats-officedocument.wordprocessingml.document', 'application/vnd.ms-excel', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', 'application/pdf', 'image/png', 'image/jpeg'];
 
-    var files = document.getElementById('supplementary').files;
+    var files = document.getElementById('upload5').files;
 
     var isValid = true;
 
@@ -141,7 +140,7 @@ function validateSupplementaryFileType() {
         document.getElementById('supplementary_error').innerText =
             'Invalid file type. Please select docx, xls, xlsx, pdf, png, or jpg files.';
         // Изчистване на стойността на input полето
-        document.getElementById('supplementary').value = '';
+        document.getElementById('upload5').value = '';
     }
 }
 
@@ -149,7 +148,7 @@ function validateSupplementaryFileType() {
 
 function validateCoverLaterFileType() {
     var allowedExtensions = ['docx', 'tex']; // Разрешените разширения за файлове
-    var files = document.getElementById('cover_letter').files;
+    var files = document.getElementById('upload6').files;
 
     var isValid = true;
 
@@ -170,7 +169,7 @@ function validateCoverLaterFileType() {
         document.getElementById('cover_letter_error').innerText =
             'Invalid file type. Please select docx files.';
         // Изчистване на стойността на input полето
-        document.getElementById('cover_letter').value = '';
+        document.getElementById('upload6').value = '';
     }
 }
 
