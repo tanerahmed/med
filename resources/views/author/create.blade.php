@@ -559,8 +559,11 @@
                }
 
                submitBtn.addEventListener("click", (e) => {
-                  e.preventDefault();
-
+                  
+                e.preventDefault();
+                  
+                  submitBtn.disabled = true; // Деактивирайте бутона след изпращане на формата
+                  
                   const formData = new FormData();
 
                   // Append files grouped by input type
