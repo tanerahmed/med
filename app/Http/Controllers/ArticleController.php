@@ -485,10 +485,12 @@ class ArticleController extends Controller
                 $article->issue_id = $issueId;
             }
 
-            $file = $request->file('final_article');
-            $finalFilePath = $file->storeAs('final_articles/' . $articleId, $file->getClientOriginalName(), 'public');
-            $article->final_article_path = $finalFilePath;
-
+            if ($request->hasFile('final_article')) {
+                $file = $request->file('final_article');
+                $finalFilePath = $file->storeAs('final_articles/' . $articleId, $file->getClientOriginalName(), 'public');
+                $article->final_article_path = $finalFilePath;
+            }
+            
             $article->save();
 
             // Activity LOG
