@@ -50,8 +50,8 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     ->name('article.updateAuthorCanEdit');
 
     // Admin upload PDF file for Article (за да може потребителите да свалят и да четат ПДФ фай)
-    Route::get('articles/{article}/upload-pdf', [PDFController::class, 'upload'])->name('pdfs.upload');
-    Route::post('articles/{article}/store-pdf', [PDFController::class, 'store'])->name('pdfs.store');
+    // Route::get('articles/{article}/upload-pdf', [PDFController::class, 'upload'])->name('pdfs.upload');
+    // Route::post('articles/{article}/store-pdf', [PDFController::class, 'store'])->name('pdfs.store');
 
 });
 
@@ -89,7 +89,7 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/articles_/{id}', [ArticleController::class, 'sendEmailForReviewRequest'])->name('articles.sendEmailForReviewRequest');
 
 
-    // Route::get('/reviwer-download-pdf-files/{article}',     [ArticleController::class, 'summaryPdfFile'])->name('review.summary_pdf');
+    Route::get('/reviwer-download-pdf-files/{article}',     [ArticleController::class, 'summaryPdfFile'])->name('review.summary_pdf');
 
     // Author
     Route::get('/author/dashboard', [AuthorController::class, 'AuthorDashboard'])->middleware('auth', 'role:author')->name('author.dashboard');

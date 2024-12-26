@@ -182,13 +182,19 @@ class ReviewerController extends Controller
         $rating = $request->input('rating');
         if ($review->reviewer_id_1 === $user->id) {
             $review->rating_1 = $rating;
-            $review->reviewer_id_1_canedit = 0;
+            // if($rating !== 'accepted with revision'){
+            //     $review->reviewer_id_1_canedit = 0;
+            // }
         } elseif ($review->reviewer_id_2 === $user->id) {
             $review->rating_2 = $rating;
-            $review->reviewer_id_2_canedit = 0;
+            // if($rating !== 'accepted with revision'){
+            //     $review->reviewer_id_2_canedit = 0;
+            // }           
         } elseif ($review->reviewer_id_3 === $user->id) {
             $review->rating_3 = $rating;
-            $review->reviewer_id_3_canedit = 0;
+            // if($rating !== 'accepted with revision'){
+            //     $review->reviewer_id_3_canedit = 0;
+            // }            
         }
         $review->save();
 

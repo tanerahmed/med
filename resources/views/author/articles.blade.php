@@ -136,7 +136,7 @@
                                                             @else
                                                                 <a href="{{ route('articles.adminAcceptArticleBlade', $article->id) }}"class="btn btn-warning btn-sm disabled">Editor Accept</a>
                                                                 <a href="{{ route('articles.edit', $article->id) }}" class="btn btn-primary btn-sm">Reviews</a>
-                                                                <a href="{{ route('pdfs.upload', $article->id) }}" class="btn btn-success btn-sm">Upload PDF</a>
+                                                                {{-- <a href="{{ route('pdfs.upload', $article->id) }}" class="btn btn-success btn-sm">Upload PDF</a> --}}
                                                             @endif
                                             
                                                             <form action="{{ route('articles.destroy', $article->id) }}" method="POST" style="display:inline;">
