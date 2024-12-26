@@ -110,6 +110,11 @@
                             @else
                                 <h3>There are no search results.</h3>
                             @endif
+                            
+                            <div class="pagination">
+                                {{ $articles->links() }} <!-- Генерира бутоните за навигация -->
+                            </div>
+                            
                         </div><!-- #posts end -->
 
                     </main><!-- .postcontent end -->
