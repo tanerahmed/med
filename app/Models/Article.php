@@ -86,6 +86,12 @@ class Article extends Model
         return $this->hasMany(Review::class);
     }
 
+    public function pdfs()
+    {
+        return $this->hasMany(PDF::class);
+    }
+
+
     public function isPending()
     {
         return $this->status === 'pending';

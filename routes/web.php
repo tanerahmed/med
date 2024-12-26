@@ -8,6 +8,7 @@ use App\Http\Controllers\AuthorController;
 use App\Http\Controllers\ReviewerController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\AdminPanelAuthController;
+use App\Http\Controllers\PDFController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LogController;
 use App\Http\Controllers\GdprController;
@@ -48,6 +49,10 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::put('/articles/{id}/updateAuthorCanEdit', [ArticleController::class, 'updateAuthorCanEdit'])
     ->name('article.updateAuthorCanEdit');
 
+    // Admin upload PDF file for Article (за да може потребителите да свалят и да четат ПДФ фай)
+    Route::get('articles/{article}/upload-pdf', [PDFController::class, 'upload'])->name('pdfs.upload');
+    Route::post('articles/{article}/store-pdf', [PDFController::class, 'store'])->name('pdfs.store');
+
 });
 
 Route::middleware(['auth'])->group(function () {
@@ -84,7 +89,7 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/articles_/{id}', [ArticleController::class, 'sendEmailForReviewRequest'])->name('articles.sendEmailForReviewRequest');
 
 
-    Route::get('/reviwer-download-pdf-files/{article}',     [ArticleController::class, 'summaryPdfFile'])->name('review.summary_pdf');
+    // Route::get('/reviwer-download-pdf-files/{article}',     [ArticleController::class, 'summaryPdfFile'])->name('review.summary_pdf');
 
     // Author
     Route::get('/author/dashboard', [AuthorController::class, 'AuthorDashboard'])->middleware('auth', 'role:author')->name('author.dashboard');
@@ -106,7 +111,7 @@ Route::middleware(['auth'])->group(function () {
 
 });
 
-Route::get('/article-download-pdf-files/{article}',     [ArticleController::class, 'downloadArticlePDFFiles'])->name('admin.downolad_summary_pdf');
+// Route::get('/article-download-pdf-files/{article}',     [ArticleController::class, 'downloadArticlePDFFiles'])->name('admin.downolad_summary_pdf');
 
 // NOT NEEDED Co Author approve Thankyou Page 
 // Route::get('/co-author-approve/{article_id}/{authrom_email}', [ArticleController::class, 'coAuthorApprove'])->name('articles.coAuthorApprove');

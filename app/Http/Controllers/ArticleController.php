@@ -941,138 +941,138 @@ class ArticleController extends Controller
     }
 
 
-    public function summaryPdfFile(Article $article)
-    {
+    // public function summaryPdfFile(Article $article)
+    // {
 
-        $pdf = new FPDI(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
-        $pdf->SetCreator(PDF_CREATOR);
-        $pdf->SetAuthor('Author');
-        $pdf->SetTitle('Document title');
-        $pdf->SetSubject('Document subject');
-        $pdf->SetKeywords('keyword1, keyword2, keyword3');
-        $pdf->SetHeaderData(PDF_HEADER_LOGO, PDF_HEADER_LOGO_WIDTH, '', '');
-        $pdf->setHeaderFont(array(PDF_FONT_NAME_MAIN, '', PDF_FONT_SIZE_MAIN));
-        $pdf->setFooterFont(array(PDF_FONT_NAME_DATA, '', PDF_FONT_SIZE_DATA));
-        $pdf->SetDefaultMonospacedFont(PDF_FONT_MONOSPACED);
-        $pdf->SetMargins(PDF_MARGIN_LEFT, PDF_MARGIN_TOP, PDF_MARGIN_RIGHT);
-        $pdf->SetAutoPageBreak(TRUE, PDF_MARGIN_BOTTOM);
-        $pdf->SetFont('dejavusans', '', 10);
-        $pdf->AddPage();
+    //     $pdf = new FPDI(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
+    //     $pdf->SetCreator(PDF_CREATOR);
+    //     $pdf->SetAuthor('Author');
+    //     $pdf->SetTitle('Document title');
+    //     $pdf->SetSubject('Document subject');
+    //     $pdf->SetKeywords('keyword1, keyword2, keyword3');
+    //     $pdf->SetHeaderData(PDF_HEADER_LOGO, PDF_HEADER_LOGO_WIDTH, '', '');
+    //     $pdf->setHeaderFont(array(PDF_FONT_NAME_MAIN, '', PDF_FONT_SIZE_MAIN));
+    //     $pdf->setFooterFont(array(PDF_FONT_NAME_DATA, '', PDF_FONT_SIZE_DATA));
+    //     $pdf->SetDefaultMonospacedFont(PDF_FONT_MONOSPACED);
+    //     $pdf->SetMargins(PDF_MARGIN_LEFT, PDF_MARGIN_TOP, PDF_MARGIN_RIGHT);
+    //     $pdf->SetAutoPageBreak(TRUE, PDF_MARGIN_BOTTOM);
+    //     $pdf->SetFont('dejavusans', '', 10);
+    //     $pdf->AddPage();
 
-        $htmlType = '<div style="text-align: center; background-color: #808080; color: #ffffff;">
-        <h1>' . $article->type . '</h1></div>';
+    //     $htmlType = '<div style="text-align: center; background-color: #808080; color: #ffffff;">
+    //     <h1>' . $article->type . '</h1></div>';
 
-        $pdf->writeHTML($htmlType);
-        $pdf->writeHTML('<h1>' . $article->title . '</h1><p></p>');
-        $pdf->writeHTML("<hr>");
-        $abstract_html = '<p><h2>Abstract:</h2><br>' . $article->abstract . '</p><br>';
-        $pdf->writeHTML($abstract_html);
-        $pdf->writeHTML("<hr>");
-        $coauthors_html = '<p><h2>Keywords:</h2>' . $article->keywords . '</p><br>';
-        $pdf->writeHTML($coauthors_html);
+    //     $pdf->writeHTML($htmlType);
+    //     $pdf->writeHTML('<h1>' . $article->title . '</h1><p></p>');
+    //     $pdf->writeHTML("<hr>");
+    //     $abstract_html = '<p><h2>Abstract:</h2><br>' . $article->abstract . '</p><br>';
+    //     $pdf->writeHTML($abstract_html);
+    //     $pdf->writeHTML("<hr>");
+    //     $coauthors_html = '<p><h2>Keywords:</h2>' . $article->keywords . '</p><br>';
+    //     $pdf->writeHTML($coauthors_html);
 
-        // $article->titlePage = без него!
-        foreach ([$article->manuscript, $article->figures, $article->tables, $article->supplementaryFiles, $article->coverLetter] as $files) {
-            foreach ($files as $file) {
-                $filePath = storage_path('app/public/' . $file->file_path);
-                $filePath = str_replace('\\', '/', $filePath);
+    //     // $article->titlePage = без него!
+    //     foreach ([$article->manuscript, $article->figures, $article->tables, $article->supplementaryFiles, $article->coverLetter] as $files) {
+    //         foreach ($files as $file) {
+    //             $filePath = storage_path('app/public/' . $file->file_path);
+    //             $filePath = str_replace('\\', '/', $filePath);
 
-                $ext = pathinfo($filePath, PATHINFO_EXTENSION);
-                $content = '';
+    //             $ext = pathinfo($filePath, PATHINFO_EXTENSION);
+    //             $content = '';
 
-                try {
-                    switch ($ext) {
-                        case 'doc':
-                        case 'docx':
-                            $phpWord = PhpWordIOFactory::load($filePath);
-                            $htmlWriter = PhpWordIOFactory::createWriter($phpWord, 'HTML');
-                            $htmlFile = tempnam(sys_get_temp_dir(), 'phpword');
-                            $htmlWriter->save($htmlFile);
-                            $content = file_get_contents($htmlFile);
-                            unlink($htmlFile);
-                            $pdf->AddPage();
-                            $pdf->writeHTML($content, true, false, true, false, '');
-                            break;
-                        case 'xlsx':
-                        case 'xls':
-                            $spreadsheet = PhpSpreadsheetIOFactory::load($filePath);
-                            $htmlWriter = new PhpSpreadsheetWriterHtml($spreadsheet);
-                            $htmlFile = tempnam(sys_get_temp_dir(), 'phpspreadsheet');
-                            $htmlWriter->save($htmlFile);
-                            $content = file_get_contents($htmlFile);
-                            unlink($htmlFile);
-                            $pdf->AddPage();
-                            $pdf->writeHTML($content, true, false, true, false, '');
-                            break;
-                        case 'pdf':
-                            $pageCount = $pdf->setSourceFile($filePath);
-                            $pdf->AddPage();
-                            for ($i = 1; $i <= $pageCount; $i++) {
-                                $tplIdx = $pdf->importPage($i);
-                                $pdf->useTemplate($tplIdx);
-                                if ($i < $pageCount) {
-                                    $pdf->AddPage();
-                                }
-                            }
-                            break;
-                        case 'jpg':
-                        case 'jpeg':
-                        case 'png':
-                            // $pdf->Image($filePath, 10, 10, '', '', '', '', '', false, 300, '', false, false, 0, false, false, false);
-                            // Добавяне на изображение
-                            // $pdf->Image($file, $x, $y, $w, $h, $type, $link, $align, $resize, $dpi, $palign, $ismask, $imgmask, $border, $fitbox, $hidden, $fitonpage);
-                            // Ако искате изображението да пасне на ширината на страницата и да се мащабира пропорционално:
-                            $pdf->AddPage();
-                            $margin = 10; // Може да се променя според нуждите за маржове.
-                            $pageWidth = $pdf->GetPageWidth() - 2 * $margin; // ширина на страницата минус маржовете от двете страни
-                            $pageHeight = $pdf->GetPageHeight() - 2 * $margin; // височина на страницата минус маржовете от двете страни
+    //             try {
+    //                 switch ($ext) {
+    //                     case 'doc':
+    //                     case 'docx':
+    //                         $phpWord = PhpWordIOFactory::load($filePath);
+    //                         $htmlWriter = PhpWordIOFactory::createWriter($phpWord, 'HTML');
+    //                         $htmlFile = tempnam(sys_get_temp_dir(), 'phpword');
+    //                         $htmlWriter->save($htmlFile);
+    //                         $content = file_get_contents($htmlFile);
+    //                         unlink($htmlFile);
+    //                         $pdf->AddPage();
+    //                         $pdf->writeHTML($content, true, false, true, false, '');
+    //                         break;
+    //                     case 'xlsx':
+    //                     case 'xls':
+    //                         $spreadsheet = PhpSpreadsheetIOFactory::load($filePath);
+    //                         $htmlWriter = new PhpSpreadsheetWriterHtml($spreadsheet);
+    //                         $htmlFile = tempnam(sys_get_temp_dir(), 'phpspreadsheet');
+    //                         $htmlWriter->save($htmlFile);
+    //                         $content = file_get_contents($htmlFile);
+    //                         unlink($htmlFile);
+    //                         $pdf->AddPage();
+    //                         $pdf->writeHTML($content, true, false, true, false, '');
+    //                         break;
+    //                     case 'pdf':
+    //                         $pageCount = $pdf->setSourceFile($filePath);
+    //                         $pdf->AddPage();
+    //                         for ($i = 1; $i <= $pageCount; $i++) {
+    //                             $tplIdx = $pdf->importPage($i);
+    //                             $pdf->useTemplate($tplIdx);
+    //                             if ($i < $pageCount) {
+    //                                 $pdf->AddPage();
+    //                             }
+    //                         }
+    //                         break;
+    //                     case 'jpg':
+    //                     case 'jpeg':
+    //                     case 'png':
+    //                         // $pdf->Image($filePath, 10, 10, '', '', '', '', '', false, 300, '', false, false, 0, false, false, false);
+    //                         // Добавяне на изображение
+    //                         // $pdf->Image($file, $x, $y, $w, $h, $type, $link, $align, $resize, $dpi, $palign, $ismask, $imgmask, $border, $fitbox, $hidden, $fitonpage);
+    //                         // Ако искате изображението да пасне на ширината на страницата и да се мащабира пропорционално:
+    //                         $pdf->AddPage();
+    //                         $margin = 10; // Може да се променя според нуждите за маржове.
+    //                         $pageWidth = $pdf->GetPageWidth() - 2 * $margin; // ширина на страницата минус маржовете от двете страни
+    //                         $pageHeight = $pdf->GetPageHeight() - 2 * $margin; // височина на страницата минус маржовете от двете страни
 
-                            // Получаване размерите на изображението
-                            list($width, $height) = getimagesize($filePath);
+    //                         // Получаване размерите на изображението
+    //                         list($width, $height) = getimagesize($filePath);
 
-                            // Изчисляване на аспектното съотношение
-                            $aspectRatio = $width / $height;
+    //                         // Изчисляване на аспектното съотношение
+    //                         $aspectRatio = $width / $height;
 
-                            // Изчисляване на новите размери
-                            if ($width > $height) {
-                                // Ландшафтно изображение
-                                $newWidth = $pageWidth; // ширината на страницата е максималната ширина
-                                $newHeight = $newWidth / $aspectRatio;
-                                if ($newHeight > $pageHeight) {
-                                    $newHeight = $pageHeight;
-                                    $newWidth = $newHeight * $aspectRatio;
-                                }
-                            } else {
-                                // Портретно изображение
-                                $newHeight = $pageHeight;
-                                $newWidth = $newHeight * $aspectRatio;
-                                if ($newWidth > $pageWidth) {
-                                    $newWidth = $pageWidth;
-                                    $newHeight = $newWidth / $aspectRatio;
-                                }
-                            }
+    //                         // Изчисляване на новите размери
+    //                         if ($width > $height) {
+    //                             // Ландшафтно изображение
+    //                             $newWidth = $pageWidth; // ширината на страницата е максималната ширина
+    //                             $newHeight = $newWidth / $aspectRatio;
+    //                             if ($newHeight > $pageHeight) {
+    //                                 $newHeight = $pageHeight;
+    //                                 $newWidth = $newHeight * $aspectRatio;
+    //                             }
+    //                         } else {
+    //                             // Портретно изображение
+    //                             $newHeight = $pageHeight;
+    //                             $newWidth = $newHeight * $aspectRatio;
+    //                             if ($newWidth > $pageWidth) {
+    //                                 $newWidth = $pageWidth;
+    //                                 $newHeight = $newWidth / $aspectRatio;
+    //                             }
+    //                         }
 
-                            // Добавяне на изображението
-                            $pdf->Image($filePath, $margin, $margin, $newWidth, $newHeight, 'JPG', '', '', true, 300, '', false, false, 0, false, false, false);
-                            break;
-                        case 'html':
-                            $content = file_get_contents($filePath);
-                            $pdf->AddPage();
-                            $pdf->writeHTML($content, true, false, true, false, '');
-                            break;
-                        default:
-                            break;
-                    }
-                } catch (\Exception $e) {
+    //                         // Добавяне на изображението
+    //                         $pdf->Image($filePath, $margin, $margin, $newWidth, $newHeight, 'JPG', '', '', true, 300, '', false, false, 0, false, false, false);
+    //                         break;
+    //                     case 'html':
+    //                         $content = file_get_contents($filePath);
+    //                         $pdf->AddPage();
+    //                         $pdf->writeHTML($content, true, false, true, false, '');
+    //                         break;
+    //                     default:
+    //                         break;
+    //                 }
+    //             } catch (\Exception $e) {
 
-                    \Log::error("Error processing file {$filePath}: " . $e->getMessage());
-                }
-            }
-        }
+    //                 \Log::error("Error processing file {$filePath}: " . $e->getMessage());
+    //             }
+    //         }
+    //     }
 
-        $pdf->lastPage();
-        $pdf->Output('article_id_#' . $article->id . '.pdf', 'I');
-    }
+    //     $pdf->lastPage();
+    //     $pdf->Output('article_id_#' . $article->id . '.pdf', 'I');
+    // }
 
 
 
@@ -1130,32 +1130,32 @@ class ArticleController extends Controller
     }
 
 
-    public function downloadArticlePDFFiles(Article $article)
-    {
+    // public function downloadArticlePDFFiles(Article $article)
+    // {
 
-        $apiKey = "tanerahmed87@gmail.com_0MODe75ov9bco2OuOWwYHB9x308U3C0T0d1HxWDDwf26wwLl6t1vj0Qsf836nam8";
-
-
-        $uploadedFiles = [];
-
-        foreach ([$article->coverLetter, $article->figures, $article->manuscript, $article->supplementaryFiles, $article->tables, $article->titlePage] as $files) {
-            foreach ($files as $file) {
-                $filePath = storage_path('app/public/' . $file->file_path);
-                $filePath = str_replace('\\', '/', $filePath);
-                $uploadedFiles[] = $filePath; // Добавяне на пътя до файла в масива с качени файлове
-            }
-        }
-
-        // dd($uploadedFiles);
-        /*
-          array:1 [▼ // app\Http\Controllers\ArticleController.php:954
-          0 => "C:/xampp/htdocs/med/storage/app/public/manuscripts/65/file-sample_100kB.doc"
-                ]
-         */
+    //     $apiKey = "tanerahmed87@gmail.com_0MODe75ov9bco2OuOWwYHB9x308U3C0T0d1HxWDDwf26wwLl6t1vj0Qsf836nam8";
 
 
-        $this->mergePdf($apiKey, $uploadedFiles);
-    }
+    //     $uploadedFiles = [];
+
+    //     foreach ([$article->coverLetter, $article->figures, $article->manuscript, $article->supplementaryFiles, $article->tables, $article->titlePage] as $files) {
+    //         foreach ($files as $file) {
+    //             $filePath = storage_path('app/public/' . $file->file_path);
+    //             $filePath = str_replace('\\', '/', $filePath);
+    //             $uploadedFiles[] = $filePath; // Добавяне на пътя до файла в масива с качени файлове
+    //         }
+    //     }
+
+    //     // dd($uploadedFiles);
+    //     /*
+    //       array:1 [▼ // app\Http\Controllers\ArticleController.php:954
+    //       0 => "C:/xampp/htdocs/med/storage/app/public/manuscripts/65/file-sample_100kB.doc"
+    //             ]
+    //      */
+
+
+    //     $this->mergePdf($apiKey, $uploadedFiles);
+    // }
 
     public function updateAuthorCanEdit($id, Request $request)
     {
@@ -1169,9 +1169,6 @@ class ArticleController extends Controller
         );
         return redirect()->route('article.list')->with($notification);
     }
-
-
-
 
 
 }
