@@ -145,16 +145,23 @@
                                                                 <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this article?')">Delete</button>
                                                             </form>
                                             
-                                                            <form action="{{ route('article.updateAuthorCanEdit', $article->id) }}" method="POST" style="display:inline;">
-                                                                @csrf
-                                                                @method('PUT')
-                                                                <input type="hidden" name="author_can_edit" value="1">
-                                                                <button type="submit" class="btn btn-warning btn-sm">Send Edit</button>
-                                                            </form>
+                                                            
                                             
                                                             @if ($article->status === 'accepted')
                                                                 <a href="{{ route('articles.addIssueIdBlade', $article->id) }}" class="btn btn-warning btn-sm">Publish</a>
                                                             @endif
+
+                                                            @if ($article->status === 'accepted')
+                                                                <button type="submit" class="btn btn-warning btn-sm disabled">Send Edit</button>
+                                                            @else
+                                                                <form action="{{ route('article.updateAuthorCanEdit', $article->id) }}" method="POST" style="display:inline;">
+                                                                    @csrf
+                                                                    @method('PUT')
+                                                                    <input type="hidden" name="author_can_edit" value="1">
+                                                                    <button type="submit" class="btn btn-warning btn-sm">Send Edit</button>
+                                                                </form>
+                                                            @endif
+
                                                         @endif
                                                     @endif
                                             

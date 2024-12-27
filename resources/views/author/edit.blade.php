@@ -2,6 +2,13 @@
 @section('admin')
 
     <div class="page-content">
+
+
+
+        @if ($article->status === 'accepted')
+            <h1 style="color: red;"> The article has been ACCEPTED!</h1>
+            <br>
+        @endif
         <h4>Force add reviwer</h4>
 
         @if ($errors->any())
