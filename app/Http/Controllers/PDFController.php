@@ -16,6 +16,8 @@ class PDFController extends Controller
         return view('pdfs.upload', compact('article'));
     }
 
+
+    // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! DO NOT USE - it's use in ArticleController - > addIssueId !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     public function store(Request $request, $articleId)
     {
 
@@ -38,4 +40,8 @@ class PDFController extends Controller
         ];
         return redirect()->route('article.list')->with($notification);
     }
+    // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! DO NOT USE - it's use in ArticleController - > addIssueId !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+
+
 }

@@ -50,8 +50,9 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     ->name('article.updateAuthorCanEdit');
 
     // Admin upload PDF file for Article (за да може потребителите да свалят и да четат ПДФ фай)
-    // Route::get('articles/{article}/upload-pdf', [PDFController::class, 'upload'])->name('pdfs.upload');
-    // Route::post('articles/{article}/store-pdf', [PDFController::class, 'store'])->name('pdfs.store');
+    Route::get('articles/{article}/upload-pdf', [PDFController::class, 'upload'])->name('pdfs.upload');
+    // DO NOT USE - it's use in ArticleController - > addIssueId 
+   // Route::post('articles/{article}/store-pdf', [PDFController::class, 'store'])->name('pdfs.store');
 
 });
 

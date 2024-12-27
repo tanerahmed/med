@@ -18,6 +18,7 @@ use App\Models\User;
 use App\Models\Review;
 use App\Models\InvitedReviewer;
 use App\Models\ReviewComment;
+use App\Models\PDF;
 
 use Illuminate\Support\Facades\Mail;
 use App\Mail\CoAuthorRequestEmail;
@@ -463,7 +464,12 @@ class ArticleController extends Controller
         $maxIssueId = Article::max('issue_id');
         $article = Article::findOrFail($articleId);
 
-        return view('author.editIssue', compact('article', 'maxIssueId'));
+        $latestPdf = PDF::where('article_id', $articleId)
+                        ->orderBy('created_at', 'asc')
+                        ->first();
+        // dd($article->pdfs);
+
+        return view('author.editIssue', compact('article', 'maxIssueId', 'latestPdf'));
     }
 
     public function addIssueId(Request $request, $articleId)
@@ -484,7 +490,7 @@ class ArticleController extends Controller
             if ($request->has('issue_id')) {
                 $article->issue_id = $issueId;
             }
-
+            // Create Final HTML FILE for frontend
             if ($request->hasFile('final_article')) {
                 $file = $request->file('final_article');
                 $finalFilePath = $file->storeAs('final_articles/' . $articleId, $file->getClientOriginalName(), 'public');
@@ -492,6 +498,18 @@ class ArticleController extends Controller
             }
             
             $article->save();
+
+            // Crate PDF file for downloading in frontend
+            if ($request->hasFile('pdf_file')) {
+                $file = $request->file('pdf_file');
+                $filePath = $file->storeAs('pdfs/' . $articleId, $file->getClientOriginalName(), 'public');
+
+                PDF::create([
+                    'file_path' => $filePath,
+                    'article_id' => $article->id,
+                ]);
+            }
+
 
             // Activity LOG
             activity()

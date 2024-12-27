@@ -4,7 +4,7 @@
 
         <div class="d-flex justify-content-between align-items-center flex-wrap grid-margin">
             <div>
-                <h4 class="mb-3 mb-md-0">Edit Issue ID</h4>
+                <h4 class="mb-3 mb-md-0">Article: {{$article->title}}</h4>
             </div>
         </div>
 
@@ -34,8 +34,16 @@
                         <div class="mb-3">
                             <label for="final_article" class="form-label"><strong>Upload Final Article View (html file): </strong></label>
                             
-                            <input type="file" name="final_article" multiple class="form-control" id="final_article" required>
+                            <input type="file" name="final_article" multiple class="form-control" id="final_article">
                             <p style="color:blue">{{ $article->final_article_path  }}</p>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="mb-3">
+                            <label for="pdf_file" class="form-label"><strong>Upload PDF file (download in frontend): </strong></label>
+                            
+                            <input type="file" name="pdf_file" multiple class="form-control" id="pdf_file">
+                            <p style="color:blue">{{  $article->pdfs->last()->file_path  }}</p>
                         </div>
                     </div>
                     <div class="col-md-6">
@@ -59,16 +67,10 @@
 
 
                     <hr>
-                    {{-- <div class="col-md-12">
-                        <!-- Контейнер за полетата на авторите -->
-                        <div id="authorsContainer" class="row g-3"></div>
-                    </div>
-                    <div class="mb-3">
-                        <button type="button" class="btn btn-primary" id="addAuthorButton">Add Author</button>
-                    </div> --}}
+
 
                     <div class="mb-3 d-flex justify-content-end">
-                        <button type="submit" class="btn btn-warning">Update Issue ID</button>
+                        <button type="submit" class="btn btn-success">Update</button>
                     </div>
                 </div>
             </form>
