@@ -35,7 +35,7 @@
                             <label for="final_article" class="form-label"><strong>Upload Final Article View (html file): </strong></label>
                             
                             <input type="file" name="final_article" multiple class="form-control" id="final_article">
-                            <p style="color:blue">{{ $article->final_article_path  }}</p>
+                            <p style="color:blue">{{ $article->final_article_path  ?? 'No HTML available' }}</p>
                         </div>
                     </div>
                     <div class="col-md-6">
@@ -43,7 +43,7 @@
                             <label for="pdf_file" class="form-label"><strong>Upload PDF file (download in frontend): </strong></label>
                             
                             <input type="file" name="pdf_file" multiple class="form-control" id="pdf_file">
-                            <p style="color:blue">{{  $article->pdfs->last()->file_path  }}</p>
+                            <p style="color:blue">{{  $article->pdfs->last()->file_path  ?? 'No PDF available' }}</p>
                         </div>
                     </div>
                     <div class="col-md-6">
