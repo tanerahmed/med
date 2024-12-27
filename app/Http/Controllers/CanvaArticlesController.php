@@ -98,8 +98,8 @@ class CanvaArticlesController extends Controller
         $issueIds = array_filter($issueIds, fn($value) => !is_null($value)); // премахва null стойностите
         rsort($issueIds); // сортира масива в нарастващ ред
 
+        // content == HTML File !
         $content = Storage::get('public/' . $article->final_article_path);
-        // $content = Storage::get('public/final_articles/1/tttttt.html');
 
         $specialties = $filteredArticles->pluck('specialty')->unique()->filter(function ($value) {
             return !is_null($value) && $value !== 'Select Speciality';
