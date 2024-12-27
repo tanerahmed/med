@@ -32,7 +32,7 @@
                     <!-- !!!!!!!!!!!! Първа колона !!!!!!!!!!!! -->
                     <div class="col-md-6">
                         <div class="mb-3">
-                            <label for="final_article" class="form-label"><strong>Upload Final Article View: </strong></label>
+                            <label for="final_article" class="form-label"><strong>Upload Final Article View (html file): </strong></label>
                             
                             <input type="file" name="final_article" multiple class="form-control" id="final_article" required>
                             <p style="color:blue">{{ $article->final_article_path  }}</p>
