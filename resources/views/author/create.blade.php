@@ -682,6 +682,20 @@
 
 
    <script>
+
+
+        // Toastr конфигурация
+        toastr.options = {
+            closeButton: true,
+            progressBar: false,
+            preventDuplicates: true,
+            timeOut: 0,
+            extendedTimeOut: 0,
+            tapToDismiss: false
+        };
+
+
+
       @if(Session::has('message'))
       var type = "{{ Session::get('alert-type', 'info') }}"
       switch (type) {
