@@ -573,13 +573,25 @@
                      });
                   });
 
-                  // const fieldNames = ["title_pages", "manuscript", "figures", "tables", 'supplementary', 'cover_letter'];
+                    // Събиране на данни за авторите CO AUTHORS
+                    const authorsContainer = document.getElementById("authorsContainer");
+                    const authorRows = authorsContainer.querySelectorAll(".author-row");
+                    let authors = []; // Масив за съхранение на данните за авторите
 
-                  // filesToUpload.forEach((file, index) => {
-                  //    if (fieldNames[index]) {
-                  //       formData.append(fieldNames[index], file); // Използвайте името вместо индекса
-                  //    }
-                  // });
+                    authorRows.forEach((row) => {
+                        const author = {
+                            first_name: row.querySelector('[name*="[first_name]"]').value,
+                            middle_name: row.querySelector('[name*="[middle_name]"]').value,
+                            family_name: row.querySelector('[name*="[family_name]"]').value,
+                            primary_affiliation: row.querySelector('[name*="[primary_affiliation]"]').value,
+                            contact: row.querySelector('[name*="[contact]"]').value,
+                            position: row.querySelector('[name*="[position]"]').value || null,
+                            is_corresponding_author: row.querySelector('[name*="[is_corresponding_author]"]').checked ? 1 : 0,
+                            contributions: row.querySelector('[name*="[contributions]"]').value,
+                        };
+
+                        authors.push(author);
+                    });
 
                   const typeSelect = document.getElementById("article_type");
                   const specialtySelect = document.getElementById("specialty");
@@ -590,6 +602,7 @@
                   const grantInput = document.getElementById("grant_id");
                   const keywordsInput = document.getElementById("keywords");
 
+                  formData.append("authors", JSON.stringify(authors)); // Конвертиране на масива в JSON
                   formData.append("article_type", typeSelect.value);
                   formData.append("specialty", specialtySelect.value);
                   formData.append("scientific_area", scientificArea.value);

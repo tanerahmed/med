@@ -34,6 +34,19 @@ document.addEventListener('DOMContentLoaded', function() {
                     <div class="col-md-6">
                         <label for="contact_${authorIndex}" class="form-label">Contact (E-mail):</label>
                         <input type="email" class="form-control" name="authors[${authorIndex}][contact]" placeholder="E-mail" required>
+
+                    <div>
+                        <label for="position">Position</label>
+                        <input type="number" name="authors[${authorIndex}][position]" class="form-control">
+                    </div>
+
+                    <div>
+                        <label for="is_corresponding_author">
+                            <input type="checkbox" name="authors[${authorIndex}][is_corresponding_author]" value="1">
+                            Corresponding Author
+                        </label>
+                    </div>
+
                     </div>
                     <div class="col-md-6">
                         <label for="author_contributions_${authorIndex}" class="form-label">Author Contributions Statement:</label>

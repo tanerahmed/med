@@ -19,6 +19,8 @@ class Author extends Model
         'primary_affiliation',
         'contact_email',
         'author_contributions',
+        'position',
+        'is_corresponding_author',
     ];
 
     public function article()

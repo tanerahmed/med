@@ -145,7 +145,8 @@ class ArticleController extends Controller
 
     }
     public function articleStore(Request $request)
-    {      
+    {     
+        
         $user = Auth::user();
 
         $validator = Validator::make($request->all(), [
@@ -259,20 +260,21 @@ class ArticleController extends Controller
                 }
 
                 if ($request->has('authors')) {
-                    foreach ($request->input('authors') as $authorData) {
+                    $authors = json_decode($request->input('authors'), true);
+                
+                    foreach ($authors as $authorData) {
                         $author = new Author();
-                        $author->article_id = $article->id;
+                        $author->article_id = $article->id; // Увери се, че статията е вече създадена
                         $author->first_name = $authorData['first_name'];
                         $author->middle_name = $authorData['middle_name'];
                         $author->family_name = $authorData['family_name'];
                         $author->primary_affiliation = $authorData['primary_affiliation'];
                         $author->contact_email = $authorData['contact'];
                         $author->author_contributions = $authorData['contributions'];
-                        // APPROVED == 1 ?!?
+                        $author->position = $authorData['position'];
+                        $author->is_corresponding_author = $authorData['is_corresponding_author'];
                         $author->approved = 1;
                         $author->save();
-                        // prepare emails for notification
-                        array_push($this->emails, $authorData['contact']);
                     }
                 }
 
