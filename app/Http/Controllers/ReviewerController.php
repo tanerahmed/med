@@ -352,7 +352,7 @@ class ReviewerController extends Controller
                     $review->reviewer_id_3 = $user->id;
                 }else{
                     $notification = array(
-                        'message' => 'All reviewers found.',
+                        'message' => 'The quota is full, all reviewers are present.',
                         'alert-type' => 'error'
                     );
                     return redirect()->route('review.list')->with($notification);
@@ -360,7 +360,7 @@ class ReviewerController extends Controller
             }// Тува вече квотата е пълна от Ревювъри и казваме, че към момента няма как да стане ревювър
             else {
                 $notification = array(
-                    'message' => 'All reviewers found.',
+                    'message' => 'The quota is full, all reviewers are present.',
                     'alert-type' => 'error'
                 );
                 return redirect()->route('review.list')->with($notification);
