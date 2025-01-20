@@ -12,7 +12,7 @@ class CanvaArticlesController extends Controller
     public function listArticles()
     {
         // $articles = Article::whereNotNull('issue_id')->get();
-        $articles = Article::whereNotNull('issue_id')->paginate(10);
+        $articles = Article::whereNotNull('issue_id')->orderBy('created_at', 'desc')->paginate(10);
 
         $activeSpecialty = '';
 
@@ -31,7 +31,7 @@ class CanvaArticlesController extends Controller
 
     public function listArticlesBySpecialty($specialty)
     {
-        $articles = Article::whereNotNull('issue_id')->where('specialty', $specialty)->paginate(10);
+        $articles = Article::whereNotNull('issue_id')->where('specialty', $specialty)->orderBy('created_at', 'desc')->paginate(10);
         $activeSpecialty = $specialty;
 
         // get issue ids
@@ -113,7 +113,7 @@ class CanvaArticlesController extends Controller
     public function listArticlesByIssue($issueId)
     {
         // Тук може би ще държим в отделна таблица Issue Articles ?!?
-        $articles = Article::where('issue_id', $issueId)->whereNotNull('issue_id')->paginate(10);
+        $articles = Article::where('issue_id', $issueId)->whereNotNull('issue_id')->orderBy('created_at', 'desc')->paginate(10);
         $activeSpecialty = '';
 
         // get issue ids
