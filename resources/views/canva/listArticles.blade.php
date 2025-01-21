@@ -61,7 +61,7 @@
                                                 <div class="entry-meta">
                                                     <ul>
                                                         <li><i
-                                                                class="uil uil-schedule"></i>{{ $article->updated_at->format('Y-m-d') }}
+                                                                class="uil uil-schedule"></i>{{ $article->created_at->format('Y-m-d') }}
                                                         </li>
                                                        
                                                         <li><i class="uil uil-folder-open"></i>{{ $article->specialty }}

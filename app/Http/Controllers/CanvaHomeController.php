@@ -26,7 +26,7 @@ class CanvaHomeController extends Controller
          rsort($issueIds);
 
         $maxIssueId = $allArticles->pluck('issue_id')->filter()->max();
-        $articles = Article::where('issue_id', $maxIssueId)->where('status', 'accepted')->get();
+        $articles = Article::where('issue_id', $maxIssueId)->where('status', 'accepted')->orderBy('created_at', 'desc')->get();
 
 
         return view('canva.listArticlesByIssueId', ['articles' => $articles, 'issueIds' => $issueIds, 'issueId' => $maxIssueId]);
