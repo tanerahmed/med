@@ -890,6 +890,11 @@ class ArticleController extends Controller
                             'alert-type' => 'danger'
                         );
                     }
+                }else{
+                    $notification = array(
+                        'message' => 'Review requests already was sent.',
+                        'alert-type' => 'error'
+                    );
                 }
             }
 
@@ -899,7 +904,7 @@ class ArticleController extends Controller
         // Error
         $notification = array(
             'message' => 'There is a problem, plase try again later.',
-            'alert-type' => 'danger'
+            'alert-type' => 'error'
         );
         return redirect()->route('article.list')->with($notification);
     }
