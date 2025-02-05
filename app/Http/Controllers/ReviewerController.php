@@ -84,54 +84,97 @@ class ReviewerController extends Controller
         $zip = new ZipArchive;
         $zipFileName = "article_id = " . $article->id . ".zip";
 
-        if ($zip->open($zipFileName, ZipArchive::CREATE) === TRUE) {
+        // if ($zip->open($zipFileName, ZipArchive::CREATE) === TRUE) {
 
-            //  TITLE PAGE dont show in ZIP file if is REVIWER
+        //     //  TITLE PAGE dont show in ZIP file if is REVIWER
+        //     $user = Auth::user();
+        //     if ($user->role !== "reviewer") {
+        //         foreach ($article->titlePage as $value) {
+        //             $filePath = storage_path('app/public/' . $value->file_path);
+        //             $filePath = str_replace('\\', '/', $filePath);
+        //             $zip->addFile($filePath, basename($filePath));
+        //         }
+        //     }
+
+        //     foreach ($article->manuscript as $value) {
+        //         $filePath = storage_path('app/public/' . $value->file_path);
+        //         $filePath = str_replace('\\', '/', $filePath);
+        //         $zip->addFile($filePath, basename($filePath));
+        //     }
+
+        //     foreach ($article->supplementaryFiles as $value) {
+        //         $filePath = storage_path('app/public/' . $value->file_path);
+        //         $filePath = str_replace('\\', '/', $filePath);
+        //         $zip->addFile($filePath, basename($filePath));
+        //     }
+
+        //     foreach ($article->tables as $value) {
+        //         $filePath = storage_path('app/public/' . $value->file_path);
+        //         $filePath = str_replace('\\', '/', $filePath);
+        //         $zip->addFile($filePath, basename($filePath));
+        //     }
+
+        //     foreach ($article->coverLetter as $value) {
+        //         $filePath = storage_path('app/public/' . $value->file_path);
+        //         $filePath = str_replace('\\', '/', $filePath);
+        //         $zip->addFile($filePath, basename($filePath));
+        //     }
+
+        //     foreach ($article->figures as $value) {
+        //         $filePath = storage_path('app/public/' . $value->file_path);
+        //         $filePath = str_replace('\\', '/', $filePath);
+        //         $zip->addFile($filePath, basename($filePath));
+        //     }
+
+        //     // Затваряне на ZIP архива
+        //     $zip->close();
+        // }
+
+        // Сваляне на ZIP архива
+       // return response()->download($zipFileName)->deleteFileAfterSend(true);
+    
+        if ($zip->open($zipFileName, ZipArchive::CREATE) === TRUE) {
+            $hasFiles = false; // Флаг за проверка
+        
             $user = Auth::user();
             if ($user->role !== "reviewer") {
                 foreach ($article->titlePage as $value) {
                     $filePath = storage_path('app/public/' . $value->file_path);
-                    $filePath = str_replace('\\', '/', $filePath);
-                    $zip->addFile($filePath, basename($filePath));
+                    if (file_exists($filePath)) {
+                        $zip->addFile($filePath, basename($filePath));
+                        $hasFiles = true;
+                    }
                 }
             }
-
-            foreach ($article->manuscript as $value) {
-                $filePath = storage_path('app/public/' . $value->file_path);
-                $filePath = str_replace('\\', '/', $filePath);
-                $zip->addFile($filePath, basename($filePath));
+        
+            foreach (['manuscript', 'supplementaryFiles', 'tables', 'coverLetter', 'figures'] as $fileType) {
+                foreach ($article->$fileType as $value) {
+                    $filePath = storage_path('app/public/' . $value->file_path);
+                    if (file_exists($filePath)) {
+                        $zip->addFile($filePath, basename($filePath));
+                        $hasFiles = true;
+                    }
+                }
             }
-
-            foreach ($article->supplementaryFiles as $value) {
-                $filePath = storage_path('app/public/' . $value->file_path);
-                $filePath = str_replace('\\', '/', $filePath);
-                $zip->addFile($filePath, basename($filePath));
-            }
-
-            foreach ($article->tables as $value) {
-                $filePath = storage_path('app/public/' . $value->file_path);
-                $filePath = str_replace('\\', '/', $filePath);
-                $zip->addFile($filePath, basename($filePath));
-            }
-
-            foreach ($article->coverLetter as $value) {
-                $filePath = storage_path('app/public/' . $value->file_path);
-                $filePath = str_replace('\\', '/', $filePath);
-                $zip->addFile($filePath, basename($filePath));
-            }
-
-            foreach ($article->figures as $value) {
-                $filePath = storage_path('app/public/' . $value->file_path);
-                $filePath = str_replace('\\', '/', $filePath);
-                $zip->addFile($filePath, basename($filePath));
-            }
-
-            // Затваряне на ZIP архива
+        
             $zip->close();
-        }
+        
+            // Проверяваме дали ZIP-ът има съдържание
+            if (!$hasFiles) {
+               // unlink($zipFileName); // Изтриваме празния ZIP
+               $notification = array(
+                    'message' => 'No files in ZIP folder.',
+                    'alert-type' => 'error'
+                );
 
-        // Сваляне на ZIP архива
-        return response()->download($zipFileName)->deleteFileAfterSend(true);
+
+                return redirect()->route('article.list')->with($notification);
+            }
+        }
+    
+    // Изпращаме файла за сваляне
+    return response()->download($zipFileName)->deleteFileAfterSend(true);
+    
     }
 
     private function prepareQuestions($answer1, $answer2, $answer3)
