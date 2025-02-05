@@ -45,7 +45,12 @@ public function userStore(Request $request)
     $validator = $request->validate([
         'name' => 'required|string',
         'email' => 'required|email|unique:users',
-        'password' => 'required|string|min:3',
+        // 'password' => 'required|string|min:3',
+        'password' => [
+            'required',
+            'min:8', // Минимум 8 символа
+            'regex:/^(?=.*[a-zA-Z])(?=.*\d)(?=.*[\W_]).{8,}$/', // Поне една буква, една цифра, един специален символ и минимум 8 символа
+        ],
         'role' => 'required|in:author,reviewer,editor,admin,user',
     ]);
 
