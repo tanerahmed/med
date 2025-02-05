@@ -373,6 +373,7 @@ class ArticleController extends Controller
             return $value !== null;
         });
 
+
         $requestReviewerIds = array_filter([
             $request->input('reviewer_id_1'),
             $request->input('reviewer_id_2'),
@@ -395,12 +396,29 @@ class ArticleController extends Controller
 
 
         if ($review) {
-            // Обновете прегледа с информацията от формата
-            $review->update([
-                'reviewer_id_1' => $request->input('reviewer_id_1'),
-                'reviewer_id_2' => $request->input('reviewer_id_2'),
-                'reviewer_id_3' => $request->input('reviewer_id_3'),
-            ]);
+
+            // ПРОВЕРКА АКО МИ ИЗПРАТЯТ ЕДИН И СЪЩ РЕВЮВЪР ДА Е РАВНО НА null
+            $reviewer1 = $request->input('reviewer_id_1');
+            $reviewer2 = $request->input('reviewer_id_2');
+            $reviewer3 = $request->input('reviewer_id_3');
+            
+            if ($reviewer1 === $reviewer2) {
+                $reviewer2 = null;
+            }
+            if ($reviewer1 === $reviewer3) {
+                $reviewer3 = null;
+            }
+            if ($reviewer2 !== null && $reviewer2 === $reviewer3) {
+                $reviewer3 = null;
+            }
+            
+            $review->reviewer_id_1 = $reviewer1;
+            $review->reviewer_id_2 = $reviewer2;
+            $review->reviewer_id_3 = $reviewer3;
+            
+            // Запазване на коригираните данни
+            $review->save();
+
 
             $subject = 'Force added Reviewer for Article #' . $id;
 
