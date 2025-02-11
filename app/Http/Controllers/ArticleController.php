@@ -1210,13 +1210,13 @@ class ArticleController extends Controller
         $article->author_can_edit = $request->input('author_can_edit', 0);
         $article->save();
 
-
+dd( $request->reason);
         $authorEmail = $article->user->email;
         $subject = 'Admin Reject your ' . $article->title . ' with #' . $article->id;
         $body = [
             'article_id' => $article->id,
             'article_title' => $article->title,
-            'reason' => $request->reason
+            'reason' => $request->reason,
         ];
 
         Mail::to($authorEmail)->send(new ArticleSendEditReason($subject, $body));
