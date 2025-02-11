@@ -48,6 +48,8 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
 
     Route::put('/articles/{id}/updateAuthorCanEdit', [ArticleController::class, 'updateAuthorCanEdit'])
     ->name('article.updateAuthorCanEdit');
+    Route::get('/articles/{id}/editAuthorCanEdit', [ArticleController::class, 'editAuthorCanEdit'])
+    ->name('article.editAuthorCanEdit');
 
     // Admin upload PDF file for Article (за да може потребителите да свалят и да четат ПДФ фай)
     Route::get('articles/{article}/upload-pdf', [PDFController::class, 'upload'])->name('pdfs.upload');

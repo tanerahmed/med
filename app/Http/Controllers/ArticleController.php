@@ -29,6 +29,7 @@ use App\Mail\ForceReviewerEmail;
 use App\Mail\ArticlePublishedEmail;
 use App\Mail\ArticleDeleteddEmail;
 use App\Mail\AdminAcceptArticleEmail;
+use App\Mail\ArticleSendEditReason;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -1204,9 +1205,22 @@ class ArticleController extends Controller
 
     public function updateAuthorCanEdit($id, Request $request)
     {
+
         $article = Article::findOrFail($id);
         $article->author_can_edit = $request->input('author_can_edit', 0);
         $article->save();
+
+
+        $authorEmail = $article->user->email;
+        $subject = 'Admin Reject your ' . $article->title . ' with #' . $article->id;
+        $body = [
+            'article_id' => $article->id,
+            'article_title' => $article->title,
+            'reason' => $request->reason
+        ];
+
+        Mail::to($authorEmail)->send(new ArticleSendEditReason($subject, $body));
+
 
         $notification = array(
             'message' => 'Send Edit to article' . $article->title . ' successfully.',
@@ -1214,7 +1228,12 @@ class ArticleController extends Controller
         );
         return redirect()->route('article.list')->with($notification);
     }
-
+    public function editAuthorCanEdit($id)
+    {
+        $article = Article::findOrFail($id);
+        return view('author.edit-author', compact('article'));
+    }
+    
 
 }
 

@@ -48,78 +48,7 @@
                                             {{-- <td>{!! $article->statusFromReview !!}</td> --}}
                                             <td>{{ $article->created_at }}</td>
                                             <td>{{ $article->issue_id }}</td>
-                                            {{-- <td>
-                                                @if (Auth::check() && Auth::user()->role === 'admin')
-                                                    @if ($article->admin_accept === 0)
-                                                        <a href="{{ route('articles.edit', $article->id) }}"
-                                                            class="btn btn-primary btn-sm disabled">Reviews<i
-                                                                class="fas fa-users"></i></a>
-                                                    @else
-                                                        <a href="{{ route('articles.edit', $article->id) }}"
-                                                            class="btn btn-primary btn-sm">Reviews<i
-                                                                class="fas fa-users"></i></a>
-                                                    @endif
-                                                @endif
-                                                @if (Auth::user()->role === 'author' && $article->status === 'accepted')
-                                                    <a href="{{ route('articles.articleEdit', $article->id) }}"
-                                                        class="btn btn-warning btn-sm disabled">Full Accept<i
-                                                            class="fas fa-edit"></i></a>
-                                                @elseif (Auth::user()->role === 'author' && $article->status === 'declined')
-                                                    <a href="{{ route('articles.articleEdit', $article->id) }}"
-                                                        class="btn btn-warning btn-sm disabled">Declined<i
-                                                            class="fas fa-edit"></i></a>
-                                                @elseif (Auth::user()->role !== 'admin' && $article->author_can_edit === 1)
-                                                    <a href="{{ route('articles.articleEdit', $article->id) }}"
-                                                        class="btn btn-warning btn-sm">Edit</a>
-                                                        
-                                                @elseif (Auth::user()->role === 'admin')
-                                                    @if ($article->admin_accept === 0)
-                                                        <a href="{{ route('articles.adminAcceptArticleBlade', $article->id) }}"
-                                                            class="btn btn-warning btn-sm">Editor Accept<i
-                                                                class="fas fa-edit"></i></a>
-                                                    @elseif ($article->admin_accept === 1)
-                                                        <a href="{{ route('articles.adminAcceptArticleBlade', $article->id) }}"
-                                                            class="btn btn-warning btn-sm disabled">Editor Accept<i
-                                                                class="fas fa-edit"></i></a>
-                                                    @endif
 
-                                                    <form action="{{ route('articles.destroy', $article->id) }}"
-                                                        method="POST">
-                                                        @csrf
-                                                        @method('DELETE')
-                                                        <button type="submit" class="btn btn-danger btn-sm"
-                                                            onclick="return confirm('Are you sure you want to delete this article?')">Delete</button>
-                                                    </form>
-                                                    <form action="{{ route('article.updateAuthorCanEdit', $article->id) }}"
-                                                        method="POST">
-                                                        @csrf
-                                                        @method('PUT')
-                                                        <input type="hidden" name="author_can_edit" value="1">
-                                                        <button type="submit" class="btn btn-warning btn-sm">Send
-                                                            Edit</button>
-                                                    </form>
-                                                @endif
-
-                                                @if (Auth::user()->role === 'admin' && $article->status === 'accepted')
-                                                    <a href="{{ route('articles.addIssueIdBlade', $article->id) }}"
-                                                        class="btn btn-warning btn-sm">Publish<i
-                                                            class="fas fa-edit"></i></a>
-                                                @endif
-
-                                                @if ((Auth::user()->role === 'author' || Auth::user()->role === 'reviewer' ) && $article->status !== 'accepted')
-                                                    <form action="{{ route('articles.destroy', $article->id) }}"
-                                                        method="POST">
-                                                        @csrf
-                                                        @method('DELETE')
-                                                        <button type="submit" class="btn btn-danger btn-sm"
-                                                            onclick="return confirm('Are you sure you want to delete this article?')">Delete</button>
-                                                    </form>
-                                                @endif
-
-                                                <a href="{{ route('review.downolad_files', $article->id) }}"
-                                                    class="btn btn-success btn-sm">Download ZIP<i
-                                                        class="fas fa-download"></i></a>
-                                            </td> --}}
                                             <td>
                                                 @if (Auth::check())
                                                     @php
@@ -154,9 +83,9 @@
                                                             @if ($article->status === 'accepted')
                                                                 <button type="submit" class="btn btn-warning btn-sm disabled">Send Edit</button>
                                                             @else
-                                                                <form action="{{ route('article.updateAuthorCanEdit', $article->id) }}" method="POST" style="display:inline;">
+                                                                <form action="{{ route('article.editAuthorCanEdit', $article->id) }}" method="POST" style="display:inline;">
                                                                     @csrf
-                                                                    @method('PUT')
+                                                                    @method('GET')
                                                                     <input type="hidden" name="author_can_edit" value="1">
                                                                     <button type="submit" class="btn btn-warning btn-sm">Send Edit</button>
                                                                 </form>
