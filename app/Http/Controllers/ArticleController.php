@@ -1210,7 +1210,6 @@ class ArticleController extends Controller
         $article->author_can_edit = $request->input('author_can_edit', 0);
         $article->save();
 
-dd( $request->reason);
         $authorEmail = $article->user->email;
         $subject = 'Admin Reject your ' . $article->title . ' with #' . $article->id;
         $body = [

@@ -8,7 +8,7 @@
 <body>
     <p>Hello,</p>
     <p>Article  #ID : {{ $body['article_id'] }} with title : {{ $body['article_title'] }} was Rejected with reason! </p>
-    <p>{{ $body['reason'] }}</p>
+    <p> !!!! {{ $body['reason'] }}  ?????</p>
 
 
     <p>Sincerely,</p>
