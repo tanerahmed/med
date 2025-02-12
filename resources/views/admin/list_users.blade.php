@@ -1,5 +1,6 @@
 @extends('admin.dashboard')
 @section('admin')
+
     <div class="page-content">
 
         <div class="d-flex justify-content-between align-items-center flex-wrap grid-margin">
@@ -13,7 +14,7 @@
                 <div class="card">
                     <div class="card-body">
                         <div class="table-responsive">
-                            <table class="table table-hover mb-0">
+                            <table id='dataTable' class="table table-hover mb-0">
                                 <thead>
                                     <tr>
                                         <th class="pt-0">#ID</th>
@@ -64,7 +65,15 @@
                 </div>
             </div>
         </div>
-
-
     </div>
+
+        <script>
+        $(document).ready(function() {
+            $('#dataTable').DataTable({
+                "order": [
+                    [5, "desc"]
+                ] // Сортиране по втората колона (индекс 1) във възходящ ред
+            });
+        });
+    </script>
 @endsection
