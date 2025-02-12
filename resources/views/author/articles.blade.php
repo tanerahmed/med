@@ -1,5 +1,18 @@
 @extends('admin.dashboard')
 @section('admin')
+
+<style>
+    #dataTable {
+        width: 100% !important;
+        table-layout: fixed;
+    }
+    #dataTable td, #dataTable th {
+        white-space: normal;
+        height: auto;
+    }
+</style>
+
+
     <div class="page-content">
 
         <div class="d-flex justify-content-between align-items-center flex-wrap grid-margin">
