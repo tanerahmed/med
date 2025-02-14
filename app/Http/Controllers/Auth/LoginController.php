@@ -16,17 +16,7 @@ class LoginController extends Controller
     {
         $user = Socialite::driver('orcid')->user();
     
-var_dump($user);
-die('LoginCOntrler.php');
 
-
-        // TODO DOBAVI orcid  V TABLICATA USERS
-        // TODO DOBAVI orcid  V TABLICATA USERS
-        // TODO DOBAVI orcid  V TABLICATA USERS
-        // TODO DOBAVI orcid  V TABLICATA USERS
-        // TODO DOBAVI orcid  V TABLICATA USERS
-        // TODO DOBAVI orcid  V TABLICATA USERS
-        // TODO DOBAVI orcid  V TABLICATA USERS
 
         // Find the user in your database by their ORCID ID.
         $existingUser = User::where('orcid', $user->id)->first();
