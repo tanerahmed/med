@@ -10,6 +10,52 @@
         white-space: normal;
         height: auto;
     }
+    /* ID */
+    #dataTable th:nth-child(1), #dataTable td:nth-child(1) {
+        width: 20px; /* Можеш да промениш тази стойност според нуждите */
+        text-align: center;
+    }
+/* Type */
+    #dataTable th:nth-child(2), #dataTable td:nth-child(2) {
+        width: 80px;
+        text-align: center;
+    }
+/* Specality */
+    #dataTable th:nth-child(3), #dataTable td:nth-child(3) {
+        width: 70px;
+        text-align: center;
+    }
+
+    /* Specality Area */
+    #dataTable th:nth-child(4), #dataTable td:nth-child(4) {
+        width: 100px;
+        text-align: center;
+    }
+
+
+    /* Title*/
+    #dataTable th:nth-child(5), #dataTable td:nth-child(5) {
+        width: 500px;
+    }
+
+    /* Date*/
+    #dataTable th:nth-child(6), #dataTable td:nth-child(6) {
+        width: 50px;
+    }
+
+    /* Issue*/
+    #dataTable th:nth-child(7), #dataTable td:nth-child(7) {
+        width: 25px;
+    }
+
+       /* Acction*/
+       #dataTable th:nth-child(8), #dataTable td:nth-child(8) {
+        width: 450px;
+    }      
+     /* Review*/
+       #dataTable th:nth-child(9), #dataTable td:nth-child(98) {
+        width: 100px;
+    }
 </style>
 
 
