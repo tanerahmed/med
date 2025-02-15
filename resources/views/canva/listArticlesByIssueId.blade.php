@@ -71,15 +71,11 @@
                                                     </ul>
                                                         <br>
                                                         <ul>
-                                                            <li><i class="uil uil-user"></i>{{ $article->user->name }}</li>
-
                                                             @foreach ($article->authors as $author)
-                                                                @if ($author)
-                                                                    <li><i
-                                                                            class="uil uil-user"></i>{{ $author->first_name }}
-                                                                        {{ $author->family_name }}</li>
-                                                                @endif
-                                                            @endforeach
+                                                            @if ($author)
+                                                                <li><i class="uil uil-user"></i>{{ $author->first_name }} {{ $author->family_name }}</li>
+                                                            @endif
+                                                        @endforeach
                                                         </ul>
                                                         <br>
                                                         <ul>
