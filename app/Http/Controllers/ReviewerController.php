@@ -383,10 +383,10 @@ class ReviewerController extends Controller
             } elseif ($review->reviewer_id_2 === null) {
                 $review->reviewer_id_2 = $user->id;
             } elseif ($review->reviewer_id_3 === null) {
-                // Проверка дали rating_1 и rating_2 съдържат "accepted" или "accepted with revision" а другият е "declined"
+                // Проверка дали rating_1 и rating_2 съдържат "accepted", а другият е "declined"
                 //  Само тогава записваме Арбитър - Ревювър 3
-                $isRating1Accepted = in_array($review->rating_1, ['accepted', 'accepted with revision']);
-                $isRating2Accepted = in_array($review->rating_2, ['accepted', 'accepted with revision']);
+                $isRating1Accepted = $review->rating_1 === 'accepted';
+                $isRating2Accepted = $review->rating_2 === 'accepted';
                 $isRating1Declined = $review->rating_1 === 'declined';
                 $isRating2Declined = $review->rating_2 === 'declined';
 
