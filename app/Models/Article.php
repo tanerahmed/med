@@ -78,7 +78,9 @@ class Article extends Model
 
     public function authors()
     {
-        return $this->hasMany(Author::class);
+        // return $this->hasMany(Author::class);
+        // Взимам Ко Авторите сортирани по позиция
+        return $this->hasMany(Author::class)->orderBy('position', 'asc');
     }
 
     public function reviews()
