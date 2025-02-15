@@ -175,6 +175,21 @@ class ArticleController extends Controller
             // return back()->with('error', 'An error occurred while validat data. Please try again with correct data.');
         }
 
+        // Проверка дали авторите имат всички задължителни полета.
+        if ($request->has('authors')) {
+            $authors = json_decode($request->input('authors'), true);
+        
+            foreach ($authors as $authorData) {
+                if ($authorData['first_name'] == '' || $authorData['family_name_'] == '' || $authorData['primary_affiliation'] == '' ||  $authorData['contact'] == '' ){
+                    return response()->json([
+                        'success' => false,
+                        'errors' => "Co Autgors data not walid"
+                    ], 422);
+                }
+            }
+        }
+
+
         try {
             DB::transaction(function () use ($request) {
                 $article = new Article();

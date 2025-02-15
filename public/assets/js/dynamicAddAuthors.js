@@ -12,8 +12,8 @@ document.addEventListener('DOMContentLoaded', function() {
             <h3>Co Author</h3>
                 <div class="row">
                     <div class="col-md-6">
-                        <label for="author_${authorIndex}" class="form-label">Name:</label>
-                        <input type="text" class="form-control" name="authors[${authorIndex}][first_name]" placeholder="First Name" required>
+                        <label for="author_${authorIndex}" class="form-label">* Name:</label>
+                        <input type="text" class="form-control" name="authors[${authorIndex}][first_name]" placeholder="First Name - required" required>
                     </div>
                     <div class="col-md-6">
                         <label for="middle_name_${authorIndex}" class="form-label">Middle Name/Initial:</label>
@@ -22,27 +22,27 @@ document.addEventListener('DOMContentLoaded', function() {
                 </div>
                 <div class="row">
                     <div class="col-md-6">
-                        <label for="family_name_${authorIndex}" class="form-label">Family Name:</label>
-                        <input type="text" class="form-control" name="authors[${authorIndex}][family_name]" placeholder="Family Name" required>
+                        <label for="family_name_${authorIndex}" class="form-label">* Family Name:</label>
+                        <input type="text" class="form-control" name="authors[${authorIndex}][family_name]" placeholder="Family Name - required" required>
                     </div>
                     <div class="col-md-6">
-                        <label for="primary_affiliation_${authorIndex}" class="form-label">Primary Affiliation:</label>
-                        <input type="text" class="form-control" name="authors[${authorIndex}][primary_affiliation]" placeholder="Primary Affiliation" required>
+                        <label for="primary_affiliation_${authorIndex}" class="form-label">* Primary Affiliation:</label>
+                        <input type="text" class="form-control" name="authors[${authorIndex}][primary_affiliation]" placeholder="Primary Affiliation - required" required>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-md-6">
-                        <label for="contact_${authorIndex}" class="form-label">Contact (E-mail):</label>
-                        <input type="email" class="form-control" name="authors[${authorIndex}][contact]" placeholder="E-mail" required>
+                        <label for="contact_${authorIndex}" class="form-label">* Contact (E-mail):</label>
+                        <input type="email" class="form-control" name="authors[${authorIndex}][contact]" placeholder="E-mail - required" required>
 
                     <div>
                         <label for="position">Position</label>
-                        <input type="number" name="authors[${authorIndex}][position]" class="form-control">
+                        <input type="number" name="authors[${authorIndex}][position]" value="${authorIndex}" class="form-control">
                     </div>
 
                     <div>
                         <label for="is_corresponding_author">
-                            <input type="checkbox" name="authors[${authorIndex}][is_corresponding_author]" value="1">
+                            <input type="checkbox" name="authors[${authorIndex}][is_corresponding_author]" value="0">
                             Corresponding Author
                         </label>
                     </div>
