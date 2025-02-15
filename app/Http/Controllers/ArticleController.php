@@ -490,7 +490,7 @@ class ArticleController extends Controller
         $fileNames['figures'] = $this->cutAndReturnOnlyFileName($article->figures);
         $fileNames['tables'] = $this->cutAndReturnOnlyFileName($article->tables);
         $fileNames['supplementaryFiles'] = $this->cutAndReturnOnlyFileName($article->supplementaryFiles);
-        $fileNames['coverLetter'] = $this->cutAndReturnOnlyFileName($article->coverLetter);
+        $fileNames['coverLetter'] = $this->cutAndReturnOnlyFileName($article->coverLetter);      
 
         return view('author.articleEdit', compact('article', 'fileNames'));
     }
@@ -615,6 +615,20 @@ class ArticleController extends Controller
         $validator = Validator::make($request->all(), [
             // Валидацията на данните тук...
         ]);
+
+
+        // Проверка дали авторите имат всички задължителни полета.
+        if ($request->has('authors')) {
+            $authors = $request->input('authors');
+            foreach ($authors as $authorData) {
+                if ($authorData['first_name'] == '' || $authorData['family_name'] == '' || $authorData['primary_affiliation'] == '' ||  $authorData['contact_email'] == '' ){
+                    return response()->json([
+                        'success' => false,
+                        'errors' => "Co Autgors data not walid"
+                    ], 422);
+                }
+            }
+        }
 
 
         try {
@@ -831,6 +845,25 @@ class ArticleController extends Controller
                 $review->reviewer_id_2_canedit = 1;
                 $review->reviewer_id_3_canedit = 1;
                 $review->save();
+
+
+                // Изтриване на старите автори и записване на новите
+                $article->authors()->delete();
+                // Co Authors update
+                foreach ($request->input('authors') as $author) {
+                    $article->authors()->create([
+                        'first_name' => $author['first_name'],
+                        'middle_name' => $author['middle_name'] ?? null,
+                        'family_name' => $author['family_name'],
+                        'primary_affiliation' => $author['primary_affiliation'],
+                        'contact_email' => $author['contact_email'],
+                        'author_contributions' => $author['author_contributions'] ?? null,
+                        'position' => $author['position'] ?? null,
+                        'is_corresponding_author' => isset($author['is_corresponding_author']) ? 1 : 0,
+                    ]);
+                }
+
+
             });
         } catch (\Exception $e) {
             $notification = [

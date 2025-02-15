@@ -240,95 +240,96 @@
 
                         @if (Auth::user()->role === 'author' || Auth::user()->role === 'reviewer')
                            <!-- Upload Title Page -->
-<div class="mb-3">
-    @foreach ($fileNames['titlePage'] as $fileName)
-    <p style="color:burlywood">{{ $fileName }}</p>
-    <div class="mb-3 form-check">
-        <input type="checkbox" class="form-check-input" name="delete_title_pages[]" value="{{ $fileName }}" id="delete_title_page_{{ $loop->index }}">
-        <label class="form-check-label" for="delete_title_page_{{ $loop->index }}">Delete file</label>
-    </div>
-    @endforeach
-    <label for="title_pages" class="form-label"><strong>Upload Title Page: </strong><i>(docx, LaTeX doc)</i></label>
-    <div id="title_pages_selected_files"></div>
-    <input type="file" name="title_pages[]" multiple class="form-control" id="title_pages" onchange="validateTitlePageFileType(); displaySelectedFiles('title_pages')">
-    <div class="text-danger" id="title_page_error"></div>
-</div>
-<hr>
-<!-- Manuscript -->
-<div class="mb-3">
-    @foreach ($fileNames['manuscript'] as $fileName)
-    <p style="color:burlywood">{{ $fileName }}</p>
-    <div class="mb-3 form-check">
-        <input type="checkbox" class="form-check-input" name="delete_manuscripts[]" value="{{ $fileName }}" id="delete_manuscript_{{ $loop->index }}">
-        <label class="form-check-label" for="delete_manuscript_{{ $loop->index }}">Delete file</label>
-    </div>
-    @endforeach
-    <label for="manuscript" class="form-label"><strong>Upload Manuscript: </strong><i>(docx, LaTeX doc)</i></label>
-    <div id="manuscript_selected_files"></div>
-    <input type="file" name="manuscript[]" multiple class="form-control" id="manuscript" onchange="validateManuscriptFileType(); displaySelectedFiles('manuscript')">
-    <div class="text-danger" id="manuscript_error"></div>                         
-</div>
-<hr>
-<!-- Figures -->
-<div class="mb-3">
-    @foreach ($fileNames['figures'] as $fileName)
-    <p style="color:burlywood">{{ $fileName }}</p>
-    <div class="mb-3 form-check">
-        <input type="checkbox" class="form-check-input" name="delete_figures[]" value="{{ $fileName }}" id="delete_figure_{{ $loop->index }}">
-        <label class="form-check-label" for="delete_figure_{{ $loop->index }}">Delete file</label>
-    </div>
-    @endforeach
-    <label for="figures" class="form-label"><strong>Upload Figures: </strong> <i>(jpg)</i></label>
-    <div id="figures_selected_files"></div>
-    <input type="file" name="figures[]" multiple class="form-control" id="figures" onchange="validateFiguresFileType(); displaySelectedFiles('figures')">
-    <div class="text-danger" id="figures_error"></div>
-</div>
-<hr>
-<!-- Tables -->
-<div class="mb-3">
-    @foreach ($fileNames['tables'] as $fileName)
-    <p style="color:burlywood">{{ $fileName }}</p>
-    <div class="mb-3 form-check">
-        <input type="checkbox" class="form-check-input" name="delete_tables[]" value="{{ $fileName }}" id="delete_table_{{ $loop->index }}">
-        <label class="form-check-label" for="delete_table_{{ $loop->index }}">Delete file</label>
-    </div>
-    @endforeach
-    <label for="tables" class="form-label"><strong>Upload Tables: </strong><i>(docx)</i></label>
-    <div id="tables_selected_files"></div>
-    <input type="file" name="tables[]" multiple class="form-control" id="tables" onchange="validateTablesFileType(); displaySelectedFiles('tables')">
-    <div class="text-danger" id="tables_error"></div>
-</div>
-<hr>
-<!-- Supplementary -->
-<div class="mb-3">
-    @foreach ($fileNames['supplementaryFiles'] as $fileName)
-    <p style="color:burlywood">{{ $fileName }}</p>
-    <div class="mb-3 form-check">
-        <input type="checkbox" class="form-check-input" name="delete_supplementary[]" value="{{ $fileName }}" id="delete_supplementary_{{ $loop->index }}">
-        <label class="form-check-label" for="delete_supplementary_{{ $loop->index }}">Delete file</label>
-    </div>
-    @endforeach
-    <label for="supplementary" class="form-label"><strong>Upload Supplementary: </strong><i>(docx, xls, xlsx, pdf, jpg)</i></label>
-    <div id="supplementary_selected_files"></div>
-    <input type="file" name="supplementary[]" multiple class="form-control" id="supplementary" onchange="validateSupplementaryFileType(); displaySelectedFiles('supplementary')">
-    <div class="text-danger" id="supplementary_error"></div>
-</div>
-<hr>
-<!-- Cover Letter -->
-<div class="mb-3">
-    @foreach ($fileNames['coverLetter'] as $fileName)
-    <p style="color:burlywood">{{ $fileName }}</p>
-    <div class="mb-3 form-check">
-        <input type="checkbox" class="form-check-input" name="delete_cover_letter[]" value="{{ $fileName }}" id="delete_cover_letter_{{ $loop->index }}">
-        <label class="form-check-label" for="delete_cover_letter_{{ $loop->index }}">Delete file</label>
-    </div>
-    @endforeach
-    <label for="cover_letter" class="form-label"><strong>Upload Cover Letter:</strong></label>
-    <div id="cover_letter_selected_files"></div>
-    <input type="file" name="cover_letter[]" multiple class="form-control" id="cover_letter" onchange="validateCoverLaterFileType(); displaySelectedFiles('cover_letter')">
-    <div class="text-danger" id="cover_letter_error"></div>
-</div>
-<hr>
+                            <div class="mb-3">
+                                @foreach ($fileNames['titlePage'] as $fileName)
+                                <p style="color:burlywood">{{ $fileName }}</p>
+                                <div class="mb-3 form-check">
+                                    <input type="checkbox" class="form-check-input" name="delete_title_pages[]" value="{{ $fileName }}" id="delete_title_page_{{ $loop->index }}">
+                                    <label class="form-check-label" for="delete_title_page_{{ $loop->index }}">Delete file</label>
+                                </div>
+                                @endforeach
+                                <label for="title_pages" class="form-label"><strong>Upload Title Page: </strong><i>(docx, LaTeX doc)</i></label>
+                                <div id="title_pages_selected_files"></div>
+                                <input type="file" name="title_pages[]" multiple class="form-control" id="title_pages" onchange="validateTitlePageFileType(); displaySelectedFiles('title_pages')">
+                                <div class="text-danger" id="title_page_error"></div>
+                            </div>
+                            <hr>
+                            <!-- Manuscript -->
+                            <div class="mb-3">
+                                @foreach ($fileNames['manuscript'] as $fileName)
+                                <p style="color:burlywood">{{ $fileName }}</p>
+                                <div class="mb-3 form-check">
+                                    <input type="checkbox" class="form-check-input" name="delete_manuscripts[]" value="{{ $fileName }}" id="delete_manuscript_{{ $loop->index }}">
+                                    <label class="form-check-label" for="delete_manuscript_{{ $loop->index }}">Delete file</label>
+                                </div>
+                                @endforeach
+                                <label for="manuscript" class="form-label"><strong>Upload Manuscript: </strong><i>(docx, LaTeX doc)</i></label>
+                                <div id="manuscript_selected_files"></div>
+                                <input type="file" name="manuscript[]" multiple class="form-control" id="manuscript" onchange="validateManuscriptFileType(); displaySelectedFiles('manuscript')">
+                                <div class="text-danger" id="manuscript_error"></div>                         
+                            </div>
+                            <hr>
+                            <!-- Figures -->
+                            <div class="mb-3">
+                                @foreach ($fileNames['figures'] as $fileName)
+                                <p style="color:burlywood">{{ $fileName }}</p>
+                                <div class="mb-3 form-check">
+                                    <input type="checkbox" class="form-check-input" name="delete_figures[]" value="{{ $fileName }}" id="delete_figure_{{ $loop->index }}">
+                                    <label class="form-check-label" for="delete_figure_{{ $loop->index }}">Delete file</label>
+                                </div>
+                                @endforeach
+                                <label for="figures" class="form-label"><strong>Upload Figures: </strong> <i>(jpg)</i></label>
+                                <div id="figures_selected_files"></div>
+                                <input type="file" name="figures[]" multiple class="form-control" id="figures" onchange="validateFiguresFileType(); displaySelectedFiles('figures')">
+                                <div class="text-danger" id="figures_error"></div>
+                            </div>
+                            <hr>
+                            <!-- Tables -->
+                            <div class="mb-3">
+                                @foreach ($fileNames['tables'] as $fileName)
+                                <p style="color:burlywood">{{ $fileName }}</p>
+                                <div class="mb-3 form-check">
+                                    <input type="checkbox" class="form-check-input" name="delete_tables[]" value="{{ $fileName }}" id="delete_table_{{ $loop->index }}">
+                                    <label class="form-check-label" for="delete_table_{{ $loop->index }}">Delete file</label>
+                                </div>
+                                @endforeach
+                                <label for="tables" class="form-label"><strong>Upload Tables: </strong><i>(docx)</i></label>
+                                <div id="tables_selected_files"></div>
+                                <input type="file" name="tables[]" multiple class="form-control" id="tables" onchange="validateTablesFileType(); displaySelectedFiles('tables')">
+                                <div class="text-danger" id="tables_error"></div>
+                            </div>
+                            <hr>
+                            <!-- Supplementary -->
+                            <div class="mb-3">
+                                @foreach ($fileNames['supplementaryFiles'] as $fileName)
+                                <p style="color:burlywood">{{ $fileName }}</p>
+                                <div class="mb-3 form-check">
+                                    <input type="checkbox" class="form-check-input" name="delete_supplementary[]" value="{{ $fileName }}" id="delete_supplementary_{{ $loop->index }}">
+                                    <label class="form-check-label" for="delete_supplementary_{{ $loop->index }}">Delete file</label>
+                                </div>
+                                @endforeach
+                                <label for="supplementary" class="form-label"><strong>Upload Supplementary: </strong><i>(docx, xls, xlsx, pdf, jpg)</i></label>
+                                <div id="supplementary_selected_files"></div>
+                                <input type="file" name="supplementary[]" multiple class="form-control" id="supplementary" onchange="validateSupplementaryFileType(); displaySelectedFiles('supplementary')">
+                                <div class="text-danger" id="supplementary_error"></div>
+                            </div>
+                            <hr>
+                            <!-- Cover Letter -->
+                            <div class="mb-3">
+                                @foreach ($fileNames['coverLetter'] as $fileName)
+                                <p style="color:burlywood">{{ $fileName }}</p>
+                                <div class="mb-3 form-check">
+                                    <input type="checkbox" class="form-check-input" name="delete_cover_letter[]" value="{{ $fileName }}" id="delete_cover_letter_{{ $loop->index }}">
+                                    <label class="form-check-label" for="delete_cover_letter_{{ $loop->index }}">Delete file</label>
+                                </div>
+                                @endforeach
+                                <label for="cover_letter" class="form-label"><strong>Upload Cover Letter:</strong></label>
+                                <div id="cover_letter_selected_files"></div>
+                                <input type="file" name="cover_letter[]" multiple class="form-control" id="cover_letter" onchange="validateCoverLaterFileType(); displaySelectedFiles('cover_letter')">
+                                <div class="text-danger" id="cover_letter_error"></div>
+                            </div>
+
+                            <hr>
 
                             <!-- Keywords -->
                             <div class="mb-3">
@@ -362,13 +363,79 @@
                         @endif
                     </div>
                     <hr>
-                    {{-- <div class="col-md-12">
+                    <div class="col-md-12">
                         <!-- Контейнер за полетата на авторите -->
-                        <div id="authorsContainer" class="row g-3"></div>
-                    </div>
-                    <div class="mb-3">
-                        <button type="button" class="btn btn-primary" id="addAuthorButton">Add Author</button>
-                    </div> --}}
+                        @foreach ($article->authors as $author) 
+                        <div class="author-row">
+                            <h3>Co Author</h3>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label for="authors_{{ $loop->index }}_first_name" class="form-label">* Name:</label>
+                                    <input type="text" class="form-control" 
+                                        name="authors[{{ $loop->index }}][first_name]" 
+                                        placeholder="First Name - required" 
+                                        value="{{ old('authors.'.$loop->index.'.first_name', $author->first_name) }}" required>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="authors_{{ $loop->index }}_middle_name" class="form-label">Middle Name/Initial:</label>
+                                    <input type="text" class="form-control" 
+                                        name="authors[{{ $loop->index }}][middle_name]" 
+                                        placeholder="Middle Name/Initial" 
+                                        value="{{ old('authors.'.$loop->index.'.middle_name', $author->middle_name) }}">
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label for="authors_{{ $loop->index }}_family_name" class="form-label">* Family Name:</label>
+                                    <input type="text" class="form-control" 
+                                        name="authors[{{ $loop->index }}][family_name]" 
+                                        placeholder="Family Name - required" 
+                                        value="{{ old('authors.'.$loop->index.'.family_name', $author->family_name) }}" required>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="authors_{{ $loop->index }}_primary_affiliation" class="form-label">* Primary Affiliation:</label>
+                                    <input type="text" class="form-control" 
+                                        name="authors[{{ $loop->index }}][primary_affiliation]" 
+                                        placeholder="Primary Affiliation - required" 
+                                        value="{{ old('authors.'.$loop->index.'.primary_affiliation', $author->primary_affiliation) }}" required>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label for="authors_{{ $loop->index }}_contact_email" class="form-label">* Contact (E-mail):</label>
+                                    <input type="email" class="form-control" 
+                                        name="authors[{{ $loop->index }}][contact_email]" 
+                                        placeholder="E-mail - required" 
+                                        value="{{ old('authors.'.$loop->index.'.contact_email', $author->contact_email) }}" required>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="authors_{{ $loop->index }}_author_contributions" class="form-label">Author Contributions Statement:</label>
+                                    <textarea class="form-control" 
+                                        name="authors[{{ $loop->index }}][author_contributions]" 
+                                        placeholder="Author Contributions Statement" rows="3">{{ old('authors.'.$loop->index.'.author_contributions', $author->author_contributions) }}</textarea>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <label for="authors_{{ $loop->index }}_is_corresponding_author">
+                                        <input type="checkbox" name="authors[{{ $loop->index }}][is_corresponding_author]" 
+                                            value="1" 
+                                            {{ old('authors.'.$loop->index.'.is_corresponding_author', $author->is_corresponding_author) ? 'checked' : '' }}>
+                                        Corresponding Author
+                                    </label>
+                                </div>
+                                <div class="col-md-4">
+                                    <label for="authors_{{ $loop->index }}_position">Position</label>
+                                    <input type="number" name="authors[{{ $loop->index }}][position]" 
+                                        value="{{ old('authors.'.$loop->index.'.position', $author->position) }}" 
+                                        class="form-control">
+                                </div>
+                            </div>
+                        </div>
+                    @endforeach
+                    
+
+
 
                     <div class="mb-3 d-flex justify-content-end">
                         <button type="submit" class="btn btn-warning">Edit Article</button>
