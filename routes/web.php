@@ -98,6 +98,12 @@ Route::middleware(['auth'])->group(function () {
 
     // Show articles by Author EMAIL
     Route::get('/author/{email}/articlesByAuthor', [AuthorController::class, 'showArticlesByAuthor'])->name('author.articlesByAuthor');
+    // Show articles by Specialty
+    Route::get('/articles/specialty/{specialty}', [ArticleController::class, 'showArticlesBySpecialty'])->name('articles.showArticlesBySpecialty');
+    // Show articles by scientific_аrea
+    Route::get('/articles/scientific-area/{scientific_area}', [ArticleController::class, 'showArticlesByScientificArea'])->name('articles.showArticlesByScientificArea');
+
+
 
     // Reviewer 
     Route::get('/reviewer/dashboard',   [ReviewerController::class, 'ReviewerDashboard'])->name('reviewer.dashboard');

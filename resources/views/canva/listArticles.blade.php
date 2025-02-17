@@ -68,11 +68,25 @@
                                                                 class="uil uil-schedule"></i>{{ $article->created_at->format('Y-m-d') }}
                                                         </li>
                                                        
-                                                        <li><i class="uil uil-folder-open"></i>{{ $article->specialty }}
+                                                        <li>
+                                                            <i class="uil uil-folder-open"></i>                                                                                                                    
+                                                            <a href="{{ route('articles.showArticlesBySpecialty', ['specialty' => urlencode($article->specialty)]) }}">
+                                                                {{ $article->specialty }}
+                                                            </a>                                                                                                           
                                                         </li>
-                                                        <li><i
-                                                                class="uil uil-folder-open"></i>{{ $article->scientific_area }}
+
+
+
+
+
+                                                        <li>
+                                                            <i class="uil uil-folder-open"></i>                                                                                                                    
+                                                            <a href="{{ route('articles.showArticlesByScientificArea', ['scientific_area' => $article->scientific_area]) }}">
+                                                                {{ $article->scientific_area }}
+                                                            </a>                                                                                                           
                                                         </li>
+
+                                        
                                                     </ul>
                                                     <br>
                                                     <ul>

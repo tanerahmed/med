@@ -1282,6 +1282,58 @@ class ArticleController extends Controller
     }
     
 
+
+    public function showArticlesBySpecialty($specialty)
+    {
+        // Търсим всички статии, където има автори с дадената специалност
+        $articles = Article::where('specialty', $specialty)->whereNotNull('issue_id')->orderBy('created_at', 'desc')->paginate(10);
+
+        if ($articles->isEmpty()) {
+            abort(404, "Няма статии за автори със специалност There is no  {$specialty}.");
+        }
+
+        $activeSpecialty = '';
+
+        // get issue ids
+        $allArticles = Article::all();
+        $issueIds = $allArticles->pluck('issue_id')->unique()->toArray();
+        $issueIds = array_filter($issueIds, fn($value) => !is_null($value)); // премахва null стойностите
+        rsort($issueIds); // сортира масива в нарастващ ред
+
+        $specialties = $articles->pluck('specialty')->unique()->filter(function ($value) {
+            return !is_null($value) && $value !== 'Select Speciality';
+        })->toArray();
+
+        return view('canva.listArticles', compact('articles',  'issueIds', 'activeSpecialty', 'specialties'));
+    }
+
+
+    public function showArticlesByScientificArea($scientific_area)
+    {
+
+        // Търсим всички статии, където има автори с дадената специалност
+        $articles = Article::where('scientific_area', $scientific_area)->whereNotNull('issue_id')->orderBy('created_at', 'desc')->paginate(10);
+
+        if ($articles->isEmpty()) {
+            abort(404, "Няма статии за автори със специалност There is no  {$scientific_area}.");
+        }
+
+        $activeSpecialty = '';
+
+        // get issue ids
+        $allArticles = Article::all();
+        $issueIds = $allArticles->pluck('issue_id')->unique()->toArray();
+        $issueIds = array_filter($issueIds, fn($value) => !is_null($value)); // премахва null стойностите
+        rsort($issueIds); // сортира масива в нарастващ ред
+
+        $specialties = $articles->pluck('specialty')->unique()->filter(function ($value) {
+            return !is_null($value) && $value !== 'Select Speciality';
+        })->toArray();
+
+        return view('canva.listArticles', compact('articles',  'issueIds', 'activeSpecialty', 'specialties'));
+    }
+
+
 }
 
 
