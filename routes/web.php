@@ -83,9 +83,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/articles_/{id}/article-issue', [ArticleController::class, 'addIssueIdBlade'])->name('articles.addIssueIdBlade');
     Route::put('/articles_/article-issue-edit/{id}', [ArticleController::class, 'addIssueId'])->name('articles.addIssueId');
 
-
-
-
+  
 
     
     Route::put('/articles_/{id}', [ArticleController::class, 'update'])->name('articles.update');
@@ -97,6 +95,9 @@ Route::middleware(['auth'])->group(function () {
     // Author
     Route::get('/author/dashboard', [AuthorController::class, 'AuthorDashboard'])->middleware('auth', 'role:author')->name('author.dashboard');
     Route::delete('/articles/{id}', [ArticleController::class, 'destroy'])->name('articles.destroy');
+
+    // Show articles by Author EMAIL
+    Route::get('/author/{email}/articlesByAuthor', [AuthorController::class, 'showArticlesByAuthor'])->name('author.articlesByAuthor');
 
     // Reviewer 
     Route::get('/reviewer/dashboard',   [ReviewerController::class, 'ReviewerDashboard'])->name('reviewer.dashboard');

@@ -7,7 +7,11 @@
             <div class="page-title-row">
 
                 <div class="page-title-content">
-                    <h1>Articles</h1>
+                    <h1>Articles</h1> 
+                   
+                     @if(isset($author))
+                        <h2>BY {{ $author->first_name }} {{ $author->family_name }}</h2>
+                    @endif
                 </div>
 
                 <nav aria-label="breadcrumb">
@@ -72,12 +76,18 @@
                                                     </ul>
                                                     <br>
                                                     <ul>
-                                                        @foreach ($article->authors as $author)
+                                                        @foreach ($article->authors as $index => $author)
                                                             @if ($author)
-                                                                <li><i class="uil uil-user"></i>{{ $author->first_name }} {{ $author->family_name }}</li>
+                                                                <li>
+                                                                    <i class="uil uil-user"></i>
+                                                                    <a href="{{ route('author.articlesByAuthor', ['email' => urlencode($author->contact_email)]) }}">
+                                                                        {{ $author->first_name }} {{ $author->family_name }}
+                                                                    </a>
+                                                                </li>
                                                             @endif
                                                         @endforeach
                                                     </ul>
+                                                    
                                                     <br>
                                                     <ul>
                                                         @if ($article->final_article_path)
