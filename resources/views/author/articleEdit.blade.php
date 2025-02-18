@@ -42,6 +42,122 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
     <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/dataTables.bootstrap5.min.css">
+    <style>
+      /* * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, Helvetica, sans-serif;
+         }
+
+         .wrapper {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 15px;
+            width: 100%;
+            min-height: 100vh;
+            background: #5691d5;
+            background: linear-gradient(282deg, #009dff 0%, #54bddf);
+         } */
+
+      .box {
+         max-width: 500px;
+         background: #F9FAFB;
+         padding: 12px;
+         width: 100%;
+         border-radius: 4px;
+         border-bottom: 2px solid #6583FF;
+      }
+
+      .upload-area-title {
+         font-size: 16px;
+         text-align: center;
+         margin-bottom: 8px;
+         font-weight: 600;
+      }
+
+      .upload-area-title i {
+         font-size: 14px;
+         font-weight: normal;
+      }
+
+      .uploadLabel {
+         width: 100%;
+         min-height: 100px;
+         background: #6583FF0d;
+         display: flex;
+         flex-direction: column;
+         justify-content: center;
+         align-items: center;
+         border: 1px dashed #6583FF82;
+         cursor: pointer;
+      }
+
+      .uploadLabel span {
+         font-size: 40px;
+         color: #6583FF;
+      }
+
+      .uploadLabel p {
+         color: #6583FF;
+         font-weight: 700;
+         /* font-family: cursive; */
+      }
+
+      .uploaded {
+         margin: 8px 0;
+         font-size: 14px;
+         color: #a5a5a5;
+      }
+
+      .showfilebox {
+         display: flex;
+         align-items: center;
+         justify-content: space-between;
+         margin: 4px 0;
+         padding: 2px 8px;
+         box-shadow: #0000000d 0px 0px 0px 1px, #d1d5db3d 0px 0px 0px 1px inset;
+      }
+
+      .showfilebox .left {
+         display: flex;
+         align-items: center;
+         flex-wrap: wrap;
+         gap: 10px;
+      }
+
+      .filetype {
+         background: #6583FF;
+         color: #fff;
+         padding: 2px 8px;
+         font-size: 14px;
+         text-transform: capitalize;
+         font-weight: 700;
+         border-radius: 3px;
+      }
+
+      .left h3 {
+         /* font-weight: 600; */
+         font-size: 14px;
+         color: #292f42;
+         margin: 0;
+      }
+
+      .right span {
+         background: #6583FF;
+         color: #fff;
+         width: 20px;
+         height: 20px;
+         font-size: 20px;
+         line-height: 20px;
+         display: inline-block;
+         text-align: center;
+         font-weight: 700;
+         cursor: pointer;
+         border-radius: 50%;
+      }
+   </style>
     <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/1.11.5/js/dataTables.bootstrap5.min.js"></script>
 </head>
@@ -86,10 +202,7 @@
                 @method('PUT')
 
                 <div class="row">
-                    <div class="alert alert-info" role="alert">
-                        If you want to upload more than one file at a time, please hold down the
-                        <strong>Ctrl</strong> button while selecting the files.
-                    </div>
+
                     <!-- !!!!!!!!!!!! Първа колона !!!!!!!!!!!! -->
                     <div class="col-md-6">
                         @if (Auth::user()->role === 'author' || Auth::user()->role === 'reviewer')
@@ -225,112 +338,6 @@
                                 <label for="abstract" class="form-label"><strong>Type Abstract:</strong></label>
                                 <textarea class="form-control" id="abstract" name="abstract" rows="8">{{ $article->abstract }}</textarea>
                             </div>
-                        @elseif (Auth::user()->role === 'admin' && $article->status === 'accepted')
-                        @endif
-                        {{-- <div class="mb-3">
-                            <label class="form-check-label" for="declarations">
-                                <input class="form-check-input" type="checkbox" id="declarations" required>
-                                I hereby declare that...
-                            </label>
-                        </div> --}}
-                    </div>
-
-                    <!-- !!!!!!!!!!!! Втора колона !!!!!!!!!!!! -->
-                    <div class="col-md-6">
-
-                        @if (Auth::user()->role === 'author' || Auth::user()->role === 'reviewer')
-                           <!-- Upload Title Page -->
-                            <div class="mb-3">
-                                @foreach ($fileNames['titlePage'] as $fileName)
-                                <p style="color:burlywood">{{ $fileName }}</p>
-                                <div class="mb-3 form-check">
-                                    <input type="checkbox" class="form-check-input" name="delete_title_pages[]" value="{{ $fileName }}" id="delete_title_page_{{ $loop->index }}">
-                                    <label class="form-check-label" for="delete_title_page_{{ $loop->index }}">Delete file</label>
-                                </div>
-                                @endforeach
-                                <label for="title_pages" class="form-label"><strong>Upload Title Page: </strong><i>(docx, LaTeX doc)</i></label>
-                                <div id="title_pages_selected_files"></div>
-                                <input type="file" name="title_pages[]" multiple class="form-control" id="title_pages" onchange="validateTitlePageFileType(); displaySelectedFiles('title_pages')">
-                                <div class="text-danger" id="title_page_error"></div>
-                            </div>
-                            <hr>
-                            <!-- Manuscript -->
-                            <div class="mb-3">
-                                @foreach ($fileNames['manuscript'] as $fileName)
-                                <p style="color:burlywood">{{ $fileName }}</p>
-                                <div class="mb-3 form-check">
-                                    <input type="checkbox" class="form-check-input" name="delete_manuscripts[]" value="{{ $fileName }}" id="delete_manuscript_{{ $loop->index }}">
-                                    <label class="form-check-label" for="delete_manuscript_{{ $loop->index }}">Delete file</label>
-                                </div>
-                                @endforeach
-                                <label for="manuscript" class="form-label"><strong>Upload Manuscript: </strong><i>(docx, LaTeX doc)</i></label>
-                                <div id="manuscript_selected_files"></div>
-                                <input type="file" name="manuscript[]" multiple class="form-control" id="manuscript" onchange="validateManuscriptFileType(); displaySelectedFiles('manuscript')">
-                                <div class="text-danger" id="manuscript_error"></div>                         
-                            </div>
-                            <hr>
-                            <!-- Figures -->
-                            <div class="mb-3">
-                                @foreach ($fileNames['figures'] as $fileName)
-                                <p style="color:burlywood">{{ $fileName }}</p>
-                                <div class="mb-3 form-check">
-                                    <input type="checkbox" class="form-check-input" name="delete_figures[]" value="{{ $fileName }}" id="delete_figure_{{ $loop->index }}">
-                                    <label class="form-check-label" for="delete_figure_{{ $loop->index }}">Delete file</label>
-                                </div>
-                                @endforeach
-                                <label for="figures" class="form-label"><strong>Upload Figures: </strong> <i>(jpg)</i></label>
-                                <div id="figures_selected_files"></div>
-                                <input type="file" name="figures[]" multiple class="form-control" id="figures" onchange="validateFiguresFileType(); displaySelectedFiles('figures')">
-                                <div class="text-danger" id="figures_error"></div>
-                            </div>
-                            <hr>
-                            <!-- Tables -->
-                            <div class="mb-3">
-                                @foreach ($fileNames['tables'] as $fileName)
-                                <p style="color:burlywood">{{ $fileName }}</p>
-                                <div class="mb-3 form-check">
-                                    <input type="checkbox" class="form-check-input" name="delete_tables[]" value="{{ $fileName }}" id="delete_table_{{ $loop->index }}">
-                                    <label class="form-check-label" for="delete_table_{{ $loop->index }}">Delete file</label>
-                                </div>
-                                @endforeach
-                                <label for="tables" class="form-label"><strong>Upload Tables: </strong><i>(docx)</i></label>
-                                <div id="tables_selected_files"></div>
-                                <input type="file" name="tables[]" multiple class="form-control" id="tables" onchange="validateTablesFileType(); displaySelectedFiles('tables')">
-                                <div class="text-danger" id="tables_error"></div>
-                            </div>
-                            <hr>
-                            <!-- Supplementary -->
-                            <div class="mb-3">
-                                @foreach ($fileNames['supplementaryFiles'] as $fileName)
-                                <p style="color:burlywood">{{ $fileName }}</p>
-                                <div class="mb-3 form-check">
-                                    <input type="checkbox" class="form-check-input" name="delete_supplementary[]" value="{{ $fileName }}" id="delete_supplementary_{{ $loop->index }}">
-                                    <label class="form-check-label" for="delete_supplementary_{{ $loop->index }}">Delete file</label>
-                                </div>
-                                @endforeach
-                                <label for="supplementary" class="form-label"><strong>Upload Supplementary: </strong><i>(docx, xls, xlsx, pdf, jpg)</i></label>
-                                <div id="supplementary_selected_files"></div>
-                                <input type="file" name="supplementary[]" multiple class="form-control" id="supplementary" onchange="validateSupplementaryFileType(); displaySelectedFiles('supplementary')">
-                                <div class="text-danger" id="supplementary_error"></div>
-                            </div>
-                            <hr>
-                            <!-- Cover Letter -->
-                            <div class="mb-3">
-                                @foreach ($fileNames['coverLetter'] as $fileName)
-                                <p style="color:burlywood">{{ $fileName }}</p>
-                                <div class="mb-3 form-check">
-                                    <input type="checkbox" class="form-check-input" name="delete_cover_letter[]" value="{{ $fileName }}" id="delete_cover_letter_{{ $loop->index }}">
-                                    <label class="form-check-label" for="delete_cover_letter_{{ $loop->index }}">Delete file</label>
-                                </div>
-                                @endforeach
-                                <label for="cover_letter" class="form-label"><strong>Upload Cover Letter:</strong></label>
-                                <div id="cover_letter_selected_files"></div>
-                                <input type="file" name="cover_letter[]" multiple class="form-control" id="cover_letter" onchange="validateCoverLaterFileType(); displaySelectedFiles('cover_letter')">
-                                <div class="text-danger" id="cover_letter_error"></div>
-                            </div>
-
-                            <hr>
-
                             <!-- Keywords -->
                             <div class="mb-3">
                                 <label for="Keywords" class="form-label"><strong>Type Keywords: </strong> <i>(separate
@@ -353,6 +360,173 @@
                                 <input type="text" class="form-control" name="grant_id" id="grant_id"
                                     placeholder="Add Grand ID (Optional)" value="{{ $article->grant_id }}">
                             </div>
+                        @elseif (Auth::user()->role === 'admin' && $article->status === 'accepted')
+                        @endif
+                        {{-- <div class="mb-3">
+                            <label class="form-check-label" for="declarations">
+                                <input class="form-check-input" type="checkbox" id="declarations" required>
+                                I hereby declare that...
+                            </label>
+                        </div> --}}
+                    </div>
+
+                    <!-- !!!!!!!!!!!! Втора колона !!!!!!!!!!!! -->
+                    <div class="col-md-6">
+
+                        @if (Auth::user()->role === 'author' || Auth::user()->role === 'reviewer')
+                           <!-- Upload Title Page -->
+<div class="mb-3">
+    @foreach ($fileNames['titlePage'] as $fileName)
+    <p style="color:burlywood">{{ $fileName }}</p>
+    <div class="mb-3 form-check">
+        <input type="checkbox" class="form-check-input" name="delete_title_pages[]" value="{{ $fileName }}" id="delete_title_page_{{ $loop->index }}">
+        <label class="form-check-label" for="delete_title_page_{{ $loop->index }}">Delete file</label>
+    </div>
+    @endforeach
+    <div class="box">
+       <div class="input-box">
+          <h2 class="upload-area-title">Upload Title Page <i>(docx,
+                LaTeX doc)</i></h2>                                 
+             <input type="file" id="upload1" data-id="title_pages" hidden multiple onchange="validateTitlePageFileType()" />
+             <div class="text-danger" id="title_page_error"></div>
+             <label for="upload1" class="uploadLabel">
+                <span><i class="fa fa-cloud-upload"></i></span>
+                <p>Click to Upload</p>
+             </label>
+       </div>
+
+       <div id="filewrapper1">
+          <h3 class="uploaded">Uploaded Documents</h3>
+       </div>
+    </div>
+</div>
+<hr>
+<!-- Manuscript -->
+<div class="mb-3">
+    @foreach ($fileNames['manuscript'] as $fileName)
+    <p style="color:burlywood">{{ $fileName }}</p>
+    <div class="mb-3 form-check">
+        <input type="checkbox" class="form-check-input" name="delete_manuscripts[]" value="{{ $fileName }}" id="delete_manuscript_{{ $loop->index }}">
+        <label class="form-check-label" for="delete_manuscript_{{ $loop->index }}">Delete file</label>
+    </div>
+    @endforeach
+    <div class="box">
+       <div class="input-box">
+          <h2 class="upload-area-title">Upload Manuscript <i>(docx, LaTeX doc)</i></h2>
+             <input type="file" id="upload2" data-id="manuscript" hidden multiple onchange="validateManuscriptFileType()"/>
+             <div class="text-danger" id="manuscript_error"></div>
+             <label for="upload2" class="uploadLabel">
+                <span><i class="fa fa-cloud-upload"></i></span>
+                <p>Click to Upload</p>
+             </label>
+       </div>
+       <div id="filewrapper2">
+          <h3 class="uploaded">Uploaded Documents</h3>
+       </div>
+    </div>                         
+</div>
+<hr>
+<!-- Figures -->
+<div class="mb-3">
+    @foreach ($fileNames['figures'] as $fileName)
+    <p style="color:burlywood">{{ $fileName }}</p>
+    <div class="mb-3 form-check">
+        <input type="checkbox" class="form-check-input" name="delete_figures[]" value="{{ $fileName }}" id="delete_figure_{{ $loop->index }}">
+        <label class="form-check-label" for="delete_figure_{{ $loop->index }}">Delete file</label>
+    </div>
+    @endforeach
+    <div class="box">
+       <div class="input-box">
+          <h2 class="upload-area-title">Upload Figures <i>(jpg)</i></h2>
+             <input type="file" id="upload3" data-id="figures" hidden multiple onchange="validateFiguresFileType()"/>
+             <div class="text-danger" id="figures_error"></div>
+             <label for="upload3" class="uploadLabel">
+                <span><i class="fa fa-cloud-upload"></i></span>
+                <p>Click to Upload</p>
+             </label>
+       </div>
+       <div id="filewrapper3">
+          <h3 class="uploaded">Uploaded Documents</h3>
+       </div>
+    </div>
+</div>
+<hr>
+<!-- Tables -->
+<div class="mb-3">
+    @foreach ($fileNames['tables'] as $fileName)
+    <p style="color:burlywood">{{ $fileName }}</p>
+    <div class="mb-3 form-check">
+        <input type="checkbox" class="form-check-input" name="delete_tables[]" value="{{ $fileName }}" id="delete_table_{{ $loop->index }}">
+        <label class="form-check-label" for="delete_table_{{ $loop->index }}">Delete file</label>
+    </div>
+    @endforeach
+    <div class="box">
+       <div class="input-box">
+          <h2 class="upload-area-title">Upload Tables <i>(docx)</i></h2>
+             <input type="file" id="upload4" data-id="tables" hidden multiple onchange="validateTablesFileType()"/>
+             <div class="text-danger" id="tables_error"></div>
+             <label for="upload4" class="uploadLabel">
+                <span><i class="fa fa-cloud-upload"></i></span>
+                <p>Click to Upload</p>
+             </label>
+       </div>
+       <div id="filewrapper4">
+          <h3 class="uploaded">Uploaded Documents</h3>
+       </div>
+    </div>
+</div>
+<hr>
+<!-- Supplementary -->
+<div class="mb-3">
+    @foreach ($fileNames['supplementaryFiles'] as $fileName)
+    <p style="color:burlywood">{{ $fileName }}</p>
+    <div class="mb-3 form-check">
+        <input type="checkbox" class="form-check-input" name="delete_supplementary[]" value="{{ $fileName }}" id="delete_supplementary_{{ $loop->index }}">
+        <label class="form-check-label" for="delete_supplementary_{{ $loop->index }}">Delete file</label>
+    </div>
+    @endforeach
+    <div class="box">
+       <div class="input-box">
+          <h2 class="upload-area-title">Upload Supplementary <i>(docx, xls, xlsx, pdf, png, jpg)</i></h2>
+             <input type="file" id="upload5" data-id="supplementary" hidden multiple onchange="validateSupplementaryFileType()"/>
+             <div class="text-danger" id="supplementary_error"></div>
+             <label for="upload5" class="uploadLabel">
+                <span><i class="fa fa-cloud-upload"></i></span>
+                <p>Click to Upload</p>
+             </label>
+       </div>
+       <div id="filewrapper5">
+          <h3 class="uploaded">Uploaded Documents</h3>
+       </div>
+    </div>
+</div>
+<hr>
+<!-- Cover Letter -->
+<div class="mb-3">
+    @foreach ($fileNames['coverLetter'] as $fileName)
+    <p style="color:burlywood">{{ $fileName }}</p>
+    <div class="mb-3 form-check">
+        <input type="checkbox" class="form-check-input" name="delete_cover_letter[]" value="{{ $fileName }}" id="delete_cover_letter_{{ $loop->index }}">
+        <label class="form-check-label" for="delete_cover_letter_{{ $loop->index }}">Delete file</label>
+    </div>
+    @endforeach
+    <div class="box">
+        <div class="input-box">
+           <h2 class="upload-area-title">Upload Cover Letter  <i>(docx, LaTeX doc)</i></h2>
+              <input type="file" id="upload6" data-id="cover_letter" hidden multiple onchange="validateCoverLaterFileType()"/>
+              <div class="text-danger" id="cover_letter_error"></div>
+              <label for="upload6" class="uploadLabel">
+                 <span><i class="fa fa-cloud-upload"></i></span>
+                 <p>Click to Upload</p>
+              </label>
+        </div>
+        <div id="filewrapper6">
+           <h3 class="uploaded">Uploaded Documents</h3>
+        </div>
+     </div>
+</div>
+<hr>
+                            
                         @else
                             <!-- Admin Accept -->
                             <div class="mb-3 form-check">
@@ -363,79 +537,13 @@
                         @endif
                     </div>
                     <hr>
-                    <div class="col-md-12">
+                    {{-- <div class="col-md-12">
                         <!-- Контейнер за полетата на авторите -->
-                        @foreach ($article->authors as $author) 
-                        <div class="author-row">
-                            <h3>Co Author</h3>
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <label for="authors_{{ $loop->index }}_first_name" class="form-label">* Name:</label>
-                                    <input type="text" class="form-control" 
-                                        name="authors[{{ $loop->index }}][first_name]" 
-                                        placeholder="First Name - required" 
-                                        value="{{ old('authors.'.$loop->index.'.first_name', $author->first_name) }}" required>
-                                </div>
-                                <div class="col-md-6">
-                                    <label for="authors_{{ $loop->index }}_middle_name" class="form-label">Middle Name/Initial:</label>
-                                    <input type="text" class="form-control" 
-                                        name="authors[{{ $loop->index }}][middle_name]" 
-                                        placeholder="Middle Name/Initial" 
-                                        value="{{ old('authors.'.$loop->index.'.middle_name', $author->middle_name) }}">
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <label for="authors_{{ $loop->index }}_family_name" class="form-label">* Family Name:</label>
-                                    <input type="text" class="form-control" 
-                                        name="authors[{{ $loop->index }}][family_name]" 
-                                        placeholder="Family Name - required" 
-                                        value="{{ old('authors.'.$loop->index.'.family_name', $author->family_name) }}" required>
-                                </div>
-                                <div class="col-md-6">
-                                    <label for="authors_{{ $loop->index }}_primary_affiliation" class="form-label">* Primary Affiliation:</label>
-                                    <input type="text" class="form-control" 
-                                        name="authors[{{ $loop->index }}][primary_affiliation]" 
-                                        placeholder="Primary Affiliation - required" 
-                                        value="{{ old('authors.'.$loop->index.'.primary_affiliation', $author->primary_affiliation) }}" required>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <label for="authors_{{ $loop->index }}_contact_email" class="form-label">* Contact (E-mail):</label>
-                                    <input type="email" class="form-control" 
-                                        name="authors[{{ $loop->index }}][contact_email]" 
-                                        placeholder="E-mail - required" 
-                                        value="{{ old('authors.'.$loop->index.'.contact_email', $author->contact_email) }}" required>
-                                </div>
-                                <div class="col-md-6">
-                                    <label for="authors_{{ $loop->index }}_author_contributions" class="form-label">Author Contributions Statement:</label>
-                                    <textarea class="form-control" 
-                                        name="authors[{{ $loop->index }}][author_contributions]" 
-                                        placeholder="Author Contributions Statement" rows="3">{{ old('authors.'.$loop->index.'.author_contributions', $author->author_contributions) }}</textarea>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-4">
-                                    <label for="authors_{{ $loop->index }}_is_corresponding_author">
-                                        <input type="checkbox" name="authors[{{ $loop->index }}][is_corresponding_author]" 
-                                            value="1" 
-                                            {{ old('authors.'.$loop->index.'.is_corresponding_author', $author->is_corresponding_author) ? 'checked' : '' }}>
-                                        Corresponding Author
-                                    </label>
-                                </div>
-                                <div class="col-md-4">
-                                    <label for="authors_{{ $loop->index }}_position">Position</label>
-                                    <input type="number" name="authors[{{ $loop->index }}][position]" 
-                                        value="{{ old('authors.'.$loop->index.'.position', $author->position) }}" 
-                                        class="form-control">
-                                </div>
-                            </div>
-                        </div>
-                    @endforeach
-                    
-
-
+                        <div id="authorsContainer" class="row g-3"></div>
+                    </div>
+                    <div class="mb-3">
+                        <button type="button" class="btn btn-primary" id="addAuthorButton">Add Author</button>
+                    </div> --}}
 
                     <div class="mb-3 d-flex justify-content-end">
                         <button type="submit" class="btn btn-warning">Edit Article</button>
@@ -447,29 +555,121 @@
 
  
     <script>
-        function displaySelectedFiles(inputId) {
-            var input = document.getElementById(inputId);
-            var fileList = input.files;
-            var fileNames = "<span style='font-weight: bold; font-style: italic;'>";
-            for (var i = 0; i < fileList.length; i++) {
-                fileNames += fileList[i].name;
-                if (i !== fileList.length - 1) {
-                    fileNames += ", "; // Добавете запетая между имената на файловете, освен ако не е последният файл
-                }
-            }
-            fileNames += "</span>"; // Затварящ таг за span
-            var selectedFilesDiv = document.getElementById(inputId + '_selected_files');
-            selectedFilesDiv.innerHTML = fileNames;
-        }
+        window.addEventListener("load", () => {
+               const fileInputs = document.querySelectorAll("input[type='file']")
+               const submitBtn = document.getElementById("submitBtn");
+
+               let filesByInput = {};
+
+               fileInputs.forEach((input) => {
+                  const filewrapper = document.getElementById(`filewrapper${input.id.slice(-1)}`);
+                  filesByInput[input.dataset.id] = [];
+
+                  input.addEventListener("change", (e) => {
+                     Array.from(e.target.files).forEach((file) => {
+                        let filetype = file.name.split(".").pop().toLowerCase();
+                        
+                        filesByInput[input.dataset.id].push(file); // filesToUpload[titlePage].push(file)
+                        fileshow(file.name, filetype, filewrapper, filesByInput[input.dataset.id]);
+                     });
+                     // {titlePage:[file1, fiel2], manuscript: [file1], figures: [1,2,3,4,...]};
+                  });
+               });
 
 
 
-        document.addEventListener('DOMContentLoaded', function() {
-            document.getElementById('articleForm').addEventListener('submit', function() {
-                document.getElementById('submitBtn').disabled =
-                    true; // Деактивирайте бутона след изпращане на формата
+               function fileshow(fileName, fileType, filewrapper, fileArray) {
+                  const showfileboxEl = document.createElement("div");
+                  const leftEl = document.createElement("div");
+                  const rightEl = document.createElement("div");
+                  const fileTypeEl = document.createElement("span");
+                  const fileNameEl = document.createElement("h3");
+                  const crossEl = document.createElement("span");
+
+                  showfileboxEl.classList.add("showfilebox");
+                  leftEl.classList.add("left");
+                  rightEl.classList.add("right");
+                  fileTypeEl.classList.add("filetype");
+
+                  fileTypeEl.innerHTML = fileType;
+                  fileNameEl.innerHTML = fileName;
+                  crossEl.innerHTML = "&#215;";
+
+                  leftEl.append(fileTypeEl);
+                  leftEl.append(fileNameEl);
+                  showfileboxEl.append(leftEl);
+                  showfileboxEl.append(rightEl);
+                  rightEl.append(crossEl);
+                  filewrapper.append(showfileboxEl);
+
+                  crossEl.addEventListener("click", () => {
+                     filewrapper.removeChild(showfileboxEl);
+                     const index = fileArray.findIndex((file) => file.name === fileName);
+
+                     if (index > -1) fileArray.splice(index, 1);
+                  });
+               }
+
+               submitBtn.addEventListener("click", (e) => {
+                  
+                e.preventDefault();
+                  
+                  submitBtn.disabled = true; // Деактивирайте бутона след изпращане на формата
+                  
+                  const formData = new FormData();
+
+                  // Append files grouped by input type
+                  Object.keys(filesByInput).forEach((inputType) => {
+                     filesByInput[inputType].forEach((file) => {
+                        formData.append(`${inputType}[]`, file); // Group files under their respective input type                        
+                     });
+                  });
+                  
+                  const typeSelect = document.getElementById("article_type");
+                  const specialtySelect = document.getElementById("specialty");
+                  const scientificArea = document.getElementById("scientific_area");
+                  const fundingInput = document.getElementById("funding_name");
+                  const titleInput = document.getElementById("title");
+                  const abstractInput = document.getElementById("abstract");
+                  const grantInput = document.getElementById("grant_id");
+                  const keywordsInput = document.getElementById("keywords");
+
+                  formData.append("article_type", typeSelect.value);
+                  formData.append("specialty", specialtySelect.value);
+                  formData.append("scientific_area", scientificArea.value);
+                  formData.append("funding_name", fundingInput.value);
+                  formData.append("title", titleInput.value);
+                  formData.append("abstract", abstractInput.value);
+                  formData.append("grant_id", grantInput.value);
+                  formData.append("keywords", keywordsInput.value); 
+
+                  fetch("{{ route('article.store') }}", { 
+                        method: "POST",
+                        headers: {
+                           "X-CSRF-TOKEN": "{{ csrf_token() }}" // Include CSRF token
+                        },
+                        body: formData,
+                     })
+                     .then((response) => {
+                        if (!response.ok) {
+                            throw new Error('Network response was not ok');
+                        }
+                        return response.json();
+                    })
+                    .then((data) => {
+                        if (data.success) {
+                            alert(data.message);
+                            window.location.href = data.redirect_url; // Redirect to article.list
+                        } else {
+                            alert("An error occurred: " + (data.message || "Unknown error"));
+                        }
+                    })
+                    .catch((error) => {
+                        console.error("There was a problem with the fetch operation:", error);
+                        alert("An unexpected error occurred. Please try again.");
+                    });
+               });
             });
-        });
     </script>
 
     <!-- partial:partials/_footer.html -->
