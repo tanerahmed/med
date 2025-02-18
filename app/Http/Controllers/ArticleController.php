@@ -617,18 +617,26 @@ class ArticleController extends Controller
         ]);
 
 
+        // TODO MANI TUKA KOMENTARA !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        // TODO MANI TUKA KOMENTARA !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        // TODO MANI TUKA KOMENTARA !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        // TODO MANI TUKA KOMENTARA !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        // TODO MANI TUKA KOMENTARA !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        // TODO MANI TUKA KOMENTARA !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        // TODO MANI TUKA KOMENTARA !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
         // Проверка дали авторите имат всички задължителни полета.
-        if ($request->has('authors')) {
-            $authors = $request->input('authors');
-            foreach ($authors as $authorData) {
-                if ($authorData['first_name'] == '' || $authorData['family_name'] == '' || $authorData['primary_affiliation'] == '' ||  $authorData['contact_email'] == '' ){
-                    return response()->json([
-                        'success' => false,
-                        'errors' => "Co Autgors data not walid"
-                    ], 422);
-                }
-            }
-        }
+        // if ($request->has('authors')) {
+        //     $authors = $request->input('authors');
+        //     foreach ($authors as $authorData) {
+        //         if ($authorData['first_name'] == '' || $authorData['family_name'] == '' || $authorData['primary_affiliation'] == '' ||  $authorData['contact_email'] == '' ){
+        //             return response()->json([
+        //                 'success' => false,
+        //                 'errors' => "Co Autgors data not walid"
+        //             ], 422);
+        //         }
+        //     }
+        // }
 
 
         try {
