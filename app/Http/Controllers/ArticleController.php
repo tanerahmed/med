@@ -920,7 +920,10 @@ class ArticleController extends Controller
             foreach (['reviewer_id_1', 'reviewer_id_2', 'reviewer_id_3'] as $reviewerIdKey) {
                 $reviewerId = $request->input($reviewerIdKey);
 
-                if ($reviewerId && !in_array($reviewerId, $reviewerIds)) {
+                // ТАЗИ ПРОВЕРКА Я СПРЯХ !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+                // if ($reviewerId && !in_array($reviewerId, $reviewerIds)) {
+
+                if ($reviewerId) {
                     $user = User::find($reviewerId);
                     // Изпрати покана ако не си пращал преди.
                     $invitedReviewers = InvitedReviewer::where('article_id', $id)->pluck('user_id')->toArray();
