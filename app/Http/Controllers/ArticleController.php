@@ -492,7 +492,10 @@ class ArticleController extends Controller
         $fileNames['supplementaryFiles'] = $this->cutAndReturnOnlyFileName($article->supplementaryFiles);
         $fileNames['coverLetter'] = $this->cutAndReturnOnlyFileName($article->coverLetter);      
 
-        return view('author.articleEdit', compact('article', 'fileNames'));
+        $authors = Author::where('article_id', $articleId)->get();
+
+
+        return view('author.articleEdit', compact('article', 'fileNames', 'authors'));
     }
 
     public function addIssueIdBlade($articleId)
@@ -637,6 +640,7 @@ class ArticleController extends Controller
         //         }
         //     }
         // }
+
 
 
         try {

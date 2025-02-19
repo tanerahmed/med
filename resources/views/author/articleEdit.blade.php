@@ -210,7 +210,7 @@
                             <div class="mb-3">
                                 <label for="funding_name" class="form-label"><strong>Type: </strong></label>
 
-                                <select class="form-select" name="type" aria-label="Default select example">
+                                <select class="form-select"  id="article_type" name="type" aria-label="Default select example">
                                     <option value="{{ $article->type }}" selected>{{ $article->type }}</option>
                                     <option value="review">review</option>
                                     <option value="letter to the editor">letter to the editor</option>
@@ -537,16 +537,66 @@
                         @endif
                     </div>
                     <hr>
-                    {{-- <div class="col-md-12">
-                        <!-- Контейнер за полетата на авторите -->
-                        <div id="authorsContainer" class="row g-3"></div>
-                    </div>
-                    <div class="mb-3">
-                        <button type="button" class="btn btn-primary" id="addAuthorButton">Add Author</button>
-                    </div> --}}
+    {{-- ТАНЕР START --}}
+    @foreach ($authors as $index => $author)
+    <div class="author-row">
+        <h3>Co Author</h3>
+        <div class="row">
+            <div class="col-md-6">
+                <label for="author_{{ $index }}" class="form-label">* Name:</label>
+                <input type="text" class="form-control" name="authors[{{ $index }}][first_name]" value="{{ $author->first_name }}" placeholder="First Name - required" required>
+            </div>
+            <div class="col-md-6">
+                <label for="middle_name_{{ $index }}" class="form-label">Middle Name/Initial:</label>
+                <input type="text" class="form-control" name="authors[{{ $index }}][middle_name]" value="{{ $author->middle_name }}" placeholder="Middle Name/Initial">
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <label for="family_name_{{ $index }}" class="form-label">* Family Name:</label>
+                <input type="text" class="form-control" name="authors[{{ $index }}][family_name]" value="{{ $author->family_name }}" placeholder="Family Name - required" required>
+            </div>
+            <div class="col-md-6">
+                <label for="primary_affiliation_{{ $index }}" class="form-label">* Primary Affiliation:</label>
+                <input type="text" class="form-control" name="authors[{{ $index }}][primary_affiliation]" value="{{ $author->primary_affiliation }}" placeholder="Primary Affiliation - required" required>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <label for="contact_{{ $index }}" class="form-label">* Contact (E-mail):</label>
+                <input type="email" class="form-control" name="authors[{{ $index }}][contact_email]" value="{{ $author->contact_email }}" placeholder="E-mail - required" required>
+            </div>
+
+            <div>
+                <label for="position">Position</label>
+                <input type="number" name="authors[{{ $index }}][position]" value="{{ $author->position }}" class="form-control">
+            </div>
+
+            <div>
+                <label for="is_corresponding_author_{{ $index }}">
+                    <input type="checkbox" name="authors[{{ $index }}][is_corresponding_author]" value="1" {{ $author->is_corresponding_author ? 'checked' : '' }}>
+                    Corresponding Author
+                </label>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <label for="author_contributions_{{ $index }}" class="form-label">Author Contributions Statement:</label>
+            <textarea class="form-control" name="authors[{{ $index }}][author_contributions]" placeholder="Author Contributions Statement" rows="3">{{ $author->author_contributions }}</textarea>
+        </div>
+        <div class="row">
+            <div class="col-md-12 text-end">
+                <button type="button" class="btn btn-danger" onclick="removeAuthor(this)">Remove Author</button>
+            </div>
+        </div>
+    </div>
+@endforeach
+
+
+    {{-- ТАНЕР END --}}
+                
 
                     <div class="mb-3 d-flex justify-content-end">
-                        <button type="submit" class="btn btn-warning">Edit Article</button>
+                        <button type="submit" class="btn btn-warning" id="submitBtn">Edit Article</button>
                     </div>
                 </div>
             </form>
@@ -617,6 +667,7 @@
                   submitBtn.disabled = true; // Деактивирайте бутона след изпращане на формата
                   
                   const formData = new FormData();
+                  const articleId = "75";
 
                   // Append files grouped by input type
                   Object.keys(filesByInput).forEach((inputType) => {
@@ -643,13 +694,23 @@
                   formData.append("grant_id", grantInput.value);
                   formData.append("keywords", keywordsInput.value); 
 
-                  fetch("{{ route('article.store') }}", { 
-                        method: "POST",
-                        headers: {
-                           "X-CSRF-TOKEN": "{{ csrf_token() }}" // Include CSRF token
-                        },
-                        body: formData,
-                     })
+                  console.log([...formData.entries()]);
+                  console.log(formData);   
+
+                  // fetch("{{ url('/articles_/article-edit/') }}/" + articleId, {  
+                  //       method: "PUT",
+                  //       headers: {
+                  //          "X-CSRF-TOKEN": "{{ csrf_token() }}" // Include CSRF token
+                  //       },
+                  //       body: formData,
+                  //    })
+                  fetch(`/articles_/article-edit/75`, {  
+                    method: "PUT",
+                    headers: {
+                        "X-CSRF-TOKEN": "{{ csrf_token() }}",
+                    },
+                    body: formData
+                    })
                      .then((response) => {
                         if (!response.ok) {
                             throw new Error('Network response was not ok');
