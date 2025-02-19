@@ -704,7 +704,7 @@
                   //       },
                   //       body: formData,
                   //    })
-                  fetch(`/articles_/article-edit/75`, {  
+                  fetch(`url(/articles_/article-edit/75`), {  
                     method: "PUT",
                     headers: {
                         "X-CSRF-TOKEN": "{{ csrf_token() }}",
